@@ -5,8 +5,83 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Conciliação"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Conciliação" Height="450" Width="800" WindowState="Maximized">
     <Grid>
-        
+        <Menu Height="26" VerticalAlignment="Top" FontWeight="Bold">
+            <MenuItem Header="Arquivo">
+                <MenuItem IsCheckable="true" Header="Layout" ToolTip="Cria um Layout de Carga" Click="MenuItem_Click"></MenuItem>
+                <MenuItem IsCheckable="True" Header="Importar" ToolTip="Importa dados para o Sistema" Click="MenuItem_Click_1"></MenuItem>
+                <MenuItem IsCheckable="True" Header="Exportar" ToolTip="Exporta dados para o Excel"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <TabControl Margin="10,304,10,10">
+            <TabItem Header="Base Física">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid x:Name="DgBF" Margin="10" IsEnabled="False" Background="{x:Null}"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Base Contábil">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid x:Name="DgBC" Margin="10" IsEnabled="False" Background="{x:Null}"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Resultado">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid x:Name="DgResultado" Margin="10" IsEnabled="False" Background="{x:Null}"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <GroupBox x:Name="GbCampo" Header="Campo" Margin="10,31,0,0" HorizontalAlignment="Left" Width="159" Height="268" VerticalAlignment="Top" FontWeight="Bold">
+            <StackPanel HorizontalAlignment="Left" Height="83" Margin="46,10,-2,0" VerticalAlignment="Top" Width="103">
+                <Button Name="BtnSelecionar" Content="Selecionar" ></Button>
+                <Line Height="10"></Line>
+                <Button x:Name="BtnLimparCb" Content="Limpar" HorizontalAlignment="Left" Width="103" Cursor="Hand"></Button>
+            </StackPanel>
+        </GroupBox>
+        <StackPanel x:Name="PanelCampo" Margin="18,60,0,0" HorizontalAlignment="Left" Width="39" Height="162" VerticalAlignment="Top">
+            <CheckBox x:Name="Cb1" Content="1"/>
+            <CheckBox x:Name="Cb2" Content="2"/>
+            <CheckBox x:Name="Cb3" Content="3"/>
+            <CheckBox x:Name="Cb4" Content="4"/>
+            <CheckBox x:Name="Cb5" Content="5"/>
+            <CheckBox x:Name="Cb6" Content="6"/>
+            <CheckBox x:Name="Cb7" Content="7"/>
+            <CheckBox x:Name="Cb8" Content="8"/>
+            <CheckBox x:Name="Cb9" Content="9"/>
+            <CheckBox x:Name="Cb10" Content="10"/>
+        </StackPanel>
+        <StackPanel x:Name="PanelPrincipal" Height="268" Margin="174,31,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="129">
+            <Label Name="LblCmbVlDt" Content="Prioridade" FontWeight="Bold"></Label>
+            <ComboBox Name="CmbPrioridade" HorizontalAlignment="Left" Width="94">
+                <ComboBox.Effect>
+                    <DropShadowEffect/>
+                </ComboBox.Effect>
+            </ComboBox>
+            <Line Height="10"></Line>
+            <Label Name="LblOrdem" Content="Ordem" FontWeight="Bold"></Label>
+            <ComboBox Name="CmbOrdem" HorizontalAlignment="Left" Width="94">
+                <ComboBox.Effect>
+                    <DropShadowEffect/>
+                </ComboBox.Effect>
+            </ComboBox>
+            <Line Height="10"></Line>
+            <Label Name="LblMinCont" Content="Mín. Qtd. Contábil" FontWeight="Bold"></Label>
+            <TextBox Name="TxtMinCont" Text="0,00"></TextBox>
+            <Line Height="10"></Line>
+            <Label Name="LblMinFis" Content="Mín. Qtd. Físico" FontWeight="Bold"></Label>
+            <TextBox Name="TxtMinFis" Text="0,00"></TextBox>
+            <Line Height="20"></Line>
+            <Button x:Name="BtnConciliar" Content="Conciliar" Height="23" HorizontalAlignment="Left" Width="93" Cursor="Hand" FontWeight="Bold">
+            </Button>
+        </StackPanel>
+        <StackPanel Margin="308,31,23,121">
+            <Label Name="LblRodadas" Content="Rodadas" FontWeight="Bold"/>
+            <TextBox Name="TxtRodadas" Height="104" IsEnabled="False">
+                <TextBox.Effect>
+                    <DropShadowEffect/>
+                </TextBox.Effect>
+            </TextBox>
+        </StackPanel>
+
     </Grid>
 </Window>
