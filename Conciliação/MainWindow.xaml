@@ -17,17 +17,17 @@
         <TabControl Margin="10,304,10,10">
             <TabItem Header="Base Física">
                 <Grid Background="#FFE5E5E5">
-                    <DataGrid x:Name="DgBF" Margin="10" IsEnabled="False" Background="{x:Null}"/>
+                    <DataGrid x:Name="DgBF" Margin="10" Background="{x:Null}" IsReadOnly="True" GridLinesVisibility="None"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Base Contábil">
                 <Grid Background="#FFE5E5E5">
-                    <DataGrid x:Name="DgBC" Margin="10" IsEnabled="False" Background="{x:Null}"/>
+                    <DataGrid x:Name="DgBC" Margin="10" Background="{x:Null}" IsReadOnly="True" GridLinesVisibility="None"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Resultado">
                 <Grid Background="#FFE5E5E5">
-                    <DataGrid x:Name="DgResultado" Margin="10" IsEnabled="False" Background="{x:Null}"/>
+                    <DataGrid x:Name="DgResultado" Margin="10" Background="{x:Null}" IsReadOnly="True" GridLinesVisibility="None"/>
                 </Grid>
             </TabItem>
         </TabControl>

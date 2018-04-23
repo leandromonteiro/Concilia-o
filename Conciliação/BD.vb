@@ -3,19 +3,11 @@ Imports System.Data.OleDb
 Imports System.Data
 
 Public Class BD
-    Dim DT_BF As New DataTable
-    Dim DT_BC As New DataTable
-    Dim DT_Rateio As New DataTable
-    Dim alterado_positivo As Boolean
-    Dim alterado_negativo As Boolean
+    Dim DS As New DataSet
+    Public DT_BF As New DataTable
+    Public DT_BC As New DataTable
+    Public DT_RESULTADO As New DataTable
     Dim DV_Excel As New DataView
-    Dim N_BC As Integer
-    Dim BF_Total As Double
-
-    Dim BC_Seq_Atual As String
-    Dim BC_Valor_Atual As Double
-
-    Dim First_Loop As Integer = 0
 
     Public Sub Modelo_Excel()
         Dim xlApp As Excel.Application
@@ -125,9 +117,9 @@ Public Class BD
             Dim DA_BF As New OleDbDataAdapter
             Dim DA_BC As New OleDbDataAdapter
             con.Open()
-            DA_BF.SelectCommand = New OleDbCommand("SELECT * FROM [Base Física$];", con)
-            DA_BC.SelectCommand = New OleDbCommand("SELECT [CHAVE],[CAMPO1],[CAMPO2],[CAMPO3],[CAMPO4],[CAMPO5],[CAMPO6],[CAMPO7],[CAMPO8],[CAMPO9],[CAMPO10],[QUANTIDADE], left([DATA],2) & '/' & mid([DATA],4,2) & '/' & right([DATA],4) as DATA,[VOC],[DAC] FROM [Base Contábil$];", con)
-            Dim DS As New DataSet
+            DA_BF.SelectCommand = New OleDbCommand("SELECT [CHAVE],[CAMPO1],[CAMPO2],[CAMPO3],[CAMPO4],[CAMPO5],[CAMPO6],[CAMPO7],[CAMPO8],[CAMPO9],[CAMPO10],abs([QUANTIDADE]) as QUANTIDADE,[PRIORIDADE] FROM [Base Física$];", con)
+            DA_BC.SelectCommand = New OleDbCommand("SELECT [CHAVE],[CAMPO1],[CAMPO2],[CAMPO3],[CAMPO4],[CAMPO5],[CAMPO6],[CAMPO7],[CAMPO8],[CAMPO9],[CAMPO10],[QUANTIDADE],[DATA],abs([VOC]) as VOC,abs([DAC]) as DAC FROM [Base Contábil$];", con)
+
             DA_BF.Fill(DS, "TB_BF")
             DA_BC.Fill(DS, "TB_BC")
             con.Close()
@@ -144,7 +136,6 @@ Public Class BD
             DGV_BF.ItemsSource = DS.Tables("TB_BF").DefaultView
             DGV_BC.ItemsSource = DS.Tables("TB_BC").DefaultView
 
-
             'Remover dados vazios
             'For s = 0 To DT_BC.Rows.Count - 1
             'If IsDBNull(DT_BC.Rows(s).Item(0)) Then
@@ -152,13 +143,109 @@ Public Class BD
             'End If
             'Next
 
-            'Ordenar tabelas
-            'DT_BF = DT_BF.Select("", "CLASSIFICAÇÃO BASE FÍSICA,VALOR BASE FÍSICA asc").CopyToDataTable
-            'DT_BC = DT_BC.Select("", "CLASSIFICAÇÃO BASE CONTÁBIL,VALOR BASE CONTÁBIL asc").CopyToDataTable
-
             MsgBox("Dados carregados com sucesso", MsgBoxStyle.Information)
         Catch
             MsgBox("Erro ao Carregar os Dados", MsgBoxStyle.Critical)
         End Try
+    End Sub
+
+    Public Sub Classificar_BD(Prioridade As String, Ordem As String)
+        Try
+            'Ordenar tabelas
+            If Prioridade = "Valor" And Ordem = "Crescente" Then
+                DT_BC = DT_BC.Select("", "[VOC] asc").CopyToDataTable
+            End If
+            If Prioridade = "Valor" And Ordem = "Decrescente" Then
+                DT_BC = DT_BC.Select("", "[VOC] desc").CopyToDataTable
+            End If
+            If Prioridade = "Data" And Ordem = "Crescente" Then
+                DT_BC = DT_BC.Select("", "[DATA] asc").CopyToDataTable
+            End If
+            If Prioridade = "Data" And Ordem = "Decrescente" Then
+                DT_BC = DT_BC.Select("", "[DATA] desc").CopyToDataTable
+            End If
+            DT_BF = DT_BF.Select("", "[PRIORIDADE] asc").CopyToDataTable
+        Catch
+        End Try
+    End Sub
+
+    Public Sub Criar_DT_Resultado()
+        DT_RESULTADO.Columns.Add("ID_C")
+        DT_RESULTADO.Columns.Add("CAMPO1_C")
+        DT_RESULTADO.Columns.Add("CAMPO2_C")
+        DT_RESULTADO.Columns.Add("CAMPO3_C")
+        DT_RESULTADO.Columns.Add("CAMPO4_C")
+        DT_RESULTADO.Columns.Add("CAMPO5_C")
+        DT_RESULTADO.Columns.Add("CAMPO6_C")
+        DT_RESULTADO.Columns.Add("CAMPO7_C")
+        DT_RESULTADO.Columns.Add("CAMPO8_C")
+        DT_RESULTADO.Columns.Add("CAMPO9_C")
+        DT_RESULTADO.Columns.Add("CAMPO10_C")
+        DT_RESULTADO.Columns.Add("DATA")
+        DT_RESULTADO.Columns.Add("VOC")
+        DT_RESULTADO.Columns.Add("DAC")
+        DT_RESULTADO.Columns.Add("QUANTIDADE_C")
+        DT_RESULTADO.Columns.Add("STATUS")
+        DT_RESULTADO.Columns.Add("ID_F")
+        DT_RESULTADO.Columns.Add("CAMPO1_F")
+        DT_RESULTADO.Columns.Add("CAMPO2_F")
+        DT_RESULTADO.Columns.Add("CAMPO3_F")
+        DT_RESULTADO.Columns.Add("CAMPO4_F")
+        DT_RESULTADO.Columns.Add("CAMPO5_F")
+        DT_RESULTADO.Columns.Add("CAMPO6_F")
+        DT_RESULTADO.Columns.Add("CAMPO7_F")
+        DT_RESULTADO.Columns.Add("CAMPO8_F")
+        DT_RESULTADO.Columns.Add("CAMPO9_F")
+        DT_RESULTADO.Columns.Add("CAMPO10_F")
+        DT_RESULTADO.Columns.Add("QUANTIDADE_F")
+    End Sub
+
+    Public Sub Limpar_Limite(Limite_F As Single, Limite_C As Single, DGV_BF As DataGrid, DGV_BC As DataGrid)
+        For Each R In DT_BF.Rows
+            If R.Item(11) <= Limite_F Then
+                R.Delete()
+            End If
+        Next
+
+        For Each R In DT_BC.Rows
+            If R.Item(11) <= Limite_C Then
+                R.Delete()
+            End If
+        Next
+
+        DGV_BF.ItemsSource = ""
+        DGV_BC.ItemsSource = ""
+
+        DGV_BF.ItemsSource = DT_BF.DefaultView
+        DGV_BC.ItemsSource = DT_BC.DefaultView
+    End Sub
+
+    Public Sub Conciliar(DGV_BF As DataGrid, DGV_BC As DataGrid, DGV_RESULTADO As DataGrid, CAMPO1 As Boolean,
+                         CAMPO2 As Boolean)
+        Dim TEXTO1 As Object
+        Dim TEXTO2 As Object
+
+        For Each R_BF In DT_BF.Rows
+            For Each R_BC In DT_BC.Rows
+                'Fazer a subtração apenas dos campos selecionados
+                If CAMPO1 = True Then
+                    TEXTO1 = R_BF.item(1) = R_BC.item(1)
+                Else
+                    TEXTO1 = ""
+                End If
+                If CAMPO2 = True Then
+                    TEXTO2 = R_BF.item(2) = R_BC.item(2)
+                Else
+                    TEXTO2 = ""
+                End If
+                If TEXTO1 And TEXTO2 Then
+                    MsgBox("OK")
+                End If
+                'Limpar BF
+                If R_BF.Item(11) <= 0 Then
+                    R_BF.Delete()
+                End If
+            Next
+        Next
     End Sub
 End Class

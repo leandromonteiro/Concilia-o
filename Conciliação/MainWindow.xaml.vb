@@ -4,6 +4,7 @@ Imports Microsoft.Win32
 Class MainWindow
     Public FileName As String
     Dim BD As New BD
+    Dim Limite_Primeira As Boolean
     Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
         BD.Modelo_Excel()
     End Sub
@@ -26,6 +27,7 @@ Class MainWindow
         CmbPrioridade.Items.Add("Data")
         CmbOrdem.Items.Add("Crescente")
         CmbOrdem.Items.Add("Decrescente")
+        BD.Criar_DT_Resultado()
     End Sub
 
     Private Sub MenuItem_Click_1(sender As Object, e As RoutedEventArgs)
@@ -39,6 +41,7 @@ Class MainWindow
         Else
             Exit Sub
         End If
+        Limite_Primeira = False
         BD.Importar_Excel(FileName, DgBF, DgBC)
     End Sub
 
@@ -58,6 +61,12 @@ Class MainWindow
     Private Sub BtnConciliar_Click(sender As Object, e As RoutedEventArgs) Handles BtnConciliar.Click
         'Validação
         Validar()
+        BD.Classificar_BD(CmbPrioridade.Text, CmbOrdem.Text)
+        'Limpar limite somente na primeira vez
+        If Limite_Primeira = True Then
+            BD.Limpar_Limite(TxtMinFis.Text, TxtMinCont.Text, DgBF, DgBC)
+        End If
+        Limite_Primeira = True
     End Sub
     Private Sub Validar()
         On Error Resume Next
@@ -86,6 +95,11 @@ Class MainWindow
 
         If TxtMinFis.Text = "" Or IsNumeric(TxtMinFis.Text) = False Then
             MsgBox("Mínimo valor para a base física incorreta.", vbInformation)
+            Exit Sub
+        End If
+
+        If DgBF.Items.Count = 0 Or DgBC.Items.Count = 0 Then
+            MsgBox("Insira a base física e/ou base contábil.", vbInformation)
             Exit Sub
         End If
     End Sub
