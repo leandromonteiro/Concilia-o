@@ -221,31 +221,141 @@ Public Class BD
     End Sub
 
     Public Sub Conciliar(DGV_BF As DataGrid, DGV_BC As DataGrid, DGV_RESULTADO As DataGrid, CAMPO1 As Boolean,
-                         CAMPO2 As Boolean)
+                         CAMPO2 As Boolean, CAMPO3 As Boolean, CAMPO4 As Boolean, CAMPO5 As Boolean, CAMPO6 As Boolean,
+                         CAMPO7 As Boolean, CAMPO8 As Boolean, CAMPO9 As Boolean, CAMPO10 As Boolean)
         Dim TEXTO1 As Object
         Dim TEXTO2 As Object
+        Dim TEXTO3 As Object
+        Dim TEXTO4 As Object
+        Dim TEXTO5 As Object
+        Dim TEXTO6 As Object
+        Dim TEXTO7 As Object
+        Dim TEXTO8 As Object
+        Dim TEXTO9 As Object
+        Dim TEXTO10 As Object
+
+        Dim VOC_UNIT As Single
+        Dim DAC_UNIT As Single
+        Dim BF_BC_CONCIL As Single
+        Dim Status As String
 
         For Each R_BF In DT_BF.Rows
             For Each R_BC In DT_BC.Rows
-                'Fazer a subtração apenas dos campos selecionados
+                'Dados selecionados
                 If CAMPO1 = True Then
                     TEXTO1 = R_BF.item(1) = R_BC.item(1)
                 Else
-                    TEXTO1 = ""
+                    TEXTO1 = R_BF.item(1) = R_BF.item(1)
                 End If
                 If CAMPO2 = True Then
                     TEXTO2 = R_BF.item(2) = R_BC.item(2)
                 Else
-                    TEXTO2 = ""
+                    TEXTO2 = R_BF.item(2) = R_BF.item(2)
                 End If
-                If TEXTO1 And TEXTO2 Then
-                    MsgBox("OK")
+                If CAMPO3 = True Then
+                    TEXTO3 = R_BF.item(3) = R_BC.item(3)
+                Else
+                    TEXTO3 = R_BF.item(3) = R_BF.item(3)
                 End If
-                'Limpar BF
-                If R_BF.Item(11) <= 0 Then
-                    R_BF.Delete()
+                If CAMPO4 = True Then
+                    TEXTO4 = R_BF.item(4) = R_BC.item(4)
+                Else
+                    TEXTO4 = R_BF.item(4) = R_BF.item(4)
+                End If
+                If CAMPO5 = True Then
+                    TEXTO5 = R_BF.item(5) = R_BC.item(5)
+                Else
+                    TEXTO5 = R_BF.item(5) = R_BF.item(5)
+                End If
+                If CAMPO6 = True Then
+                    TEXTO6 = R_BF.item(6) = R_BC.item(6)
+                Else
+                    TEXTO6 = R_BF.item(6) = R_BF.item(6)
+                End If
+                If CAMPO7 = True Then
+                    TEXTO7 = R_BF.item(7) = R_BC.item(7)
+                Else
+                    TEXTO7 = R_BF.item(7) = R_BF.item(7)
+                End If
+                If CAMPO8 = True Then
+                    TEXTO8 = R_BF.item(8) = R_BC.item(8)
+                Else
+                    TEXTO8 = R_BF.item(8) = R_BF.item(8)
+                End If
+                If CAMPO9 = True Then
+                    TEXTO9 = R_BF.item(9) = R_BC.item(9)
+                Else
+                    TEXTO9 = R_BF.item(9) = R_BF.item(9)
+                End If
+                If CAMPO10 = True Then
+                    TEXTO10 = R_BF.item(10) = R_BC.item(10)
+                Else
+                    TEXTO10 = R_BF.item(10) = R_BF.item(10)
+                End If
+                '-----------------------------------------------------------------
+                'Subtração e colocar dados na DT resultado
+
+                If TEXTO1 And TEXTO2 And TEXTO3 And TEXTO4 And TEXTO5 And TEXTO6 And TEXTO7 And TEXTO8 _
+                    And TEXTO9 And TEXTO10 Then
+                    'Valores unit.
+                    VOC_UNIT = R_BC.Item(13) / R_BC.Item(11)
+                    DAC_UNIT = R_BC.Item(14) / R_BC.Item(11)
+                    'Diminui BC
+                    If R_BF.Item(11) >= R_BC.Item(11) Then
+                        'Var Conciliado
+                        BF_BC_CONCIL = R_BC.Item(11)
+                        'Zera BC
+                        R_BC.Item(11) = 0
+                    Else
+                        R_BC.Item(11) = R_BC.Item(11) - R_BF.Item(11)
+                        'Var Conciliado
+                        BF_BC_CONCIL = R_BF.Item(11)
+                    End If
+
+                    'Diminui BF
+                    R_BF.Item(11) = R_BF.Item(11) - R_BC.Item(11)
+                    If R_BF.Item(11) < 0 Then
+                        R_BF.Item(11) = 0
+                    End If
+
+                    'Preencher DT resultado
+                    Status = "CONCILIADO"
+                    DT_RESULTADO.Rows.Add(R_BC.Item(0), R_BC.Item(1), R_BC.Item(2), R_BC.Item(3), R_BC.Item(4),
+                                          R_BC.Item(5), R_BC.Item(6), R_BC.Item(7), R_BC.Item(8), R_BC.Item(9),
+                                          R_BC.Item(10), R_BC.Item(12), VOC_UNIT * BF_BC_CONCIL, DAC_UNIT * BF_BC_CONCIL, BF_BC_CONCIL,
+                                          Status, R_BF.Item(0), R_BF.Item(1), R_BF.Item(2), R_BF.Item(3), R_BF.Item(4),
+                                          R_BF.Item(5), R_BF.Item(6), R_BF.Item(7), R_BF.Item(8), R_BF.Item(9),
+                                          R_BF.Item(10), BF_BC_CONCIL, R_BF.Item(12))
+                    If R_BC.Item(11) > 0 Then
+                        Status = "SOBRA CONTÁBIL"
+                        DT_RESULTADO.Rows.Add(R_BC.Item(0), R_BC.Item(1), R_BC.Item(2), R_BC.Item(3), R_BC.Item(4),
+                                          R_BC.Item(5), R_BC.Item(6), R_BC.Item(7), R_BC.Item(8), R_BC.Item(9),
+                                          R_BC.Item(10), R_BC.Item(12), VOC_UNIT * R_BC.Item(11), DAC_UNIT * R_BC.Item(11), R_BC.Item(11),
+                                          Status, "", "", "", "", "", "", "", "", "", "", "", "", "")
+                    End If
+                End If
+
+                '------------------------------------------------------------------
+                'Limpar BC
+                If R_BC.Item(11) <= 0 Then
+                    R_BC.Delete()
                 End If
             Next
+
+            'Limpar BF
+            If R_BF.Item(11) <= 0 Then
+                R_BF.Delete()
+            Else
+                Status = "SOBRA FÍSICA"
+                'Preencher DT resultado
+                DT_RESULTADO.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+                                          Status, R_BF.Item(0), R_BF.Item(1), R_BF.Item(2), R_BF.Item(3), R_BF.Item(4),
+                                          R_BF.Item(5), R_BF.Item(6), R_BF.Item(7), R_BF.Item(8), R_BF.Item(9),
+                                          R_BF.Item(10), R_BF.Item(11), R_BF.Item(12))
+            End If
         Next
+        'Devolver resultado para DGV
+        DGV_RESULTADO.ItemsSource = DT_RESULTADO.DefaultView
     End Sub
+
 End Class

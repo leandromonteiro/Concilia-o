@@ -67,6 +67,10 @@ Class MainWindow
             BD.Limpar_Limite(TxtMinFis.Text, TxtMinCont.Text, DgBF, DgBC)
         End If
         Limite_Primeira = True
+
+        'Conciliar
+        BD.Conciliar(DgBF, DgBC, DgResultado, Cb1.IsChecked, Cb2.IsChecked, Cb3.IsChecked, Cb4.IsChecked,
+                     Cb5.IsChecked, Cb6.IsChecked, Cb7.IsChecked, Cb8.IsChecked, Cb9.IsChecked, Cb10.IsChecked)
     End Sub
     Private Sub Validar()
         On Error Resume Next
