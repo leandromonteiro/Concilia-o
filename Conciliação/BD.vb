@@ -222,7 +222,7 @@ Public Class BD
 
     Public Sub Conciliar(DGV_BF As DataGrid, DGV_BC As DataGrid, DGV_RESULTADO As DataGrid, CAMPO1 As Boolean,
                          CAMPO2 As Boolean, CAMPO3 As Boolean, CAMPO4 As Boolean, CAMPO5 As Boolean, CAMPO6 As Boolean,
-                         CAMPO7 As Boolean, CAMPO8 As Boolean, CAMPO9 As Boolean, CAMPO10 As Boolean)
+                         CAMPO7 As Boolean, CAMPO8 As Boolean, CAMPO9 As Boolean, CAMPO10 As Boolean, PB As ProgressBar)
         Dim TEXTO1 As Object
         Dim TEXTO2 As Object
         Dim TEXTO3 As Object
@@ -239,10 +239,19 @@ Public Class BD
         Dim BF_BC_CONCIL As Single
         Dim Resultado_BF As Single
         Dim Resultado_BC As Single
+        Dim Deletar_BF As ArrayList
         Dim Status As String
 
+        PB.Visibility = Visibility.Visible
+        Dim n_BF As Integer
+        Dim n_BC As Integer
+
         For Each R_BF In DT_BF.Rows
+            n_BF = n_BF + 1
+            n_BC = 0
+            PB.Value = n_BF / DT_BF.Rows.Count * 100
             For Each R_BC In DT_BC.Rows
+                n_BC = n_BC + 1
                 On Error GoTo Err
                 'Dados selecionados
                 If CAMPO1 = True Then
@@ -300,6 +309,10 @@ Public Class BD
 
                 If TEXTO1 And TEXTO2 And TEXTO3 And TEXTO4 And TEXTO5 And TEXTO6 And TEXTO7 And TEXTO8 _
                     And TEXTO9 And TEXTO10 Then
+
+                    If R_BC.Item(11) <= 0 Then
+                        GoTo Prox
+                    End If
                     'Valores unit.
                     VOC_UNIT = R_BC.Item(13) / R_BC.Item(11)
                     DAC_UNIT = R_BC.Item(14) / R_BC.Item(11)
@@ -308,20 +321,16 @@ Public Class BD
                         'Var Conciliado
                         BF_BC_CONCIL = R_BC.Item(11)
                         'Zera BC
-                        'R_BC.Item(11) = 0
                         Resultado_BC = 0
                     Else
                         Resultado_BC = R_BC.Item(11) - R_BF.Item(11)
-                        'R_BC.Item(11) = R_BC.Item(11) - R_BF.Item(11)
                         'Var Conciliado
                         BF_BC_CONCIL = R_BF.Item(11)
                     End If
 
                     'Diminui BF
                     Resultado_BF = R_BF.Item(11) - R_BC.Item(11)
-                    'R_BF.Item(11) = R_BF.Item(11) - R_BC.Item(11)
                     If R_BF.Item(11) < 0 Then
-                        'R_BF.Item(11) = 0
                         Resultado_BF = 0
                     End If
 
@@ -337,24 +346,23 @@ Public Class BD
                                           R_BF.Item(5), R_BF.Item(6), R_BF.Item(7), R_BF.Item(8), R_BF.Item(9),
                                           R_BF.Item(10), BF_BC_CONCIL)
                     If R_BC.Item(11) > 0 Then
-                        Status = "SOBRA CONTÁBIL"
-                        DT_RESULTADO.Rows.Add(R_BC.Item(0), R_BC.Item(1), R_BC.Item(2), R_BC.Item(3), R_BC.Item(4),
+                            Status = "SOBRA CONTÁBIL"
+                            DT_RESULTADO.Rows.Add(R_BC.Item(0), R_BC.Item(1), R_BC.Item(2), R_BC.Item(3), R_BC.Item(4),
                                           R_BC.Item(5), R_BC.Item(6), R_BC.Item(7), R_BC.Item(8), R_BC.Item(9),
                                           R_BC.Item(10), R_BC.Item(12), VOC_UNIT * R_BC.Item(11), DAC_UNIT * R_BC.Item(11), R_BC.Item(11),
                                           Status, "", "", "", "", "", "", "", "", "", "", "", "")
+                        End If
                     End If
-                End If
 
-                '------------------------------------------------------------------
-                'Limpar BC
-                If R_BC.Item(11) <= 0 Then
-                    R_BC.Delete()
+                    '------------------------------------------------------------------
+                    'Limpar BC
+                    If R_BC.Item(11) <= 0 Then
+                    R_BC.Item(11) = 0
                 End If
             Next
-
             'Limpar BF
             If R_BF.Item(11) <= 0 Then
-                R_BF.Delete()
+                R_BF.Item(11) = 0
             Else
                 Status = "SOBRA FÍSICA"
                 'Preencher DT resultado
@@ -363,10 +371,28 @@ Public Class BD
                                           R_BF.Item(5), R_BF.Item(6), R_BF.Item(7), R_BF.Item(8), R_BF.Item(9),
                                           R_BF.Item(10), R_BF.Item(11))
             End If
+Prox:
         Next
 Err:
+        'Limpar DT
+        For Each R_BF In DT_BF.Rows
+            If R_BF.Item(11) = 0 Then
+                R_BF.delete
+            End If
+        Next
+
+        For Each R_BC In DT_BC.Rows
+            If R_BC.Item(11) = 0 Then
+                R_BC.delete
+            End If
+        Next
+
+        PB.Visibility = Visibility.Hidden
+
         'Devolver resultado para DGV
         DGV_RESULTADO.ItemsSource = DT_RESULTADO.DefaultView
+        DGV_BC.ItemsSource = DT_BC.DefaultView
+        DGV_BF.ItemsSource = DT_BF.DefaultView
     End Sub
 
 End Class

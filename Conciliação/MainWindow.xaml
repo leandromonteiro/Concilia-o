@@ -81,6 +81,8 @@
                     <DropShadowEffect/>
                 </TextBox.Effect>
             </TextBox>
+            <Line Height="120"></Line>
+            <ProgressBar x:Name="PbConciliar" Height="21"/>
         </StackPanel>
 
     </Grid>
