@@ -237,10 +237,13 @@ Public Class BD
         Dim VOC_UNIT As Single
         Dim DAC_UNIT As Single
         Dim BF_BC_CONCIL As Single
+        Dim Resultado_BF As Single
+        Dim Resultado_BC As Single
         Dim Status As String
 
         For Each R_BF In DT_BF.Rows
             For Each R_BC In DT_BC.Rows
+                On Error GoTo Err
                 'Dados selecionados
                 If CAMPO1 = True Then
                     TEXTO1 = R_BF.item(1) = R_BC.item(1)
@@ -305,18 +308,25 @@ Public Class BD
                         'Var Conciliado
                         BF_BC_CONCIL = R_BC.Item(11)
                         'Zera BC
-                        R_BC.Item(11) = 0
+                        'R_BC.Item(11) = 0
+                        Resultado_BC = 0
                     Else
-                        R_BC.Item(11) = R_BC.Item(11) - R_BF.Item(11)
+                        Resultado_BC = R_BC.Item(11) - R_BF.Item(11)
+                        'R_BC.Item(11) = R_BC.Item(11) - R_BF.Item(11)
                         'Var Conciliado
                         BF_BC_CONCIL = R_BF.Item(11)
                     End If
 
                     'Diminui BF
-                    R_BF.Item(11) = R_BF.Item(11) - R_BC.Item(11)
+                    Resultado_BF = R_BF.Item(11) - R_BC.Item(11)
+                    'R_BF.Item(11) = R_BF.Item(11) - R_BC.Item(11)
                     If R_BF.Item(11) < 0 Then
-                        R_BF.Item(11) = 0
+                        'R_BF.Item(11) = 0
+                        Resultado_BF = 0
                     End If
+
+                    R_BF.Item(11) = Resultado_BF
+                    R_BC.Item(11) = Resultado_BC
 
                     'Preencher DT resultado
                     Status = "CONCILIADO"
@@ -325,13 +335,13 @@ Public Class BD
                                           R_BC.Item(10), R_BC.Item(12), VOC_UNIT * BF_BC_CONCIL, DAC_UNIT * BF_BC_CONCIL, BF_BC_CONCIL,
                                           Status, R_BF.Item(0), R_BF.Item(1), R_BF.Item(2), R_BF.Item(3), R_BF.Item(4),
                                           R_BF.Item(5), R_BF.Item(6), R_BF.Item(7), R_BF.Item(8), R_BF.Item(9),
-                                          R_BF.Item(10), BF_BC_CONCIL, R_BF.Item(12))
+                                          R_BF.Item(10), BF_BC_CONCIL)
                     If R_BC.Item(11) > 0 Then
                         Status = "SOBRA CONTÁBIL"
                         DT_RESULTADO.Rows.Add(R_BC.Item(0), R_BC.Item(1), R_BC.Item(2), R_BC.Item(3), R_BC.Item(4),
                                           R_BC.Item(5), R_BC.Item(6), R_BC.Item(7), R_BC.Item(8), R_BC.Item(9),
                                           R_BC.Item(10), R_BC.Item(12), VOC_UNIT * R_BC.Item(11), DAC_UNIT * R_BC.Item(11), R_BC.Item(11),
-                                          Status, "", "", "", "", "", "", "", "", "", "", "", "", "")
+                                          Status, "", "", "", "", "", "", "", "", "", "", "", "")
                     End If
                 End If
 
@@ -351,9 +361,10 @@ Public Class BD
                 DT_RESULTADO.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
                                           Status, R_BF.Item(0), R_BF.Item(1), R_BF.Item(2), R_BF.Item(3), R_BF.Item(4),
                                           R_BF.Item(5), R_BF.Item(6), R_BF.Item(7), R_BF.Item(8), R_BF.Item(9),
-                                          R_BF.Item(10), R_BF.Item(11), R_BF.Item(12))
+                                          R_BF.Item(10), R_BF.Item(11))
             End If
         Next
+Err:
         'Devolver resultado para DGV
         DGV_RESULTADO.ItemsSource = DT_RESULTADO.DefaultView
     End Sub
