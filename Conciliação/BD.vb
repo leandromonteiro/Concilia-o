@@ -337,6 +337,9 @@ Public Class BD
                     R_BF.Item(11) = Resultado_BF
                     R_BC.Item(11) = Resultado_BC
 
+                    'Arrumar DT_BC - VOC e DAC
+                    R_BC.Item(13) = R_BC.Item(11) * VOC_UNIT
+                    R_BC.Item(14) = R_BC.Item(11) * DAC_UNIT
                     'Preencher DT resultado
                     Status = "CONCILIADO"
                     DT_RESULTADO.Rows.Add(R_BC.Item(0), R_BC.Item(1), R_BC.Item(2), R_BC.Item(3), R_BC.Item(4),
