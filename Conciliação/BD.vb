@@ -11,6 +11,33 @@ Public Class BD
 
     Dim n_Rodada As Integer
 
+    Public Sub Exportacao_SF_SC(Txt As TextBox)
+        Try
+            Dim Soma_BC As Single
+            Dim Soma_BF As Single
+
+            If DT_BC.Rows.Count > 0 Then
+                For Each R_BC In DT_BC.Rows
+                    Soma_BC += R_BC.item(11)
+                Next
+            Else
+                Soma_BC = 0
+            End If
+
+            If DT_BF.Rows.Count > 0 Then
+                For Each R_BF In DT_BF.Rows
+                    Soma_BF += R_BF.item(11)
+                Next
+            Else
+                Soma_BF = 0
+            End If
+
+            Txt.Text += vbCrLf & " | RODADA FINAL | SOBRA FÍSICA: " & Soma_BF & " | SOBRA CONTÁBIL " & Soma_BC
+        Catch
+            MsgBox("Erro na Rodada Final. Verifique os valores das quantidades.", vbCritical)
+        End Try
+    End Sub
+
     Public Sub Modelo_Excel()
         Dim xlApp As Excel.Application
         Dim xlWorkBook As Excel.Workbook
@@ -70,43 +97,78 @@ Public Class BD
         End Try
     End Sub
 
-    Public Sub Exportar_Excel(DGV As DataGrid)
+    Public Sub Juntar_DT()
         Try
-            Dim xlApp As Excel.Application
+            If DT_BF.Rows.Count > 0 Then
+                For Each R_BF In DT_BF.Rows
+                    DT_RESULTADO.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0,
+                                          "SOBRA FÍSICA", R_BF.Item(0), R_BF.Item(1), R_BF.Item(2), R_BF.Item(3), R_BF.Item(4),
+                                              R_BF.Item(5), R_BF.Item(6), R_BF.Item(7), R_BF.Item(8), R_BF.Item(9),
+                                              R_BF.Item(10), R_BF.Item(11))
+                Next
+            End If
+        Catch
+        End Try
+
+        Try
+            If DT_BC.Rows.Count > 0 Then
+                For Each R_BC In DT_BC.Rows
+                    DT_RESULTADO.Rows.Add(R_BC.Item(0), R_BC.Item(1), R_BC.Item(2), R_BC.Item(3), R_BC.Item(4),
+                                          R_BC.Item(5), R_BC.Item(6), R_BC.Item(7), R_BC.Item(8), R_BC.Item(9),
+                                          R_BC.Item(10), R_BC.Item(12), R_BC.Item(13), R_BC.Item(14), R_BC.Item(11),
+                                              "SOBRA CONTÁBIL", "", "", "", "", "", "", "", "", "", "", "", 0)
+                Next
+            End If
+        Catch
+        End Try
+    End Sub
+
+    Public Sub Exportar_Excel(Txt As TextBox)
+        Dim xlApp As Excel.Application
+        Try
+
             Dim xlWorkBook As Excel.Workbook
-            Dim xlWorkSheet As Excel.Worksheet
+            Dim StResultado As Excel.Worksheet
+            Dim StRodadas As Excel.Worksheet
             Dim misValue As Object = System.Reflection.Missing.Value
             Dim i As Integer
             Dim j As Integer
 
-            DV_Excel = DGV.ItemsSource
-
             xlApp = New Excel.Application
             xlWorkBook = xlApp.Workbooks.Add(misValue)
-            xlWorkSheet = xlWorkBook.Sheets(1)
+            StResultado = xlWorkBook.Sheets(1)
 
             'Colocando Títulos
-            For k As Integer = 1 To DGV.Columns.Count
-                xlWorkSheet.Cells(1, k) = DGV.Columns(k - 1).Header
+            For k As Integer = 1 To DT_RESULTADO.Columns.Count
+                StResultado.Cells(1, k) = DT_RESULTADO.Columns(k - 1).ColumnName
             Next
-            For i = 0 To DGV.Items.Count - 1
-                For j = 0 To DGV.Columns.Count - 1
-                    If j = 3 Then
-                        xlWorkSheet.Cells(i + 2, j + 1) = CDec(DV_Excel.Item(i)(j))
+            For i = 0 To DT_RESULTADO.Rows.Count - 1
+                For j = 0 To DT_RESULTADO.Columns.Count - 1
+                    If j = 12 Or j = 13 Or j = 14 Or j = 27 Then
+                        StResultado.Cells(i + 2, j + 1) = IIf(Not IsDBNull(DT_RESULTADO.Rows(i)(j)), CDec(DT_RESULTADO.Rows(i)(j)), "")
                     Else
-                        xlWorkSheet.Cells(i + 2, j + 1) = DV_Excel.Item(i)(j)
+                        StResultado.Cells(i + 2, j + 1) = DT_RESULTADO.Rows(i)(j)
                     End If
                 Next
             Next
 
-            xlWorkSheet.Range("a1:d1").Font.Bold = True
-            xlWorkSheet.Range("a1:d1").Font.ColorIndex = 2
-            xlWorkSheet.Range("a1:d1").Interior.ColorIndex = 30
+            StResultado.Range("a1:ab1").Font.Bold = True
+            StResultado.Range("a1:ab1").Font.ColorIndex = 2
+            StResultado.Range("a1:ab1").Interior.ColorIndex = 30
 
-            xlWorkSheet.Columns.AutoFit()
-            xlWorkSheet.Name = "Resultado"
+            StResultado.Columns.AutoFit()
+            StResultado.Name = "Resultado"
+
+            xlWorkBook.Sheets.Add(Before:=StResultado)
+            StRodadas = xlWorkBook.Sheets(1)
+            StRodadas.Cells(1, 1).value = Txt.Text
+            StRodadas.Cells(1, 1).columnwidth = 100
+            StRodadas.Cells(1, 1).VerticalAlignment = Excel.Constants.xlTop
+            StRodadas.Name = "Rodadas"
+
             xlApp.Visible = True
         Catch
+            xlApp.Quit()
             MsgBox("Erro ao exportar para Excel", MsgBoxStyle.Critical)
         End Try
     End Sub
@@ -125,7 +187,7 @@ Public Class BD
             Dim DA_BC As New OleDbDataAdapter
             con.Open()
             DA_BF.SelectCommand = New OleDbCommand("SELECT [CHAVE],[CAMPO1],[CAMPO2],[CAMPO3],[CAMPO4],[CAMPO5],[CAMPO6],[CAMPO7],[CAMPO8],[CAMPO9],[CAMPO10],abs([QUANTIDADE]) as QUANTIDADE,[PRIORIDADE] FROM [Base Física$];", con)
-            DA_BC.SelectCommand = New OleDbCommand("SELECT [CHAVE],[CAMPO1],[CAMPO2],[CAMPO3],[CAMPO4],[CAMPO5],[CAMPO6],[CAMPO7],[CAMPO8],[CAMPO9],[CAMPO10],[QUANTIDADE],[DATA],abs([VOC]) as VOC,abs([DAC]) as DAC FROM [Base Contábil$];", con)
+            DA_BC.SelectCommand = New OleDbCommand("SELECT [CHAVE],[CAMPO1],[CAMPO2],[CAMPO3],[CAMPO4],[CAMPO5],[CAMPO6],[CAMPO7],[CAMPO8],[CAMPO9],[CAMPO10],[QUANTIDADE],FORMAT ([DATA],'dd/MM/yyyy') as DATA,abs([VOC]) as VOC,abs([DAC]) as DAC FROM [Base Contábil$];", con)
 
             DA_BF.Fill(DS, "TB_BF")
             DA_BC.Fill(DS, "TB_BC")
@@ -208,17 +270,41 @@ Public Class BD
     End Sub
 
     Public Sub Limpar_Limite(Limite_F As Single, Limite_C As Single, DGV_BF As DataGrid, DGV_BC As DataGrid)
-        For Each R In DT_BF.Rows
-            If R.Item(11) <= Limite_F Then
-                R.Delete()
+        'Limpar DT
+        Dim Limp_BF As New ArrayList
+        Dim Limp_BC As New ArrayList
+        Dim Loop_n_BF As Integer
+        Dim Loop_n_BC As Integer
+        Dim n_limpos_BF As Integer = 0
+        Dim n_limpos_BC As Integer = 0
+
+        For Each R_BF In DT_BF.Rows
+            Loop_n_BF += 1
+            If R_BF.Item(11) <= Limite_F Then
+                Limp_BF.Add(Loop_n_BF - 1)
             End If
         Next
 
-        For Each R In DT_BC.Rows
-            If R.Item(11) <= Limite_C Then
-                R.Delete()
+        For Each R_BC In DT_BC.Rows
+            Loop_n_BC += 1
+            If R_BC.Item(11) <= Limite_C Then
+                Limp_BC.Add(Loop_n_BC - 1)
             End If
         Next
+
+        If Limp_BF.Count > 0 Then
+            For k = 0 To Limp_BF.Count - 1
+                DT_BF.Rows.RemoveAt(Limp_BF(k) - n_limpos_BF)
+                n_limpos_BF += 1
+            Next
+        End If
+
+        If Limp_BC.Count > 0 Then
+            For k = 0 To Limp_BC.Count - 1
+                DT_BC.Rows.RemoveAt(Limp_BC(k) - n_limpos_BC)
+                n_limpos_BC += 1
+            Next
+        End If
 
         DGV_BF.ItemsSource = ""
         DGV_BC.ItemsSource = ""
@@ -255,8 +341,6 @@ Public Class BD
         Dim n_BC As Integer = 0
 
         Dim n_CO As Integer = 0
-        'Dim n_SF As Integer = 0
-        Dim n_SC As Integer = 0
 
         n_Rodada += 1
 
@@ -363,14 +447,6 @@ Public Class BD
                                           Status, R_BF.Item(0), R_BF.Item(1), R_BF.Item(2), R_BF.Item(3), R_BF.Item(4),
                                           R_BF.Item(5), R_BF.Item(6), R_BF.Item(7), R_BF.Item(8), R_BF.Item(9),
                                           R_BF.Item(10), BF_BC_CONCIL)
-                    If R_BC.Item(11) > 0 Then
-                        Status = "SOBRA CONTÁBIL"
-                        n_SC += R_BC.Item(11)
-                        DT_RESULTADO.Rows.Add(R_BC.Item(0), R_BC.Item(1), R_BC.Item(2), R_BC.Item(3), R_BC.Item(4),
-                                          R_BC.Item(5), R_BC.Item(6), R_BC.Item(7), R_BC.Item(8), R_BC.Item(9),
-                                          R_BC.Item(10), R_BC.Item(12), VOC_UNIT * R_BC.Item(11), DAC_UNIT * R_BC.Item(11), R_BC.Item(11),
-                                          Status, "", "", "", "", "", "", "", "", "", "", "", "")
-                    End If
 
                     '------------------------------------------------------------------
                     'Limpar BC
@@ -383,36 +459,50 @@ Public Class BD
             If R_BF.Item(11) <= 0 Then
                 R_BF.Item(11) = 0
             End If
-            'Else
-            '    Status = "SOBRA FÍSICA"
-            '    n_SF += 1
-            '    'Preencher DT resultado
-            '    DT_RESULTADO.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-            '                              Status, R_BF.Item(0), R_BF.Item(1), R_BF.Item(2), R_BF.Item(3), R_BF.Item(4),
-            '                              R_BF.Item(5), R_BF.Item(6), R_BF.Item(7), R_BF.Item(8), R_BF.Item(9),
-            '                              R_BF.Item(10), R_BF.Item(11))
-            'End If
 
 Prox:
         Next
 Err:
         'Limpar DT
+        Dim Limp_BF As New ArrayList
+        Dim Limp_BC As New ArrayList
+        Dim Loop_n_BF As Integer
+        Dim Loop_n_BC As Integer
+        Dim n_limpos_BF As Integer = 0
+        Dim n_limpos_BC As Integer = 0
+
         For Each R_BF In DT_BF.Rows
+            Loop_n_BF += 1
             If R_BF.Item(11) = 0 Then
-                R_BF.delete
+                Limp_BF.Add(Loop_n_BF - 1)
             End If
         Next
 
         For Each R_BC In DT_BC.Rows
+            Loop_n_BC += 1
             If R_BC.Item(11) = 0 Then
-                R_BC.delete
+                Limp_BC.Add(Loop_n_BC - 1)
             End If
         Next
+
+        If Limp_BF.Count > 0 Then
+            For k = 0 To Limp_BF.Count - 1
+                DT_BF.Rows.RemoveAt(Limp_BF(k) - n_limpos_BF)
+                n_limpos_BF += 1
+            Next
+        End If
+
+        If Limp_BC.Count > 0 Then
+            For k = 0 To Limp_BC.Count - 1
+                DT_BC.Rows.RemoveAt(Limp_BC(k) - n_limpos_BC)
+                n_limpos_BC += 1
+            Next
+        End If
 
         PB.Visibility = Visibility.Hidden
 
         Txt.Text = Txt.Text & IIf(Txt.Text = "", "", vbCrLf) & " | RODADA: " & n_Rodada & " | CONCILIADO: " &
-            n_CO & " | SOBRA FÍSICA: 0 | SOBRA CONTÁBIL " & n_SC & " | CAMPOS: " & Campos
+            n_CO & " | CAMPOS: " & Campos
         'Devolver resultado para DGV
         DGV_RESULTADO.ItemsSource = DT_RESULTADO.DefaultView
         DGV_BC.ItemsSource = DT_BC.DefaultView

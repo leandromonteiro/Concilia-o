@@ -11,7 +11,7 @@
             <MenuItem Header="Arquivo">
                 <MenuItem IsCheckable="true" Header="Layout" ToolTip="Cria um Layout de Carga" Click="MenuItem_Click"></MenuItem>
                 <MenuItem IsCheckable="True" Header="Importar" ToolTip="Importa dados para o Sistema" Click="MenuItem_Click_1"></MenuItem>
-                <MenuItem IsCheckable="True" Header="Exportar" ToolTip="Exporta dados para o Excel"></MenuItem>
+                <MenuItem IsCheckable="True" Header="Exportar" ToolTip="Exporta dados para o Excel" Click="MenuItem_Click_2"></MenuItem>
             </MenuItem>
         </Menu>
         <TabControl Margin="10,304,10,10">

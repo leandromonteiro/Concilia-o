@@ -49,6 +49,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System" />
@@ -67,6 +69,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="SsConciliacao.Designer.vb">
+      <DependentUpon>SsConciliacao.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SsConciliacao.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -122,6 +130,9 @@
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SsConciliacao.resx">
+      <DependentUpon>SsConciliacao.vb</DependentUpon>
     </EmbeddedResource>
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

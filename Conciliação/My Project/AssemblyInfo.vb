@@ -12,10 +12,10 @@ Imports System.Windows
 ' Revise os valores dos atributos do assembly
 
 <Assembly: AssemblyTitle("Conciliação")>
-<Assembly: AssemblyDescription("")>
+<Assembly: AssemblyDescription("Concilia base física e base contábil de acordo com atributos selecionados")>
 <Assembly: AssemblyCompany("")>
 <Assembly: AssemblyProduct("Conciliação")>
-<Assembly: AssemblyCopyright("Copyright ©  2018")>
+<Assembly: AssemblyCopyright("Microsoft Copyright ©  2018")>
 <Assembly: AssemblyTrademark("")>
 <Assembly: ComVisible(false)>
 

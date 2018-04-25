@@ -5,6 +5,7 @@ Class MainWindow
     Public FileName As String
     Dim BD As New BD
     Dim Limite_Primeira As Boolean
+    Dim Ss As New SsConciliacao
     Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
         BD.Modelo_Excel()
     End Sub
@@ -23,6 +24,7 @@ Class MainWindow
     End Sub
 
     Private Sub PanelPrincipal_Initialized(sender As Object, e As EventArgs) Handles PanelPrincipal.Initialized
+        Ss.Show()
         CmbPrioridade.Items.Add("Valor")
         CmbPrioridade.Items.Add("Data")
         CmbOrdem.Items.Add("Crescente")
@@ -66,10 +68,12 @@ Class MainWindow
         Dim Campos As String = ""
 
         'Validação
-        Validar()
+        If Validar() = False Then
+            Exit Sub
+        End If
         BD.Classificar_BD(CmbPrioridade.Text, CmbOrdem.Text)
         'Limpar limite somente na primeira vez
-        If Limite_Primeira = True Then
+        If Limite_Primeira = False Then
             BD.Limpar_Limite(TxtMinFis.Text, TxtMinCont.Text, DgBF, DgBC)
         End If
         Limite_Primeira = True
@@ -98,39 +102,56 @@ Class MainWindow
                      Cb5.IsChecked, Cb6.IsChecked, Cb7.IsChecked, Cb8.IsChecked, Cb9.IsChecked, Cb10.IsChecked,
                      PbConciliar, TxtRodadas, Campos)
     End Sub
-    Private Sub Validar()
+    Private Function Validar() As Boolean
         On Error Resume Next
 
         If Cb1.IsChecked = False And Cb2.IsChecked = False And Cb3.IsChecked = False And Cb4.IsChecked = False _
         And Cb5.IsChecked = False And Cb6.IsChecked = False And Cb7.IsChecked = False And Cb8.IsChecked = False _
         And Cb9.IsChecked = False And Cb10.IsChecked = False Then
             MsgBox("Selecione o(s) campo(s).", vbInformation)
-            Exit Sub
+            Validar = False
+            Exit Function
         End If
 
         If CmbPrioridade.Text = "" Then
             MsgBox("Selecione a prioridade.", vbInformation)
-            Exit Sub
+            Validar = False
+            Exit Function
         End If
 
         If CmbOrdem.Text = "" Then
             MsgBox("Selecione a ordem.", vbInformation)
-            Exit Sub
+            Validar = False
+            Exit Function
         End If
 
         If TxtMinCont.Text = "" Or IsNumeric(TxtMinCont.Text) = False Then
             MsgBox("Mínimo valor para a base contábil incorreta.", vbInformation)
-            Exit Sub
+            Validar = False
+            Exit Function
         End If
 
         If TxtMinFis.Text = "" Or IsNumeric(TxtMinFis.Text) = False Then
             MsgBox("Mínimo valor para a base física incorreta.", vbInformation)
-            Exit Sub
+            Validar = False
+            Exit Function
         End If
 
         If DgBF.Items.Count = 0 Or DgBC.Items.Count = 0 Then
             MsgBox("Insira a base física e/ou base contábil.", vbInformation)
+            Validar = False
+            Exit Function
+        End If
+        Validar = True
+    End Function
+
+    Private Sub MenuItem_Click_2(sender As Object, e As RoutedEventArgs)
+        If TxtRodadas.Text = "" Then
             Exit Sub
         End If
+
+        BD.Exportacao_SF_SC(TxtRodadas)
+        BD.Juntar_DT()
+        BD.Exportar_Excel(TxtRodadas)
     End Sub
 End Class
