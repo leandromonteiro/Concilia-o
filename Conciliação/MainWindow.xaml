@@ -76,13 +76,13 @@
         </StackPanel>
         <StackPanel Margin="308,31,23,121">
             <Label Name="LblRodadas" Content="Rodadas" FontWeight="Bold"/>
-            <TextBox Name="TxtRodadas" Height="104" IsEnabled="False">
+            <TextBox Name="TxtRodadas" Height="104" IsEnabled="True" VerticalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True">
                 <TextBox.Effect>
                     <DropShadowEffect/>
                 </TextBox.Effect>
             </TextBox>
             <Line Height="120"></Line>
-            <ProgressBar x:Name="PbConciliar" Height="21"/>
+            <ProgressBar x:Name="PbConciliar" Height="21" Visibility="Hidden"/>
         </StackPanel>
 
     </Grid>

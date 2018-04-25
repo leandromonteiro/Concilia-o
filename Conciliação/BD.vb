@@ -9,6 +9,8 @@ Public Class BD
     Public DT_RESULTADO As New DataTable
     Dim DV_Excel As New DataView
 
+    Dim n_Rodada As Integer
+
     Public Sub Modelo_Excel()
         Dim xlApp As Excel.Application
         Dim xlWorkBook As Excel.Workbook
@@ -111,6 +113,11 @@ Public Class BD
 
     Public Sub Importar_Excel(ArquivoExcel As String, DGV_BF As DataGrid, DGV_BC As DataGrid)
         Try
+            'Limpa dados
+            n_Rodada = 0
+            DT_RESULTADO.Clear()
+            DS.Clear()
+
             Dim con As New OleDbConnection
             con.ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source='" & ArquivoExcel & "';Extended Properties= 'Excel 12.0';"
             Dim cmd As New OleDbCommand
@@ -222,7 +229,9 @@ Public Class BD
 
     Public Sub Conciliar(DGV_BF As DataGrid, DGV_BC As DataGrid, DGV_RESULTADO As DataGrid, CAMPO1 As Boolean,
                          CAMPO2 As Boolean, CAMPO3 As Boolean, CAMPO4 As Boolean, CAMPO5 As Boolean, CAMPO6 As Boolean,
-                         CAMPO7 As Boolean, CAMPO8 As Boolean, CAMPO9 As Boolean, CAMPO10 As Boolean, PB As ProgressBar)
+                         CAMPO7 As Boolean, CAMPO8 As Boolean, CAMPO9 As Boolean, CAMPO10 As Boolean,
+                         PB As ProgressBar, Txt As TextBox, Campos As String)
+
         Dim TEXTO1 As Object
         Dim TEXTO2 As Object
         Dim TEXTO3 As Object
@@ -239,12 +248,17 @@ Public Class BD
         Dim BF_BC_CONCIL As Single
         Dim Resultado_BF As Single
         Dim Resultado_BC As Single
-        Dim Deletar_BF As ArrayList
         Dim Status As String
 
         PB.Visibility = Visibility.Visible
-        Dim n_BF As Integer
-        Dim n_BC As Integer
+        Dim n_BF As Integer = 0
+        Dim n_BC As Integer = 0
+
+        Dim n_CO As Integer = 0
+        'Dim n_SF As Integer = 0
+        Dim n_SC As Integer = 0
+
+        n_Rodada += 1
 
         For Each R_BF In DT_BF.Rows
             n_BF = n_BF + 1
@@ -342,6 +356,7 @@ Public Class BD
                     R_BC.Item(14) = R_BC.Item(11) * DAC_UNIT
                     'Preencher DT resultado
                     Status = "CONCILIADO"
+                    n_CO += BF_BC_CONCIL
                     DT_RESULTADO.Rows.Add(R_BC.Item(0), R_BC.Item(1), R_BC.Item(2), R_BC.Item(3), R_BC.Item(4),
                                           R_BC.Item(5), R_BC.Item(6), R_BC.Item(7), R_BC.Item(8), R_BC.Item(9),
                                           R_BC.Item(10), R_BC.Item(12), VOC_UNIT * BF_BC_CONCIL, DAC_UNIT * BF_BC_CONCIL, BF_BC_CONCIL,
@@ -349,31 +364,35 @@ Public Class BD
                                           R_BF.Item(5), R_BF.Item(6), R_BF.Item(7), R_BF.Item(8), R_BF.Item(9),
                                           R_BF.Item(10), BF_BC_CONCIL)
                     If R_BC.Item(11) > 0 Then
-                            Status = "SOBRA CONTÁBIL"
-                            DT_RESULTADO.Rows.Add(R_BC.Item(0), R_BC.Item(1), R_BC.Item(2), R_BC.Item(3), R_BC.Item(4),
+                        Status = "SOBRA CONTÁBIL"
+                        n_SC += R_BC.Item(11)
+                        DT_RESULTADO.Rows.Add(R_BC.Item(0), R_BC.Item(1), R_BC.Item(2), R_BC.Item(3), R_BC.Item(4),
                                           R_BC.Item(5), R_BC.Item(6), R_BC.Item(7), R_BC.Item(8), R_BC.Item(9),
                                           R_BC.Item(10), R_BC.Item(12), VOC_UNIT * R_BC.Item(11), DAC_UNIT * R_BC.Item(11), R_BC.Item(11),
                                           Status, "", "", "", "", "", "", "", "", "", "", "", "")
-                        End If
                     End If
 
                     '------------------------------------------------------------------
                     'Limpar BC
                     If R_BC.Item(11) <= 0 Then
-                    R_BC.Item(11) = 0
+                        R_BC.Item(11) = 0
+                    End If
                 End If
             Next
             'Limpar BF
             If R_BF.Item(11) <= 0 Then
                 R_BF.Item(11) = 0
-            Else
-                Status = "SOBRA FÍSICA"
-                'Preencher DT resultado
-                DT_RESULTADO.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-                                          Status, R_BF.Item(0), R_BF.Item(1), R_BF.Item(2), R_BF.Item(3), R_BF.Item(4),
-                                          R_BF.Item(5), R_BF.Item(6), R_BF.Item(7), R_BF.Item(8), R_BF.Item(9),
-                                          R_BF.Item(10), R_BF.Item(11))
             End If
+            'Else
+            '    Status = "SOBRA FÍSICA"
+            '    n_SF += 1
+            '    'Preencher DT resultado
+            '    DT_RESULTADO.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+            '                              Status, R_BF.Item(0), R_BF.Item(1), R_BF.Item(2), R_BF.Item(3), R_BF.Item(4),
+            '                              R_BF.Item(5), R_BF.Item(6), R_BF.Item(7), R_BF.Item(8), R_BF.Item(9),
+            '                              R_BF.Item(10), R_BF.Item(11))
+            'End If
+
 Prox:
         Next
 Err:
@@ -392,6 +411,8 @@ Err:
 
         PB.Visibility = Visibility.Hidden
 
+        Txt.Text = Txt.Text & IIf(Txt.Text = "", "", vbCrLf) & " | RODADA: " & n_Rodada & " | CONCILIADO: " &
+            n_CO & " | SOBRA FÍSICA: 0 | SOBRA CONTÁBIL " & n_SC & " | CAMPOS: " & Campos
         'Devolver resultado para DGV
         DGV_RESULTADO.ItemsSource = DT_RESULTADO.DefaultView
         DGV_BC.ItemsSource = DT_BC.DefaultView

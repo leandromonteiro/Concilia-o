@@ -43,6 +43,9 @@ Class MainWindow
         End If
         Limite_Primeira = False
         BD.Importar_Excel(FileName, DgBF, DgBC)
+        DgResultado.ItemsSource = ""
+        TxtRodadas.Text = ""
+
     End Sub
 
     Private Sub BtnSelecionar_Click(sender As Object, e As RoutedEventArgs) Handles BtnSelecionar.Click
@@ -59,6 +62,9 @@ Class MainWindow
     End Sub
 
     Private Sub BtnConciliar_Click(sender As Object, e As RoutedEventArgs) Handles BtnConciliar.Click
+        Dim Array_Campos As New ArrayList
+        Dim Campos As String = ""
+
         'Validação
         Validar()
         BD.Classificar_BD(CmbPrioridade.Text, CmbOrdem.Text)
@@ -68,9 +74,29 @@ Class MainWindow
         End If
         Limite_Primeira = True
 
+        'Campos Conciliação
+        If Cb1.IsChecked = True Then Array_Campos.Add("1")
+        If Cb2.IsChecked = True Then Array_Campos.Add("2")
+        If Cb3.IsChecked = True Then Array_Campos.Add("3")
+        If Cb4.IsChecked = True Then Array_Campos.Add("4")
+        If Cb5.IsChecked = True Then Array_Campos.Add("5")
+        If Cb6.IsChecked = True Then Array_Campos.Add("6")
+        If Cb7.IsChecked = True Then Array_Campos.Add("7")
+        If Cb8.IsChecked = True Then Array_Campos.Add("8")
+        If Cb9.IsChecked = True Then Array_Campos.Add("9")
+        If Cb10.IsChecked = True Then Array_Campos.Add("10")
+        For K = 0 To Array_Campos.Count - 1
+            If K = 0 Then
+                Campos = Array_Campos(K)
+            Else
+                Campos = Campos & " , " & Array_Campos(K)
+            End If
+        Next
+
         'Conciliar
         BD.Conciliar(DgBF, DgBC, DgResultado, Cb1.IsChecked, Cb2.IsChecked, Cb3.IsChecked, Cb4.IsChecked,
-                     Cb5.IsChecked, Cb6.IsChecked, Cb7.IsChecked, Cb8.IsChecked, Cb9.IsChecked, Cb10.IsChecked, PbConciliar)
+                     Cb5.IsChecked, Cb6.IsChecked, Cb7.IsChecked, Cb8.IsChecked, Cb9.IsChecked, Cb10.IsChecked,
+                     PbConciliar, TxtRodadas, Campos)
     End Sub
     Private Sub Validar()
         On Error Resume Next
