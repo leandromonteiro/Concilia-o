@@ -1,5 +1,7 @@
 ﻿Public NotInheritable Class SsConciliacao
+    Dim Segundo As Integer
     Private Sub SsConciliacao_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        TimerSs.Start()
 
         If My.Application.Info.Title <> "" Then
             ApplicationTitle.Text = My.Application.Info.Title
@@ -12,7 +14,11 @@
         Copyright.Text = My.Application.Info.Copyright
     End Sub
 
-    Private Sub MainLayoutPanel_Paint(sender As Object, e As Forms.PaintEventArgs) Handles MainLayoutPanel.Paint
-
+    Private Sub TimerSs_Tick(sender As Object, e As EventArgs) Handles TimerSs.Tick
+        Segundo += 1
+        If Segundo >= 2 Then
+            TimerSs.Stop()
+            Me.Close()
+        End If
     End Sub
 End Class

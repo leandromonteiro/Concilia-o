@@ -27,12 +27,14 @@ Partial Class SsConciliacao
     'Não o modifique usando o editor de códigos.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SsConciliacao))
         Me.MainLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
         Me.DetailsLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
         Me.Version = New System.Windows.Forms.Label()
         Me.Copyright = New System.Windows.Forms.Label()
         Me.ApplicationTitle = New System.Windows.Forms.Label()
+        Me.TimerSs = New System.Windows.Forms.Timer(Me.components)
         Me.MainLayoutPanel.SuspendLayout()
         Me.DetailsLayoutPanel.SuspendLayout()
         Me.SuspendLayout()
@@ -104,6 +106,10 @@ Partial Class SsConciliacao
         Me.ApplicationTitle.Text = "Peça de Aplicação"
         Me.ApplicationTitle.TextAlign = System.Drawing.ContentAlignment.BottomLeft
         '
+        'TimerSs
+        '
+        Me.TimerSs.Interval = 1000
+        '
         'SsConciliacao
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -124,4 +130,5 @@ Partial Class SsConciliacao
 
     End Sub
 
+    Friend WithEvents TimerSs As Forms.Timer
 End Class
