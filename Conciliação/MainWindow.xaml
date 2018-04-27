@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Conciliação"
         mc:Ignorable="d"
-        Title="Conciliação" Height="450" Width="800" WindowState="Maximized">
+        Title="Conciliação" Height="450" Width="800" WindowState="Maximized" Icon="Fotos/Icone.ico">
     <Grid>
         <Menu Height="26" VerticalAlignment="Top" FontWeight="Bold">
-            <MenuItem Header="Arquivo">
+            <MenuItem x:Name="MiArquivo" Header="Arquivo">
                 <MenuItem IsCheckable="true" Header="Layout" ToolTip="Cria um Layout de Carga" Click="MenuItem_Click"></MenuItem>
                 <MenuItem IsCheckable="True" Header="Importar" ToolTip="Importa dados para o Sistema" Click="MenuItem_Click_1"></MenuItem>
                 <MenuItem IsCheckable="True" Header="Exportar" ToolTip="Exporta dados para o Excel" Click="MenuItem_Click_2"></MenuItem>
@@ -31,11 +31,19 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <GroupBox x:Name="GbCampo" Header="Campo" Margin="10,31,0,0" HorizontalAlignment="Left" Width="159" Height="268" VerticalAlignment="Top" FontWeight="Bold">
-            <StackPanel HorizontalAlignment="Left" Height="83" Margin="46,10,-2,0" VerticalAlignment="Top" Width="103">
-                <Button Name="BtnSelecionar" Content="Selecionar" ></Button>
+        <GroupBox x:Name="GbCampo" Header="Campo" Margin="10,31,0,0" HorizontalAlignment="Left" Width="106" Height="268" VerticalAlignment="Top" FontWeight="Bold">
+            <StackPanel HorizontalAlignment="Left" Height="83" Margin="46,10,0,0" VerticalAlignment="Top" Width="42">
+                <Button Name="BtnSelecionar" Content="" Height="33" HorizontalAlignment="Left" Width="38" Cursor="Hand" Foreground="{x:Null}" BorderBrush="{x:Null}" ClickMode="Press" >
+                    <Button.Background>
+                        <ImageBrush ImageSource="Fotos/Selecionar.png" Stretch="Uniform"/>
+                    </Button.Background>
+                </Button>
                 <Line Height="10"></Line>
-                <Button x:Name="BtnLimparCb" Content="Limpar" HorizontalAlignment="Left" Width="103" Cursor="Hand"></Button>
+                <Button x:Name="BtnLimparCb" Content="" HorizontalAlignment="Left" Width="38" Cursor="Hand" Height="35" BorderBrush="{x:Null}" ClickMode="Press">
+                    <Button.Background>
+                        <ImageBrush ImageSource="Fotos/limpar.jpg" Stretch="Uniform"/>
+                    </Button.Background>
+                </Button>
             </StackPanel>
         </GroupBox>
         <StackPanel x:Name="PanelCampo" Margin="18,60,0,0" HorizontalAlignment="Left" Width="39" Height="162" VerticalAlignment="Top">
@@ -82,7 +90,7 @@
                 </TextBox.Effect>
             </TextBox>
             <Line Height="120"></Line>
-            <ProgressBar x:Name="PbConciliar" Height="21" Visibility="Hidden"/>
+            <ProgressBar x:Name="PbConciliar" Height="21" Visibility="Collapsed"/>
         </StackPanel>
 
     </Grid>

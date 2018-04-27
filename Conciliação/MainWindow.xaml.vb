@@ -43,11 +43,12 @@ Class MainWindow
         Else
             Exit Sub
         End If
+        MiArquivo.IsEnabled = False
         Limite_Primeira = False
         BD.Importar_Excel(FileName, DgBF, DgBC)
         DgResultado.ItemsSource = ""
         TxtRodadas.Text = ""
-
+        MiArquivo.IsEnabled = True
     End Sub
 
     Private Sub BtnSelecionar_Click(sender As Object, e As RoutedEventArgs) Handles BtnSelecionar.Click
@@ -71,6 +72,7 @@ Class MainWindow
         If Validar() = False Then
             Exit Sub
         End If
+        BtnConciliar.IsEnabled = False
         BD.Classificar_BD(CmbPrioridade.Text, CmbOrdem.Text)
         'Limpar limite somente na primeira vez
         If Limite_Primeira = False Then
@@ -97,10 +99,13 @@ Class MainWindow
             End If
         Next
 
+        PbConciliar.Visibility = Visibility.Visible
         'Conciliar
         BD.Conciliar(DgBF, DgBC, DgResultado, Cb1.IsChecked, Cb2.IsChecked, Cb3.IsChecked, Cb4.IsChecked,
                      Cb5.IsChecked, Cb6.IsChecked, Cb7.IsChecked, Cb8.IsChecked, Cb9.IsChecked, Cb10.IsChecked,
                      PbConciliar, TxtRodadas, Campos)
+        PbConciliar.Visibility = Visibility.Collapsed
+        BtnConciliar.IsEnabled = True
     End Sub
     Private Function Validar() As Boolean
         On Error Resume Next
@@ -149,9 +154,13 @@ Class MainWindow
         If TxtRodadas.Text = "" Then
             Exit Sub
         End If
-
+        MiArquivo.IsEnabled = False
         BD.Exportacao_SF_SC(TxtRodadas)
         BD.Juntar_DT()
-        BD.Exportar_Excel(TxtRodadas)
+        PbConciliar.Visibility = Visibility.Visible
+        BD.Exportar_Excel(TxtRodadas, PbConciliar)
+        PbConciliar.Visibility = Visibility.Collapsed
+        MiArquivo.IsEnabled = True
     End Sub
+
 End Class

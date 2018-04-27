@@ -123,10 +123,9 @@ Public Class BD
         End Try
     End Sub
 
-    Public Sub Exportar_Excel(Txt As TextBox)
+    Public Sub Exportar_Excel(Txt As TextBox, ByRef PB As ProgressBar)
         Dim xlApp As Excel.Application
         Try
-
             Dim xlWorkBook As Excel.Workbook
             Dim StResultado As Excel.Worksheet
             Dim StRodadas As Excel.Worksheet
@@ -142,7 +141,8 @@ Public Class BD
             For k As Integer = 1 To DT_RESULTADO.Columns.Count
                 StResultado.Cells(1, k) = DT_RESULTADO.Columns(k - 1).ColumnName
             Next
-            For i = 0 To DT_RESULTADO.Rows.Count - 1
+            Dim Contar_DT_Resultado As Integer = DT_RESULTADO.Rows.Count
+            For i = 0 To Contar_DT_Resultado - 1
                 For j = 0 To DT_RESULTADO.Columns.Count - 1
                     If j = 12 Or j = 13 Or j = 14 Or j = 27 Then
                         StResultado.Cells(i + 2, j + 1) = IIf(Not IsDBNull(DT_RESULTADO.Rows(i)(j)), CDec(DT_RESULTADO.Rows(i)(j)), "")
@@ -150,11 +150,15 @@ Public Class BD
                         StResultado.Cells(i + 2, j + 1) = DT_RESULTADO.Rows(i)(j)
                     End If
                 Next
+                PB.Value = (i / (Contar_DT_Resultado - 1)) * 100
             Next
 
             StResultado.Range("a1:ab1").Font.Bold = True
             StResultado.Range("a1:ab1").Font.ColorIndex = 2
-            StResultado.Range("a1:ab1").Interior.ColorIndex = 30
+            StResultado.Range("p1").Font.ColorIndex = 1
+            StResultado.Range("a1:o1").Interior.ColorIndex = 56
+            StResultado.Range("p1").Interior.ColorIndex = 44
+            StResultado.Range("q1:ab1").Interior.ColorIndex = 10
 
             StResultado.Columns.AutoFit()
             StResultado.Name = "Resultado"
@@ -165,6 +169,7 @@ Public Class BD
             StRodadas.Cells(1, 1).columnwidth = 100
             StRodadas.Cells(1, 1).VerticalAlignment = Excel.Constants.xlTop
             StRodadas.Name = "Rodadas"
+
 
             xlApp.Visible = True
         Catch
@@ -336,7 +341,6 @@ Public Class BD
         Dim Resultado_BC As Single
         Dim Status As String
 
-        PB.Visibility = Visibility.Visible
         Dim n_BF As Integer = 0
         Dim n_BC As Integer = 0
 
@@ -353,54 +357,54 @@ Public Class BD
                 On Error GoTo Err
                 'Dados selecionados
                 If CAMPO1 = True Then
-                    TEXTO1 = R_BF.item(1) = R_BC.item(1)
+                    TEXTO1 = CStr(R_BF.item(1)) = CStr(R_BC.item(1))
                 Else
-                    TEXTO1 = R_BF.item(1) = R_BF.item(1)
+                    TEXTO1 = CStr(R_BF.item(1)) = CStr(R_BF.item(1))
                 End If
                 If CAMPO2 = True Then
-                    TEXTO2 = R_BF.item(2) = R_BC.item(2)
+                    TEXTO2 = CStr(R_BF.item(2)) = CStr(R_BC.item(2))
                 Else
-                    TEXTO2 = R_BF.item(2) = R_BF.item(2)
+                    TEXTO2 = CStr(R_BF.item(2)) = CStr(R_BF.item(2))
                 End If
                 If CAMPO3 = True Then
-                    TEXTO3 = R_BF.item(3) = R_BC.item(3)
+                    TEXTO3 = CStr(R_BF.item(3)) = CStr(R_BC.item(3))
                 Else
-                    TEXTO3 = R_BF.item(3) = R_BF.item(3)
+                    TEXTO3 = CStr(R_BF.item(3)) = CStr(R_BF.item(3))
                 End If
                 If CAMPO4 = True Then
-                    TEXTO4 = R_BF.item(4) = R_BC.item(4)
+                    TEXTO4 = CStr(R_BF.item(4)) = CStr(R_BC.item(4))
                 Else
-                    TEXTO4 = R_BF.item(4) = R_BF.item(4)
+                    TEXTO4 = CStr(R_BF.item(4)) = CStr(R_BF.item(4))
                 End If
                 If CAMPO5 = True Then
-                    TEXTO5 = R_BF.item(5) = R_BC.item(5)
+                    TEXTO5 = CStr(R_BF.item(5)) = CStr(R_BC.item(5))
                 Else
-                    TEXTO5 = R_BF.item(5) = R_BF.item(5)
+                    TEXTO5 = CStr(R_BF.item(5)) = CStr(R_BF.item(5))
                 End If
                 If CAMPO6 = True Then
-                    TEXTO6 = R_BF.item(6) = R_BC.item(6)
+                    TEXTO6 = CStr(R_BF.item(6)) = CStr(R_BC.item(6))
                 Else
-                    TEXTO6 = R_BF.item(6) = R_BF.item(6)
+                    TEXTO6 = CStr(R_BF.item(6)) = CStr(R_BF.item(6))
                 End If
                 If CAMPO7 = True Then
-                    TEXTO7 = R_BF.item(7) = R_BC.item(7)
+                    TEXTO7 = CStr(R_BF.item(7)) = CStr(R_BC.item(7))
                 Else
-                    TEXTO7 = R_BF.item(7) = R_BF.item(7)
+                    TEXTO7 = CStr(R_BF.item(7)) = CStr(R_BF.item(7))
                 End If
                 If CAMPO8 = True Then
-                    TEXTO8 = R_BF.item(8) = R_BC.item(8)
+                    TEXTO8 = CStr(R_BF.item(8)) = CStr(R_BC.item(8))
                 Else
-                    TEXTO8 = R_BF.item(8) = R_BF.item(8)
+                    TEXTO8 = CStr(R_BF.item(8)) = CStr(R_BF.item(8))
                 End If
                 If CAMPO9 = True Then
-                    TEXTO9 = R_BF.item(9) = R_BC.item(9)
+                    TEXTO9 = CStr(R_BF.item(9)) = CStr(R_BC.item(9))
                 Else
-                    TEXTO9 = R_BF.item(9) = R_BF.item(9)
+                    TEXTO9 = CStr(R_BF.item(9)) = CStr(R_BF.item(9))
                 End If
                 If CAMPO10 = True Then
-                    TEXTO10 = R_BF.item(10) = R_BC.item(10)
+                    TEXTO10 = CStr(R_BF.item(10)) = CStr(R_BC.item(10))
                 Else
-                    TEXTO10 = R_BF.item(10) = R_BF.item(10)
+                    TEXTO10 = CStr(R_BF.item(10)) = CStr(R_BF.item(10))
                 End If
                 '-----------------------------------------------------------------
                 'Subtração e colocar dados na DT resultado
@@ -498,8 +502,6 @@ Err:
                 n_limpos_BC += 1
             Next
         End If
-
-        PB.Visibility = Visibility.Hidden
 
         Txt.Text = Txt.Text & IIf(Txt.Text = "", "", vbCrLf) & " | RODADA: " & n_Rodada & " | CONCILIADO: " &
             n_CO & " | CAMPOS: " & Campos
