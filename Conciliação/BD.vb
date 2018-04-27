@@ -191,8 +191,8 @@ Public Class BD
             Dim DA_BF As New OleDbDataAdapter
             Dim DA_BC As New OleDbDataAdapter
             con.Open()
-            DA_BF.SelectCommand = New OleDbCommand("SELECT [CHAVE],[CAMPO1],[CAMPO2],[CAMPO3],[CAMPO4],[CAMPO5],[CAMPO6],[CAMPO7],[CAMPO8],[CAMPO9],[CAMPO10],abs([QUANTIDADE]) as QUANTIDADE,[PRIORIDADE] FROM [Base Física$];", con)
-            DA_BC.SelectCommand = New OleDbCommand("SELECT [CHAVE],[CAMPO1],[CAMPO2],[CAMPO3],[CAMPO4],[CAMPO5],[CAMPO6],[CAMPO7],[CAMPO8],[CAMPO9],[CAMPO10],[QUANTIDADE],FORMAT ([DATA],'dd/MM/yyyy') as DATA,abs([VOC]) as VOC,abs([DAC]) as DAC FROM [Base Contábil$];", con)
+            DA_BF.SelectCommand = New OleDbCommand("SELECT [CHAVE],[CAMPO1],[CAMPO2],[CAMPO3],[CAMPO4],[CAMPO5],[CAMPO6],[CAMPO7],[CAMPO8],[CAMPO9],[CAMPO10],[QUANTIDADE],[PRIORIDADE] FROM [Base Física$];", con)
+            DA_BC.SelectCommand = New OleDbCommand("SELECT [CHAVE],[CAMPO1],[CAMPO2],[CAMPO3],[CAMPO4],[CAMPO5],[CAMPO6],[CAMPO7],[CAMPO8],[CAMPO9],[CAMPO10],[QUANTIDADE],FORMAT ([DATA],'dd/MM/yyyy') as DATA,[VOC],[DAC] FROM [Base Contábil$];", con)
 
             DA_BF.Fill(DS, "TB_BF")
             DA_BC.Fill(DS, "TB_BC")
@@ -278,8 +278,8 @@ Public Class BD
         'Limpar DT
         Dim Limp_BF As New ArrayList
         Dim Limp_BC As New ArrayList
-        Dim Loop_n_BF As Integer
-        Dim Loop_n_BC As Integer
+        Dim Loop_n_BF As Integer = 0
+        Dim Loop_n_BC As Integer = 0
         Dim n_limpos_BF As Integer = 0
         Dim n_limpos_BC As Integer = 0
 
@@ -334,6 +334,27 @@ Public Class BD
         Dim TEXTO9 As Object
         Dim TEXTO10 As Object
 
+        Dim Campo1_BF As String
+        Dim Campo1_BC As String
+        Dim Campo2_BF As String
+        Dim Campo2_BC As String
+        Dim Campo3_BF As String
+        Dim Campo3_BC As String
+        Dim Campo4_BF As String
+        Dim Campo4_BC As String
+        Dim Campo5_BF As String
+        Dim Campo5_BC As String
+        Dim Campo6_BF As String
+        Dim Campo6_BC As String
+        Dim Campo7_BF As String
+        Dim Campo7_BC As String
+        Dim Campo8_BF As String
+        Dim Campo8_BC As String
+        Dim Campo9_BF As String
+        Dim Campo9_BC As String
+        Dim Campo10_BF As String
+        Dim Campo10_BC As String
+
         Dim VOC_UNIT As Single
         Dim DAC_UNIT As Single
         Dim BF_BC_CONCIL As Single
@@ -355,56 +376,77 @@ Public Class BD
             For Each R_BC In DT_BC.Rows
                 n_BC = n_BC + 1
                 On Error GoTo Err
+                Campo1_BF = IIf(IsDBNull(R_BF.item(1)), "", R_BF.item(1))
+                Campo1_BC = IIf(IsDBNull(R_BC.item(1)), "", R_BC.item(1))
+                Campo2_BF = IIf(IsDBNull(R_BF.item(2)), "", R_BF.item(2))
+                Campo2_BC = IIf(IsDBNull(R_BC.item(2)), "", R_BC.item(2))
+                Campo3_BF = IIf(IsDBNull(R_BF.item(3)), "", R_BF.item(3))
+                Campo3_BC = IIf(IsDBNull(R_BC.item(3)), "", R_BC.item(3))
+                Campo4_BF = IIf(IsDBNull(R_BF.item(4)), "", R_BF.item(4))
+                Campo4_BC = IIf(IsDBNull(R_BC.item(4)), "", R_BC.item(4))
+                Campo5_BF = IIf(IsDBNull(R_BF.item(5)), "", R_BF.item(5))
+                Campo5_BC = IIf(IsDBNull(R_BC.item(5)), "", R_BC.item(5))
+                Campo6_BF = IIf(IsDBNull(R_BF.item(6)), "", R_BF.item(6))
+                Campo6_BC = IIf(IsDBNull(R_BC.item(6)), "", R_BC.item(6))
+                Campo7_BF = IIf(IsDBNull(R_BF.item(7)), "", R_BF.item(7))
+                Campo7_BC = IIf(IsDBNull(R_BC.item(7)), "", R_BC.item(7))
+                Campo8_BF = IIf(IsDBNull(R_BF.item(8)), "", R_BF.item(8))
+                Campo8_BC = IIf(IsDBNull(R_BC.item(8)), "", R_BC.item(8))
+                Campo9_BF = IIf(IsDBNull(R_BF.item(9)), "", R_BF.item(9))
+                Campo9_BC = IIf(IsDBNull(R_BC.item(9)), "", R_BC.item(9))
+                Campo10_BF = IIf(IsDBNull(R_BF.item(10)), "", R_BF.item(10))
+                Campo10_BC = IIf(IsDBNull(R_BC.item(10)), "", R_BC.item(10))
+
                 'Dados selecionados
                 If CAMPO1 = True Then
-                    TEXTO1 = CStr(R_BF.item(1)) = CStr(R_BC.item(1))
+                    TEXTO1 = Campo1_BF = Campo1_BC
                 Else
-                    TEXTO1 = CStr(R_BF.item(1)) = CStr(R_BF.item(1))
+                    TEXTO1 = Campo1_BF = Campo1_BF
                 End If
                 If CAMPO2 = True Then
-                    TEXTO2 = CStr(R_BF.item(2)) = CStr(R_BC.item(2))
+                    TEXTO2 = Campo2_BF = Campo2_BC
                 Else
-                    TEXTO2 = CStr(R_BF.item(2)) = CStr(R_BF.item(2))
+                    TEXTO2 = Campo2_BF = Campo2_BF
                 End If
                 If CAMPO3 = True Then
-                    TEXTO3 = CStr(R_BF.item(3)) = CStr(R_BC.item(3))
+                    TEXTO3 = Campo3_BF = Campo3_BC
                 Else
-                    TEXTO3 = CStr(R_BF.item(3)) = CStr(R_BF.item(3))
+                    TEXTO3 = Campo3_BF = Campo3_BF
                 End If
                 If CAMPO4 = True Then
-                    TEXTO4 = CStr(R_BF.item(4)) = CStr(R_BC.item(4))
+                    TEXTO4 = Campo4_BF = Campo4_BC
                 Else
-                    TEXTO4 = CStr(R_BF.item(4)) = CStr(R_BF.item(4))
+                    TEXTO4 = Campo4_BF = Campo4_BF
                 End If
                 If CAMPO5 = True Then
-                    TEXTO5 = CStr(R_BF.item(5)) = CStr(R_BC.item(5))
+                    TEXTO5 = Campo5_BF = Campo5_BC
                 Else
-                    TEXTO5 = CStr(R_BF.item(5)) = CStr(R_BF.item(5))
+                    TEXTO5 = Campo5_BF = Campo5_BF
                 End If
                 If CAMPO6 = True Then
-                    TEXTO6 = CStr(R_BF.item(6)) = CStr(R_BC.item(6))
+                    TEXTO6 = Campo6_BF = Campo6_BC
                 Else
-                    TEXTO6 = CStr(R_BF.item(6)) = CStr(R_BF.item(6))
+                    TEXTO6 = Campo6_BF = Campo6_BF
                 End If
                 If CAMPO7 = True Then
-                    TEXTO7 = CStr(R_BF.item(7)) = CStr(R_BC.item(7))
+                    TEXTO7 = Campo7_BF = Campo7_BC
                 Else
-                    TEXTO7 = CStr(R_BF.item(7)) = CStr(R_BF.item(7))
+                    TEXTO7 = Campo7_BF = Campo7_BF
                 End If
                 If CAMPO8 = True Then
-                    TEXTO8 = CStr(R_BF.item(8)) = CStr(R_BC.item(8))
+                    TEXTO8 = Campo8_BF = Campo8_BC
                 Else
-                    TEXTO8 = CStr(R_BF.item(8)) = CStr(R_BF.item(8))
+                    TEXTO8 = Campo8_BF = Campo8_BF
                 End If
                 If CAMPO9 = True Then
-                    TEXTO9 = CStr(R_BF.item(9)) = CStr(R_BC.item(9))
+                    TEXTO9 = Campo9_BF = Campo9_BC
                 Else
-                    TEXTO9 = CStr(R_BF.item(9)) = CStr(R_BF.item(9))
+                    TEXTO9 = Campo9_BF = Campo9_BF
                 End If
                 If CAMPO10 = True Then
-                    TEXTO10 = CStr(R_BF.item(10)) = CStr(R_BC.item(10))
+                    TEXTO10 = Campo10_BF = Campo10_BC
                 Else
-                    TEXTO10 = CStr(R_BF.item(10)) = CStr(R_BF.item(10))
+                    TEXTO10 = Campo10_BF = Campo10_BF
                 End If
                 '-----------------------------------------------------------------
                 'Subtração e colocar dados na DT resultado
@@ -412,27 +454,30 @@ Public Class BD
                 If TEXTO1 And TEXTO2 And TEXTO3 And TEXTO4 And TEXTO5 And TEXTO6 And TEXTO7 And TEXTO8 _
                     And TEXTO9 And TEXTO10 Then
 
+                    If R_BF.Item(11) <= 0 Then
+                        GoTo Prox_BF
+                    End If
                     If R_BC.Item(11) <= 0 Then
-                        GoTo Prox
+                        GoTo Prox_BC
                     End If
                     'Valores unit.
-                    VOC_UNIT = R_BC.Item(13) / R_BC.Item(11)
-                    DAC_UNIT = R_BC.Item(14) / R_BC.Item(11)
+                    VOC_UNIT = CDec(R_BC.Item(13)) / CDec(R_BC.Item(11))
+                    DAC_UNIT = CDec(R_BC.Item(14)) / CDec(R_BC.Item(11))
                     'Diminui BC
-                    If R_BF.Item(11) >= R_BC.Item(11) Then
+                    If CDec(R_BF.Item(11)) >= CDec(R_BC.Item(11)) Then
                         'Var Conciliado
-                        BF_BC_CONCIL = R_BC.Item(11)
+                        BF_BC_CONCIL = CDec(R_BC.Item(11))
                         'Zera BC
                         Resultado_BC = 0
                     Else
-                        Resultado_BC = R_BC.Item(11) - R_BF.Item(11)
+                        Resultado_BC = CDec(R_BC.Item(11)) - CDec(R_BF.Item(11))
                         'Var Conciliado
-                        BF_BC_CONCIL = R_BF.Item(11)
+                        BF_BC_CONCIL = CDec(R_BF.Item(11))
                     End If
 
                     'Diminui BF
-                    Resultado_BF = R_BF.Item(11) - R_BC.Item(11)
-                    If R_BF.Item(11) < 0 Then
+                    Resultado_BF = CDec(R_BF.Item(11)) - CDec(R_BC.Item(11))
+                    If CDec(R_BF.Item(11)) < 0 Then
                         Resultado_BF = 0
                     End If
 
@@ -440,8 +485,8 @@ Public Class BD
                     R_BC.Item(11) = Resultado_BC
 
                     'Arrumar DT_BC - VOC e DAC
-                    R_BC.Item(13) = R_BC.Item(11) * VOC_UNIT
-                    R_BC.Item(14) = R_BC.Item(11) * DAC_UNIT
+                    R_BC.Item(13) = CDec(R_BC.Item(11)) * VOC_UNIT
+                    R_BC.Item(14) = CDec(R_BC.Item(11)) * DAC_UNIT
                     'Preencher DT resultado
                     Status = "CONCILIADO"
                     n_CO += BF_BC_CONCIL
@@ -454,17 +499,18 @@ Public Class BD
 
                     '------------------------------------------------------------------
                     'Limpar BC
-                    If R_BC.Item(11) <= 0 Then
+                    If CDec(R_BC.Item(11)) <= 0 Then
                         R_BC.Item(11) = 0
                     End If
                 End If
+Prox_BC:
             Next
             'Limpar BF
-            If R_BF.Item(11) <= 0 Then
+            If CDec(R_BF.Item(11)) <= 0 Then
                 R_BF.Item(11) = 0
             End If
 
-Prox:
+Prox_BF:
         Next
 Err:
         'Limpar DT
@@ -477,14 +523,14 @@ Err:
 
         For Each R_BF In DT_BF.Rows
             Loop_n_BF += 1
-            If R_BF.Item(11) = 0 Then
+            If R_BF.Item(11) <= 0 Then
                 Limp_BF.Add(Loop_n_BF - 1)
             End If
         Next
 
         For Each R_BC In DT_BC.Rows
             Loop_n_BC += 1
-            If R_BC.Item(11) = 0 Then
+            If R_BC.Item(11) <= 0 Then
                 Limp_BC.Add(Loop_n_BC - 1)
             End If
         Next
