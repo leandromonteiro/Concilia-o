@@ -12,9 +12,10 @@
                 <MenuItem IsCheckable="true" Header="Layout" ToolTip="Cria um Layout de Carga" Click="MenuItem_Click"></MenuItem>
                 <MenuItem IsCheckable="True" Header="Importar" ToolTip="Importa dados para o Sistema" Click="MenuItem_Click_1"></MenuItem>
                 <MenuItem IsCheckable="True" Header="Exportar" ToolTip="Exporta dados para o Excel" Click="MenuItem_Click_2"></MenuItem>
+                <MenuItem IsCheckable="True" Header="Zerar Conciliação" ToolTip="Limpa os dados para uma nova conciliação" Click="MenuItem_Click_3"></MenuItem>
             </MenuItem>
         </Menu>
-        <TabControl Margin="10,304,10,10">
+        <TabControl Margin="10,270,10,10">
             <TabItem Header="Base Física">
                 <Grid Background="#FFE5E5E5">
                     <DataGrid x:Name="DgBF" Margin="10" Background="{x:Null}" IsReadOnly="True" GridLinesVisibility="None"/>
@@ -31,58 +32,41 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <GroupBox x:Name="GbCampo" Header="Campo" Margin="10,31,0,0" HorizontalAlignment="Left" Width="106" Height="268" VerticalAlignment="Top" FontWeight="Bold">
-            <StackPanel HorizontalAlignment="Left" Height="83" Margin="46,10,0,0" VerticalAlignment="Top" Width="42">
-                <Button Name="BtnSelecionar" Content="" Height="33" HorizontalAlignment="Left" Width="38" Cursor="Hand" Foreground="{x:Null}" BorderBrush="{x:Null}" ClickMode="Press" >
-                    <Button.Background>
-                        <ImageBrush ImageSource="Fotos/Selecionar.png" Stretch="Uniform"/>
-                    </Button.Background>
-                </Button>
-                <Line Height="10"></Line>
-                <Button x:Name="BtnLimparCb" Content="" HorizontalAlignment="Left" Width="38" Cursor="Hand" Height="35" BorderBrush="{x:Null}" ClickMode="Press">
-                    <Button.Background>
-                        <ImageBrush ImageSource="Fotos/limpar.jpg" Stretch="Uniform"/>
-                    </Button.Background>
-                </Button>
-            </StackPanel>
+        <GroupBox x:Name="GbCampo" Header="Campo" Margin="10,35,0,0" HorizontalAlignment="Left" Width="279" Height="136" VerticalAlignment="Top" FontWeight="Bold">
+            <Grid Name="Grid_CB" HorizontalAlignment="Left" Height="99" Margin="0,26,-2,0" VerticalAlignment="Top" Width="269" RenderTransformOrigin="0.469,0.486">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="55*" />
+                    <ColumnDefinition Width="54*" />
+                    <ColumnDefinition Width="55*" />
+                    <ColumnDefinition Width="54*" />
+                    <ColumnDefinition Width="55*" />
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2.5*" />
+                    <RowDefinition Height="2.5*" />
+                </Grid.RowDefinitions>
+                <CheckBox x:Name="Cb1" Content="1"/>
+                <CheckBox Grid.Column="1"  x:Name="Cb2" Content="2"/>
+                <CheckBox Grid.Column="2" x:Name="Cb3" Content="3"/>
+                <CheckBox Grid.Column="3" x:Name="Cb4" Content="4"/>
+                <CheckBox Grid.Column="4" x:Name="Cb5" Content="5"/>
+                <CheckBox Grid.Row="1" x:Name="Cb6" Content="6"/>
+                <CheckBox Grid.Row="1" Grid.Column="1" x:Name="Cb7" Content="7"/>
+                <CheckBox Grid.Row="1" Grid.Column="2" x:Name="Cb8" Content="8"/>
+                <CheckBox Grid.Row="1" Grid.Column="3" x:Name="Cb9" Content="9"/>
+                <CheckBox Grid.Row="1" Grid.Column="4" x:Name="Cb10" Content="10"/>
+            </Grid>
         </GroupBox>
-        <StackPanel x:Name="PanelCampo" Margin="18,60,0,0" HorizontalAlignment="Left" Width="39" Height="162" VerticalAlignment="Top">
-            <CheckBox x:Name="Cb1" Content="1"/>
-            <CheckBox x:Name="Cb2" Content="2"/>
-            <CheckBox x:Name="Cb3" Content="3"/>
-            <CheckBox x:Name="Cb4" Content="4"/>
-            <CheckBox x:Name="Cb5" Content="5"/>
-            <CheckBox x:Name="Cb6" Content="6"/>
-            <CheckBox x:Name="Cb7" Content="7"/>
-            <CheckBox x:Name="Cb8" Content="8"/>
-            <CheckBox x:Name="Cb9" Content="9"/>
-            <CheckBox x:Name="Cb10" Content="10"/>
-        </StackPanel>
-        <StackPanel x:Name="PanelPrincipal" Height="268" Margin="174,31,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="129">
-            <Label Name="LblCmbVlDt" Content="Prioridade" FontWeight="Bold"></Label>
-            <ComboBox Name="CmbPrioridade" HorizontalAlignment="Left" Width="94">
-                <ComboBox.Effect>
-                    <DropShadowEffect/>
-                </ComboBox.Effect>
-            </ComboBox>
-            <Line Height="10"></Line>
-            <Label Name="LblOrdem" Content="Ordem" FontWeight="Bold"></Label>
-            <ComboBox Name="CmbOrdem" HorizontalAlignment="Left" Width="94">
-                <ComboBox.Effect>
-                    <DropShadowEffect/>
-                </ComboBox.Effect>
-            </ComboBox>
-            <Line Height="10"></Line>
-            <Label Name="LblMinCont" Content="Mín. Qtd. Contábil" FontWeight="Bold"></Label>
-            <TextBox Name="TxtMinCont" Text="0,00"></TextBox>
-            <Line Height="10"></Line>
-            <Label Name="LblMinFis" Content="Mín. Qtd. Físico" FontWeight="Bold"></Label>
-            <TextBox Name="TxtMinFis" Text="0,00"></TextBox>
-            <Line Height="20"></Line>
-            <Button x:Name="BtnConciliar" Content="Conciliar" Height="23" HorizontalAlignment="Left" Width="93" Cursor="Hand" FontWeight="Bold">
-            </Button>
-        </StackPanel>
-        <StackPanel Margin="308,31,23,121">
+        <Grid HorizontalAlignment="Left" Height="44" Margin="10,194,0,0" VerticalAlignment="Top" Width="279">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="BtnSelecionar" Content="Selecionar" Height="25" Cursor="Hand"  ClickMode="Press" Margin="0,2,10,2" FontWeight="Bold" />
+            <Button Grid.Column="1" x:Name="BtnLimparCb" Content="Limpar" Cursor="Hand" Height="25"  ClickMode="Press" Margin="0,2,10,1" FontWeight="Bold"/>
+        </Grid>
+        <StackPanel Margin="308,31,23,249">
             <Label Name="LblRodadas" Content="Rodadas" FontWeight="Bold"/>
             <TextBox Name="TxtRodadas" Height="104" IsEnabled="True" VerticalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True">
                 <TextBox.Effect>
@@ -92,6 +76,41 @@
             <Line Height="120"></Line>
             <ProgressBar x:Name="PbConciliar" Height="21" Visibility="Collapsed"/>
         </StackPanel>
-
+        <Grid x:Name="Grid_Conciliar" Height="53" Margin="308,176,23,0" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.2*" />
+                <RowDefinition Height="0.2*" />
+            </Grid.RowDefinitions>
+            <Label Name="LblCmbVlDt" Content="Prioridade" FontWeight="Bold"></Label>
+            <ComboBox Grid.Row="1" Name="CmbPrioridade" HorizontalAlignment="Left" Width="94" Margin="0,0,2,0">
+                <ComboBox.Effect>
+                    <DropShadowEffect/>
+                </ComboBox.Effect>
+            </ComboBox>
+            <Label Grid.Column="1" Name="LblOrdem" Content="Ordem" FontWeight="Bold"></Label>
+            <ComboBox Grid.Column="1" Grid.Row="1" Name="CmbOrdem" HorizontalAlignment="Left" Width="94">
+                <ComboBox.Effect>
+                    <DropShadowEffect/>
+                </ComboBox.Effect>
+            </ComboBox>
+            <Label Grid.Column="2" Name="LblMinCont" Content="Mín. Qtde. Contábil" FontWeight="Bold"></Label>
+            <TextBox Grid.Column="2" Grid.Row="1" Name="TxtMinCont" Text="0,00" HorizontalAlignment="Left" Width="92"></TextBox>
+            <TextBox Grid.Column="3" Grid.Row="1" Name="TxtMinFis" Text="0,00" HorizontalAlignment="Left" Width="92"></TextBox>
+            <Label Grid.Column="3" Name="LblMinFis" Content="Mín. Qtde. Físico" FontWeight="Bold"></Label>
+            <Button Grid.Column="6" Grid.Row="1" x:Name="BtnConciliar" Content="Conciliar" Height="25" HorizontalAlignment="Left" Width="93" Cursor="Hand" FontWeight="Bold"></Button>
+            <Label Name="LblCasaQtd" Grid.Column="4" Content="Casas Decimais Qtde." FontWeight="Bold"/>
+            <Label Name="LblCasaValor" Grid.Column="5" Content="Casas Decimais Valor" FontWeight="Bold"/>
+            <Slider Name="Slide_Qtd" Grid.Column="4" Grid.Row="1"  VerticalAlignment="Top" Maximum="4" SmallChange="1" TickPlacement="BottomRight" Margin="0,0,5,0" Cursor="Hand" ToolTip="0" Value="2"/>
+            <Slider Name="Slider_Valor" Grid.Column="5" Grid.Row="1" VerticalAlignment="Top" Maximum="4" Margin="0,0,10,0" SmallChange="1" TickPlacement="BottomRight" Cursor="Hand" ToolTip="0" Value="2"/>
+        </Grid>
     </Grid>
 </Window>

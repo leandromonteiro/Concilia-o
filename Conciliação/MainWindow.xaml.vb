@@ -23,15 +23,6 @@ Class MainWindow
         Cb10.IsChecked = False
     End Sub
 
-    Private Sub PanelPrincipal_Initialized(sender As Object, e As EventArgs) Handles PanelPrincipal.Initialized
-        Ss.Show()
-        CmbPrioridade.Items.Add("Valor")
-        CmbPrioridade.Items.Add("Data")
-        CmbOrdem.Items.Add("Crescente")
-        CmbOrdem.Items.Add("Decrescente")
-        BD.Criar_DT_Resultado()
-    End Sub
-
     Private Sub MenuItem_Click_1(sender As Object, e As RoutedEventArgs)
         Dim OFD As New OpenFileDialog
         OFD.DefaultExt = ".xlsx"
@@ -76,7 +67,7 @@ Class MainWindow
         BD.Classificar_BD(CmbPrioridade.Text, CmbOrdem.Text)
         'Limpar limite somente na primeira vez
         If Limite_Primeira = False Then
-            BD.Limpar_Limite(TxtMinFis.Text, TxtMinCont.Text, DgBF, DgBC)
+            BD.Limpar_Limite(TxtMinFis.Text, TxtMinCont.Text, TxtRodadas)
         End If
         Limite_Primeira = True
 
@@ -158,9 +149,30 @@ Class MainWindow
         BD.Exportacao_SF_SC(TxtRodadas)
         BD.Juntar_DT()
         PbConciliar.Visibility = Visibility.Visible
-        BD.Exportar_Excel(TxtRodadas, PbConciliar)
+        BD.Exportar_Excel(TxtRodadas, PbConciliar, CInt(Slide_Qtd.Value), CInt(Slider_Valor.Value))
         PbConciliar.Visibility = Visibility.Collapsed
         MiArquivo.IsEnabled = True
     End Sub
 
+    Private Sub MenuItem_Click_3(sender As Object, e As RoutedEventArgs)
+        BD.Zerar_Conciliacao(DgBF, DgBC, DgResultado)
+        TxtRodadas.Text = ""
+    End Sub
+
+    Private Sub MainWindow_Initialized(sender As Object, e As EventArgs) Handles Me.Initialized
+        Ss.Show()
+        CmbPrioridade.Items.Add("Valor")
+        CmbPrioridade.Items.Add("Data")
+        CmbOrdem.Items.Add("Crescente")
+        CmbOrdem.Items.Add("Decrescente")
+        BD.Criar_DT_Resultado()
+    End Sub
+
+    Private Sub Slide_Qtd_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles Slide_Qtd.ValueChanged
+        Slide_Qtd.ToolTip = Slide_Qtd.Value
+    End Sub
+
+    Private Sub Slider_Valor_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles Slider_Valor.ValueChanged
+        Slider_Valor.ToolTip = Slider_Valor.Value
+    End Sub
 End Class

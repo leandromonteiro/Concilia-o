@@ -7,6 +7,8 @@ Public Class BD
     Public DT_BF As New DataTable
     Public DT_BC As New DataTable
     Public DT_RESULTADO As New DataTable
+    Public DT_BF_Back As New DataTable
+    Public DT_BC_Back As New DataTable
     Dim DV_Excel As New DataView
 
     Dim n_Rodada As Integer
@@ -123,15 +125,43 @@ Public Class BD
         End Try
     End Sub
 
-    Public Sub Exportar_Excel(Txt As TextBox, ByRef PB As ProgressBar)
+    Public Sub Exportar_Excel(Txt As TextBox, ByRef PB As ProgressBar, Casa_Decimal_Qtde As Integer, Casa_Decimal_Valor As Integer)
         Dim xlApp As Excel.Application
         Try
             Dim xlWorkBook As Excel.Workbook
             Dim StResultado As Excel.Worksheet
             Dim StRodadas As Excel.Worksheet
             Dim misValue As Object = System.Reflection.Missing.Value
+            Dim Formato_Qtde As String = ""
+            Dim Formato_Valor As String = ""
             Dim i As Integer
             Dim j As Integer
+
+            Select Case Casa_Decimal_Qtde
+                Case 0
+                    Formato_Qtde = "0"
+                Case 1
+                    Formato_Qtde = "0.0"
+                Case 2
+                    Formato_Qtde = "0.00"
+                Case 3
+                    Formato_Qtde = "0.000"
+                Case 4
+                    Formato_Qtde = "0.0000"
+            End Select
+
+            Select Case Casa_Decimal_Valor
+                Case 0
+                    Formato_Valor = "0"
+                Case 1
+                    Formato_Valor = "0.0"
+                Case 2
+                    Formato_Valor = "0.00"
+                Case 3
+                    Formato_Valor = "0.000"
+                Case 4
+                    Formato_Valor = "0.0000"
+            End Select
 
             xlApp = New Excel.Application
             xlWorkBook = xlApp.Workbooks.Add(misValue)
@@ -148,6 +178,14 @@ Public Class BD
                         StResultado.Cells(i + 2, j + 1) = IIf(Not IsDBNull(DT_RESULTADO.Rows(i)(j)), CDec(DT_RESULTADO.Rows(i)(j)), "")
                     Else
                         StResultado.Cells(i + 2, j + 1) = DT_RESULTADO.Rows(i)(j)
+                    End If
+                    'Qtde
+                    If j = 12 Or j = 27 Then
+                        StResultado.Cells(i + 2, j + 1).numberformat = Formato_Qtde
+                    End If
+                    'Valor
+                    If j = 13 Or j = 14 Then
+                        StResultado.Cells(i + 2, j + 1).numberformat = Formato_Valor
                     End If
                 Next
                 PB.Value = (i / (Contar_DT_Resultado - 1)) * 100
@@ -184,6 +222,10 @@ Public Class BD
             n_Rodada = 0
             DT_RESULTADO.Clear()
             DS.Clear()
+            DT_BC.Clear()
+            DT_BF.Clear()
+            DGV_BF.ItemsSource = ""
+            DGV_BC.ItemsSource = ""
 
             Dim con As New OleDbConnection
             con.ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source='" & ArquivoExcel & "';Extended Properties= 'Excel 12.0';"
@@ -198,24 +240,21 @@ Public Class BD
             DA_BC.Fill(DS, "TB_BC")
             con.Close()
             'Dividir BF e BC em DataTables
-            'Limpar
-            DT_BC.Clear()
-            DT_BF.Clear()
-            DGV_BF.ItemsSource = ""
-            DGV_BC.ItemsSource = ""
-
             DT_BF = DS.Tables("TB_BF")
             DT_BC = DS.Tables("TB_BC")
 
+
+            'Analisar VOC e QTD
+            If Analise_VOC() = False Then
+                MsgBox("Quantidade e/ou VOC menor ou igual a zero localizado." & Chr(13) & " Ajuste a base antes de Importar.", vbInformation)
+                Exit Sub
+            End If
+
+            DT_BF_Back = DT_BF
+            DT_BC_Back = DT_BC
+
             DGV_BF.ItemsSource = DS.Tables("TB_BF").DefaultView
             DGV_BC.ItemsSource = DS.Tables("TB_BC").DefaultView
-
-            'Remover dados vazios
-            'For s = 0 To DT_BC.Rows.Count - 1
-            'If IsDBNull(DT_BC.Rows(s).Item(0)) Then
-            'DT_BC.Rows(s).Delete()
-            'End If
-            'Next
 
             MsgBox("Dados carregados com sucesso", MsgBoxStyle.Information)
         Catch
@@ -274,7 +313,8 @@ Public Class BD
         DT_RESULTADO.Columns.Add("QUANTIDADE_F")
     End Sub
 
-    Public Sub Limpar_Limite(Limite_F As Single, Limite_C As Single, DGV_BF As DataGrid, DGV_BC As DataGrid)
+    Public Sub Limpar_Limite(Limite_F As Single, Limite_C As Single, Txt As TextBox)
+        On Error GoTo Err
         'Limpar DT
         Dim Limp_BF As New ArrayList
         Dim Limp_BC As New ArrayList
@@ -299,6 +339,14 @@ Public Class BD
 
         If Limp_BF.Count > 0 Then
             For k = 0 To Limp_BF.Count - 1
+                'Adicionar na Tabela Resultado
+                DT_RESULTADO.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0,
+                                      "SOBRA FÍSICA", DT_BF.Rows(Limp_BF(k) - n_limpos_BF)(0), DT_BF.Rows(Limp_BF(k) - n_limpos_BF)(1), DT_BF.Rows(Limp_BF(k) - n_limpos_BF)(2),
+                                      DT_BF.Rows(Limp_BF(k) - n_limpos_BF)(3), DT_BF.Rows(Limp_BF(k) - n_limpos_BF)(4),
+                                      DT_BF.Rows(Limp_BF(k) - n_limpos_BF)(5), DT_BF.Rows(Limp_BF(k) - n_limpos_BF)(6), DT_BF.Rows(Limp_BF(k) - n_limpos_BF)(7),
+                                      DT_BF.Rows(Limp_BF(k) - n_limpos_BF)(8), DT_BF.Rows(Limp_BF(k) - n_limpos_BF)(9),
+                                      DT_BF.Rows(Limp_BF(k) - n_limpos_BF)(10), DT_BF.Rows(Limp_BF(k) - n_limpos_BF)(11))
+                'Limpar Linha
                 DT_BF.Rows.RemoveAt(Limp_BF(k) - n_limpos_BF)
                 n_limpos_BF += 1
             Next
@@ -306,16 +354,20 @@ Public Class BD
 
         If Limp_BC.Count > 0 Then
             For k = 0 To Limp_BC.Count - 1
+                'Adicionar na Tabela Resultado
+                DT_RESULTADO.Rows.Add(DT_BC.Rows(Limp_BC(k) - n_limpos_BC)(0), DT_BC.Rows(Limp_BC(k) - n_limpos_BC)(1), DT_BC.Rows(Limp_BC(k) - n_limpos_BC)(2),
+                                      DT_BC.Rows(Limp_BC(k) - n_limpos_BC)(3), DT_BC.Rows(Limp_BC(k) - n_limpos_BC)(4),
+                                      DT_BC.Rows(Limp_BC(k) - n_limpos_BC)(5), DT_BC.Rows(Limp_BC(k) - n_limpos_BC)(6), DT_BC.Rows(Limp_BC(k) - n_limpos_BC)(7),
+                                      DT_BC.Rows(Limp_BC(k) - n_limpos_BC)(8), DT_BC.Rows(Limp_BC(k) - n_limpos_BC)(9), DT_BC.Rows(Limp_BC(k) - n_limpos_BC)(10),
+                                      DT_BC.Rows(Limp_BC(k) - n_limpos_BC)(12), DT_BC.Rows(Limp_BC(k) - n_limpos_BC)(13), DT_BC.Rows(Limp_BC(k) - n_limpos_BC)(14),
+                                      DT_BC.Rows(Limp_BC(k) - n_limpos_BC)(11), "SOBRA CONTÁBIL", "", "", "", "", "", "", "", "", "", "", "", 0)
+                'Limpar Linha
                 DT_BC.Rows.RemoveAt(Limp_BC(k) - n_limpos_BC)
                 n_limpos_BC += 1
             Next
         End If
-
-        DGV_BF.ItemsSource = ""
-        DGV_BC.ItemsSource = ""
-
-        DGV_BF.ItemsSource = DT_BF.DefaultView
-        DGV_BC.ItemsSource = DT_BC.DefaultView
+        Txt.Text = " | RODADA MÍN. QTDE | SOBRA FÍSICA: " & n_limpos_BF & " | SOBRA CONTÁBIL: " & n_limpos_BC
+Err:
     End Sub
 
     Public Sub Conciliar(DGV_BF As DataGrid, DGV_BC As DataGrid, DGV_RESULTADO As DataGrid, CAMPO1 As Boolean,
@@ -556,5 +608,49 @@ Err:
         DGV_BC.ItemsSource = DT_BC.DefaultView
         DGV_BF.ItemsSource = DT_BF.DefaultView
     End Sub
+
+    Public Sub Zerar_Conciliacao(DgBF As DataGrid, DgBC As DataGrid, DgResultado As DataGrid)
+        Try
+            DT_BF.Clear()
+            DT_BC.Clear()
+            DT_RESULTADO.Clear()
+
+            DgBF.ItemsSource = ""
+            DgBC.ItemsSource = ""
+            DgResultado.ItemsSource = ""
+
+            DgBF.ItemsSource = DT_BF_Back.DefaultView
+            DgBC.ItemsSource = DT_BC_Back.DefaultView
+
+            DT_BF = DT_BF_Back
+            DT_BC = DT_BC_Back
+
+            n_Rodada = 0
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Public Function Analise_VOC() As Boolean
+        Try
+            Analise_VOC = True
+            For x = 0 To DT_BF.Rows.Count - 1
+                If DT_BF.Rows(x)(11) <= 0 Then
+                    Analise_VOC = False
+                    GoTo Fim
+                End If
+            Next
+            For y = 0 To DT_BC.Rows.Count - 1
+                If DT_BC.Rows(y)(11) <= 0 Or DT_BC.Rows(y)(13) <= 0 Then
+                    Analise_VOC = False
+                    GoTo Fim
+                End If
+            Next
+Fim:
+        Catch ex As Exception
+            Analise_VOC = False
+        End Try
+    End Function
 
 End Class
