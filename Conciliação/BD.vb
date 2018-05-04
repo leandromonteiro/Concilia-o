@@ -1,17 +1,22 @@
 ﻿Imports Microsoft.Office.Interop
 Imports System.Data.OleDb
 Imports System.Data
+Imports Conciliação.MainWindow
 
 Public Class BD
     Dim DS As New DataSet
-    Public DT_BF As New DataTable
-    Public DT_BC As New DataTable
+    Dim DT_BF As New DataTable
+    Dim DT_BC As New DataTable
     Public DT_RESULTADO As New DataTable
-    Public DT_BF_Back As New DataTable
-    Public DT_BC_Back As New DataTable
+    Dim DT_BF_Back As New DataTable
+    Dim DT_BC_Back As New DataTable
     Dim DV_Excel As New DataView
 
     Dim n_Rodada As Integer
+    'Stores the value of the ProgressBar
+    Public value As Double = 0
+    Dim MW As New W_PB
+
 
     Public Sub Exportacao_SF_SC(Txt As TextBox)
         Try
@@ -125,7 +130,7 @@ Public Class BD
         End Try
     End Sub
 
-    Public Sub Exportar_Excel(Txt As TextBox, ByRef PB As ProgressBar, Casa_Decimal_Qtde As Integer, Casa_Decimal_Valor As Integer)
+    Public Sub Exportar_Excel(Txt As TextBox, Casa_Decimal_Qtde As Integer, Casa_Decimal_Valor As Integer)
         Dim xlApp As Excel.Application
         Try
             Dim xlWorkBook As Excel.Workbook
@@ -162,7 +167,6 @@ Public Class BD
                 Case 4
                     Formato_Valor = "0.0000"
             End Select
-
             xlApp = New Excel.Application
             xlWorkBook = xlApp.Workbooks.Add(misValue)
             StResultado = xlWorkBook.Sheets(1)
@@ -188,7 +192,7 @@ Public Class BD
                         StResultado.Cells(i + 2, j + 1).numberformat = Formato_Valor
                     End If
                 Next
-                PB.Value = (i / (Contar_DT_Resultado - 1)) * 100
+                'PB.Value = (i / (Contar_DT_Resultado - 1)) * 100
             Next
 
             StResultado.Range("a1:ab1").Font.Bold = True
@@ -373,7 +377,7 @@ Err:
     Public Sub Conciliar(DGV_BF As DataGrid, DGV_BC As DataGrid, DGV_RESULTADO As DataGrid, CAMPO1 As Boolean,
                          CAMPO2 As Boolean, CAMPO3 As Boolean, CAMPO4 As Boolean, CAMPO5 As Boolean, CAMPO6 As Boolean,
                          CAMPO7 As Boolean, CAMPO8 As Boolean, CAMPO9 As Boolean, CAMPO10 As Boolean,
-                         PB As ProgressBar, Txt As TextBox, Campos As String)
+                         Txt As TextBox, Campos As String)
 
         Dim TEXTO1 As Object
         Dim TEXTO2 As Object
@@ -419,12 +423,14 @@ Err:
 
         Dim n_CO As Integer = 0
 
-        n_Rodada += 1
+        MW.Show()
 
+        Dim Linhas_Totais As Single = DT_BF.Rows.Count
+        n_Rodada += 1
         For Each R_BF In DT_BF.Rows
             n_BF = n_BF + 1
             n_BC = 0
-            PB.Value = n_BF / DT_BF.Rows.Count * 100
+            Process(n_BF, Linhas_Totais)
             For Each R_BC In DT_BC.Rows
                 n_BC = n_BC + 1
                 On Error GoTo Err
@@ -607,6 +613,7 @@ Err:
         DGV_RESULTADO.ItemsSource = DT_RESULTADO.DefaultView
         DGV_BC.ItemsSource = DT_BC.DefaultView
         DGV_BF.ItemsSource = DT_BF.DefaultView
+        MW.Hide()
     End Sub
 
     Public Sub Zerar_Conciliacao(DgBF As DataGrid, DgBC As DataGrid, DgResultado As DataGrid)
@@ -653,4 +660,21 @@ Fim:
         End Try
     End Function
 
+    Private Delegate Sub UpdateProgressBarDelegate(ByVal dp As _
+             System.Windows.DependencyProperty,
+             ByVal value As Object)
+    Private Sub Process(ByRef Linhas As Single, ByRef Linhas_Totais As Single)
+        Try
+
+            'Create a new instance of our ProgressBar Delegate that points
+            ' to the ProgressBar's SetValue method.
+            value = (Linhas / (Linhas_Totais)) * 100
+            Dim updatePbDelegate As New _
+        UpdateProgressBarDelegate(AddressOf MW.PB.SetValue)
+            MW.Dispatcher.Invoke(updatePbDelegate,
+            System.Windows.Threading.DispatcherPriority.Background,
+            New Object() {ProgressBar.ValueProperty, value})
+        Catch
+        End Try
+    End Sub
 End Class

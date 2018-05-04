@@ -15,7 +15,7 @@ Imports System.Windows
 <Assembly: AssemblyDescription("Concilia base física e base contábil de acordo com atributos selecionados")>
 <Assembly: AssemblyCompany("")>
 <Assembly: AssemblyProduct("Conciliação")>
-<Assembly: AssemblyCopyright("Microsoft Copyright ©  2018")>
+<Assembly: AssemblyCopyright("BM Copyright ©  2018")>
 <Assembly: AssemblyTrademark("")>
 <Assembly: ComVisible(false)>
 

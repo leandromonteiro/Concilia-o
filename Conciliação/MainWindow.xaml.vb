@@ -1,12 +1,15 @@
 ﻿Imports Conciliação.BD
 Imports System.Data
 Imports Microsoft.Win32
+
 Class MainWindow
+
     Public FileName As String
     Dim BD As New BD
     Dim Limite_Primeira As Boolean
     Dim Ss As New SsConciliacao
     Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
+        'Botao Limpar
         BD.Modelo_Excel()
     End Sub
 
@@ -59,6 +62,7 @@ Class MainWindow
         Dim Array_Campos As New ArrayList
         Dim Campos As String = ""
 
+        Me.Hide()
         'Validação
         If Validar() = False Then
             Exit Sub
@@ -90,13 +94,13 @@ Class MainWindow
             End If
         Next
 
-        PbConciliar.Visibility = Visibility.Visible
+
         'Conciliar
         BD.Conciliar(DgBF, DgBC, DgResultado, Cb1.IsChecked, Cb2.IsChecked, Cb3.IsChecked, Cb4.IsChecked,
                      Cb5.IsChecked, Cb6.IsChecked, Cb7.IsChecked, Cb8.IsChecked, Cb9.IsChecked, Cb10.IsChecked,
-                     PbConciliar, TxtRodadas, Campos)
-        PbConciliar.Visibility = Visibility.Collapsed
+                     TxtRodadas, Campos)
         BtnConciliar.IsEnabled = True
+        Me.Show()
     End Sub
     Private Function Validar() As Boolean
         On Error Resume Next
@@ -148,9 +152,7 @@ Class MainWindow
         MiArquivo.IsEnabled = False
         BD.Exportacao_SF_SC(TxtRodadas)
         BD.Juntar_DT()
-        PbConciliar.Visibility = Visibility.Visible
-        BD.Exportar_Excel(TxtRodadas, PbConciliar, CInt(Slide_Qtd.Value), CInt(Slider_Valor.Value))
-        PbConciliar.Visibility = Visibility.Collapsed
+        BD.Exportar_Excel(TxtRodadas, CInt(Slide_Qtd.Value), CInt(Slider_Valor.Value))
         MiArquivo.IsEnabled = True
     End Sub
 
@@ -175,4 +177,6 @@ Class MainWindow
     Private Sub Slider_Valor_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles Slider_Valor.ValueChanged
         Slider_Valor.ToolTip = Slider_Valor.Value
     End Sub
+
+
 End Class

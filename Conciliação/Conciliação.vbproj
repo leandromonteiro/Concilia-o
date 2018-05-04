@@ -103,6 +103,9 @@
     <Compile Include="SsConciliacao.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="W_PB.xaml.vb">
+      <DependentUpon>W_PB.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -116,6 +119,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="W_PB.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Import Include="System.Threading.Tasks" />
@@ -232,6 +239,15 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Fotos\BM.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Fotos\Icone_BM.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Fotos\Simbolo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
