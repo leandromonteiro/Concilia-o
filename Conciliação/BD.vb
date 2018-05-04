@@ -142,6 +142,7 @@ Public Class BD
             Dim i As Integer
             Dim j As Integer
 
+            MW.Show()
             Select Case Casa_Decimal_Qtde
                 Case 0
                     Formato_Qtde = "0"
@@ -177,6 +178,7 @@ Public Class BD
             Next
             Dim Contar_DT_Resultado As Integer = DT_RESULTADO.Rows.Count
             For i = 0 To Contar_DT_Resultado - 1
+                Process(i, Contar_DT_Resultado - 1)
                 For j = 0 To DT_RESULTADO.Columns.Count - 1
                     If j = 12 Or j = 13 Or j = 14 Or j = 27 Then
                         StResultado.Cells(i + 2, j + 1) = IIf(Not IsDBNull(DT_RESULTADO.Rows(i)(j)), CDec(DT_RESULTADO.Rows(i)(j)), "")
@@ -212,9 +214,10 @@ Public Class BD
             StRodadas.Cells(1, 1).VerticalAlignment = Excel.Constants.xlTop
             StRodadas.Name = "Rodadas"
 
-
+            MW.Hide()
             xlApp.Visible = True
         Catch
+            MW.Hide()
             xlApp.Quit()
             MsgBox("Erro ao exportar para Excel", MsgBoxStyle.Critical)
         End Try
@@ -423,10 +426,10 @@ Err:
 
         Dim n_CO As Integer = 0
 
-        MW.Show()
-
         Dim Linhas_Totais As Single = DT_BF.Rows.Count
         n_Rodada += 1
+        MW.Show()
+
         For Each R_BF In DT_BF.Rows
             n_BF = n_BF + 1
             n_BC = 0

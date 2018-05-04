@@ -149,11 +149,13 @@ Class MainWindow
         If TxtRodadas.Text = "" Then
             Exit Sub
         End If
+        Me.Hide()
         MiArquivo.IsEnabled = False
         BD.Exportacao_SF_SC(TxtRodadas)
         BD.Juntar_DT()
         BD.Exportar_Excel(TxtRodadas, CInt(Slide_Qtd.Value), CInt(Slider_Valor.Value))
         MiArquivo.IsEnabled = True
+        Me.Show()
     End Sub
 
     Private Sub MenuItem_Click_3(sender As Object, e As RoutedEventArgs)
