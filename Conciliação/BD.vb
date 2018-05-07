@@ -186,15 +186,14 @@ Public Class BD
                         StResultado.Cells(i + 2, j + 1) = DT_RESULTADO.Rows(i)(j)
                     End If
                     'Qtde
-                    If j = 12 Or j = 27 Then
+                    If j = 14 Or j = 27 Then
                         StResultado.Cells(i + 2, j + 1).numberformat = Formato_Qtde
                     End If
                     'Valor
-                    If j = 13 Or j = 14 Then
+                    If j = 12 Or j = 13 Then
                         StResultado.Cells(i + 2, j + 1).numberformat = Formato_Valor
                     End If
                 Next
-                'PB.Value = (i / (Contar_DT_Resultado - 1)) * 100
             Next
 
             StResultado.Range("a1:ab1").Font.Bold = True
