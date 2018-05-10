@@ -1,13 +1,14 @@
 ﻿Imports Conciliação.BD
 Imports System.Data
 Imports Microsoft.Win32
+Imports System.ComponentModel
 
 Class MainWindow
 
     Public FileName As String
     Dim BD As New BD
     Dim Limite_Primeira As Boolean
-    Dim Ss As New SsConciliacao
+
     Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
         'Botao Limpar
         BD.Modelo_Excel()
@@ -164,7 +165,6 @@ Class MainWindow
     End Sub
 
     Private Sub MainWindow_Initialized(sender As Object, e As EventArgs) Handles Me.Initialized
-        Ss.Show()
         CmbPrioridade.Items.Add("Valor")
         CmbPrioridade.Items.Add("Data")
         CmbOrdem.Items.Add("Crescente")
@@ -180,5 +180,7 @@ Class MainWindow
         Slider_Valor.ToolTip = Slider_Valor.Value
     End Sub
 
-
+    Private Sub MainWindow_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+        Application.Current.Shutdown()
+    End Sub
 End Class

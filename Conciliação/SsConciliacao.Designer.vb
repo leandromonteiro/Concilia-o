@@ -56,10 +56,10 @@ Partial Class SsConciliacao
         Me.Copyright.BackColor = System.Drawing.Color.Transparent
         Me.Copyright.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Copyright.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.Copyright.Location = New System.Drawing.Point(12, 9)
+        Me.Copyright.Location = New System.Drawing.Point(3, 0)
         Me.Copyright.Name = "Copyright"
         Me.Copyright.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Copyright.Size = New System.Drawing.Size(151, 21)
+        Me.Copyright.Size = New System.Drawing.Size(237, 218)
         Me.Copyright.TabIndex = 2
         Me.Copyright.Text = "Copyright"
         '
@@ -89,10 +89,10 @@ Partial Class SsConciliacao
         Me.Version.BackColor = System.Drawing.Color.Transparent
         Me.Version.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Version.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.Version.Location = New System.Drawing.Point(261, 30)
+        Me.Version.Location = New System.Drawing.Point(246, 0)
         Me.Version.Name = "Version"
         Me.Version.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.Version.Size = New System.Drawing.Size(220, 21)
+        Me.Version.Size = New System.Drawing.Size(247, 218)
         Me.Version.TabIndex = 3
         Me.Version.Text = "Versão {0}.{1:00}"
         '

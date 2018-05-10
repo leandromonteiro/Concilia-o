@@ -1,6 +1,7 @@
 ﻿Imports System.Windows.Media.Effects
 Imports System.Windows.Media.Animation
 Imports Microsoft.Win32
+Imports System.ComponentModel
 
 Public Class Frm_Rateio
     Dim Magia_F As New C_Rateio
@@ -38,9 +39,11 @@ Public Class Frm_Rateio
     Private Sub BtnCalcular_Click(sender As Object, e As RoutedEventArgs) Handles BtnCalcular.Click
         'Ordenar
         Tab_Rateio.IsSelected = True
+        BtnCalcular.IsEnabled = False
+        BtnCalcular.Content = "Aguarde"
         Magia_F.Calculo(DGV_Rateio)
         BtnExcel.IsEnabled = True
-        BtnCalcular.IsEnabled = False
+        BtnCalcular.Content = "Rateio"
     End Sub
     Private Sub BtnExcel_Click(sender As Object, e As RoutedEventArgs) Handles BtnExcel.Click
         'Exporta para Excel
@@ -90,4 +93,7 @@ Public Class Frm_Rateio
         Efeito_Sombra(5, BtnExcel)
     End Sub
 
+    Private Sub Frm_Rateio_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+        Application.Current.Shutdown()
+    End Sub
 End Class

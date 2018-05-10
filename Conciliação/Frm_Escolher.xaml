@@ -1,0 +1,22 @@
+﻿<Window x:Name="Frm_Conciliar_Rateio" x:Class="Frm_Escolher"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Conciliação"
+        mc:Ignorable="d"
+        Title="No que deseja trabalhar?" Height="158" Width="235" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False" Icon="Fotos/Simbolo.ico">
+    <Grid>
+        <Button Name="Btn_Conciliar" Cursor="Hand" Content="Conciliação" Margin="10,19,14,71" FontWeight="Bold">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+
+        <Button Name="Btn_Rateio" Cursor="Hand" Content="Rateio" Margin="10,64,14,26" FontWeight="Bold">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+    </Grid>
+</Window>

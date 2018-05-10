@@ -99,6 +99,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="C_Rateio.vb" />
+    <Compile Include="Frm_Escolher.xaml.vb">
+      <DependentUpon>Frm_Escolher.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Frm_Rateio.xaml.vb">
       <DependentUpon>Frm_Rateio.xaml</DependentUpon>
     </Compile>
@@ -111,6 +114,10 @@
     <Compile Include="W_PB.xaml.vb">
       <DependentUpon>W_PB.xaml</DependentUpon>
     </Compile>
+    <Page Include="Frm_Escolher.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Frm_Rateio.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -226,15 +233,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Fotos\limpar.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Fotos\Selecionar.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Fotos\Icone.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Fotos\Logo BM.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -253,10 +251,10 @@
     <Resource Include="Fotos\BM.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Fotos\Icone_BM.ico" />
+    <Resource Include="Fotos\Simbolo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Fotos\Simbolo.ico" />
+    <Resource Include="Fotos\Chamas.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
