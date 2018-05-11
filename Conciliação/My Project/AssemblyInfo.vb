@@ -11,10 +11,10 @@ Imports System.Windows
 
 ' Revise os valores dos atributos do assembly
 
-<Assembly: AssemblyTitle("Conciliação")>
-<Assembly: AssemblyDescription("Concilia base física e base contábil de acordo com atributos selecionados")>
+<Assembly: AssemblyTitle("Conciliação & Rateio")>
+<Assembly: AssemblyDescription("Concilia base física e base contábil de acordo com atributos selecionados. Faz o rateio conforme a classificação determinada")>
 <Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("Conciliação")>
+<Assembly: AssemblyProduct("Conciliação & Rateio")>
 <Assembly: AssemblyCopyright("BM Copyright ©  2018")>
 <Assembly: AssemblyTrademark("")>
 <Assembly: ComVisible(false)>
@@ -55,5 +55,5 @@ Imports System.Windows
 ' utilizando o "*" como mostrado abaixo:
 ' <Assembly: AssemblyVersion("1.0.*")>
 
-<Assembly: AssemblyVersion("1.0.0.2")>
-<Assembly: AssemblyFileVersion("1.0.0.2")>
+<Assembly: AssemblyVersion("1.1.0.1")>
+<Assembly: AssemblyFileVersion("1.1.0.1")>
