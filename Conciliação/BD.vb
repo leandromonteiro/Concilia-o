@@ -458,6 +458,13 @@ Err:
                 n_BC = n_BC + 1
                 On Error GoTo Err
 
+                If QUANTIDADE_BF <= 0 Then
+                    GoTo Prox_BF
+                End If
+                If R_BC.Item(11) <= 0 Then
+                    GoTo Prox_BC
+                End If
+
                 'Dados selecionados
                 If CAMPO1 = True Then
                     TEXTO1 = CAMPO1_BF = IIf(IsDBNull(R_BC.item(1)), "", R_BC.item(1))
@@ -515,12 +522,6 @@ Err:
                 If TEXTO1 And TEXTO2 And TEXTO3 And TEXTO4 And TEXTO5 And TEXTO6 And TEXTO7 And TEXTO8 _
                     And TEXTO9 And TEXTO10 Then
 
-                    If QUANTIDADE_BF <= 0 Then
-                        GoTo Prox_BF
-                    End If
-                    If R_BC.Item(11) <= 0 Then
-                        GoTo Prox_BC
-                    End If
                     'Valores unit.
                     VOC_UNIT = CDec(R_BC.Item(13)) / CDec(R_BC.Item(11))
                     DAC_UNIT = CDec(R_BC.Item(14)) / CDec(R_BC.Item(11))
