@@ -233,6 +233,8 @@ Public Class BD
             DGV_BF.ItemsSource = ""
             DGV_BC.ItemsSource = ""
 
+            GC.Collect()
+
             Dim con As New OleDbConnection
             con.ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source='" & ArquivoExcel & "';Extended Properties= 'Excel 12.0';"
             Dim cmd As New OleDbCommand
@@ -248,7 +250,6 @@ Public Class BD
             'Dividir BF e BC em DataTables
             DT_BF = DS.Tables("TB_BF")
             DT_BC = DS.Tables("TB_BC")
-
 
             'Analisar VOC e QTD
             If Analise_VOC() = False Then
@@ -381,37 +382,44 @@ Err:
                          CAMPO7 As Boolean, CAMPO8 As Boolean, CAMPO9 As Boolean, CAMPO10 As Boolean,
                          Txt As TextBox, Campos As String)
 
-        Dim TEXTO1 As Object
-        Dim TEXTO2 As Object
-        Dim TEXTO3 As Object
-        Dim TEXTO4 As Object
-        Dim TEXTO5 As Object
-        Dim TEXTO6 As Object
-        Dim TEXTO7 As Object
-        Dim TEXTO8 As Object
-        Dim TEXTO9 As Object
-        Dim TEXTO10 As Object
+        'Var BF e BC
+        Dim CHAVE_BF As String
+        Dim CAMPO1_BF As String
+        Dim CAMPO2_BF As String
+        Dim CAMPO3_BF As String
+        Dim CAMPO4_BF As String
+        Dim CAMPO5_BF As String
+        Dim CAMPO6_BF As String
+        Dim CAMPO7_BF As String
+        Dim CAMPO8_BF As String
+        Dim CAMPO9_BF As String
+        Dim CAMPO10_BF As String
+        Dim QUANTIDADE_BF As Decimal
+        Dim CHAVE_BC As String
+        Dim CAMPO1_BC As String
+        Dim CAMPO2_BC As String
+        Dim CAMPO3_BC As String
+        Dim CAMPO4_BC As String
+        Dim CAMPO5_BC As String
+        Dim CAMPO6_BC As String
+        Dim CAMPO7_BC As String
+        Dim CAMPO8_BC As String
+        Dim CAMPO9_BC As String
+        Dim CAMPO10_BC As String
+        Dim QUANTIDADE_BC As Decimal
+        Dim VOC_BC As Decimal
+        Dim DAC_BC As Decimal
 
-        Dim Campo1_BF As String
-        Dim Campo1_BC As String
-        Dim Campo2_BF As String
-        Dim Campo2_BC As String
-        Dim Campo3_BF As String
-        Dim Campo3_BC As String
-        Dim Campo4_BF As String
-        Dim Campo4_BC As String
-        Dim Campo5_BF As String
-        Dim Campo5_BC As String
-        Dim Campo6_BF As String
-        Dim Campo6_BC As String
-        Dim Campo7_BF As String
-        Dim Campo7_BC As String
-        Dim Campo8_BF As String
-        Dim Campo8_BC As String
-        Dim Campo9_BF As String
-        Dim Campo9_BC As String
-        Dim Campo10_BF As String
-        Dim Campo10_BC As String
+        Dim TEXTO1 As Boolean
+        Dim TEXTO2 As Boolean
+        Dim TEXTO3 As Boolean
+        Dim TEXTO4 As Boolean
+        Dim TEXTO5 As Boolean
+        Dim TEXTO6 As Boolean
+        Dim TEXTO7 As Boolean
+        Dim TEXTO8 As Boolean
+        Dim TEXTO9 As Boolean
+        Dim TEXTO10 As Boolean
 
         Dim VOC_UNIT As Single
         Dim DAC_UNIT As Single
@@ -425,88 +433,81 @@ Err:
 
         Dim n_CO As Integer = 0
 
-        Dim Linhas_Totais As Single = DT_BF.Rows.Count
+        Dim Linhas_Totais As Integer = DT_BF.Rows.Count
         n_Rodada += 1
         MW.Show()
 
         For Each R_BF In DT_BF.Rows
+            CHAVE_BF = R_BF.item(0)
+            CAMPO1_BF = IIf(IsDBNull(R_BF.item(1)), "", R_BF.item(1))
+            CAMPO2_BF = IIf(IsDBNull(R_BF.item(2)), "", R_BF.item(2))
+            CAMPO3_BF = IIf(IsDBNull(R_BF.item(3)), "", R_BF.item(3))
+            CAMPO4_BF = IIf(IsDBNull(R_BF.item(4)), "", R_BF.item(4))
+            CAMPO5_BF = IIf(IsDBNull(R_BF.item(5)), "", R_BF.item(5))
+            CAMPO6_BF = IIf(IsDBNull(R_BF.item(6)), "", R_BF.item(6))
+            CAMPO7_BF = IIf(IsDBNull(R_BF.item(7)), "", R_BF.item(7))
+            CAMPO8_BF = IIf(IsDBNull(R_BF.item(8)), "", R_BF.item(8))
+            CAMPO9_BF = IIf(IsDBNull(R_BF.item(9)), "", R_BF.item(9))
+            CAMPO10_BF = IIf(IsDBNull(R_BF.item(10)), "", R_BF.item(10))
+            QUANTIDADE_BF = CDec(R_BF.Item(11))
+
             n_BF = n_BF + 1
             n_BC = 0
             Process(n_BF, Linhas_Totais)
             For Each R_BC In DT_BC.Rows
                 n_BC = n_BC + 1
                 On Error GoTo Err
-                Campo1_BF = IIf(IsDBNull(R_BF.item(1)), "", R_BF.item(1))
-                Campo1_BC = IIf(IsDBNull(R_BC.item(1)), "", R_BC.item(1))
-                Campo2_BF = IIf(IsDBNull(R_BF.item(2)), "", R_BF.item(2))
-                Campo2_BC = IIf(IsDBNull(R_BC.item(2)), "", R_BC.item(2))
-                Campo3_BF = IIf(IsDBNull(R_BF.item(3)), "", R_BF.item(3))
-                Campo3_BC = IIf(IsDBNull(R_BC.item(3)), "", R_BC.item(3))
-                Campo4_BF = IIf(IsDBNull(R_BF.item(4)), "", R_BF.item(4))
-                Campo4_BC = IIf(IsDBNull(R_BC.item(4)), "", R_BC.item(4))
-                Campo5_BF = IIf(IsDBNull(R_BF.item(5)), "", R_BF.item(5))
-                Campo5_BC = IIf(IsDBNull(R_BC.item(5)), "", R_BC.item(5))
-                Campo6_BF = IIf(IsDBNull(R_BF.item(6)), "", R_BF.item(6))
-                Campo6_BC = IIf(IsDBNull(R_BC.item(6)), "", R_BC.item(6))
-                Campo7_BF = IIf(IsDBNull(R_BF.item(7)), "", R_BF.item(7))
-                Campo7_BC = IIf(IsDBNull(R_BC.item(7)), "", R_BC.item(7))
-                Campo8_BF = IIf(IsDBNull(R_BF.item(8)), "", R_BF.item(8))
-                Campo8_BC = IIf(IsDBNull(R_BC.item(8)), "", R_BC.item(8))
-                Campo9_BF = IIf(IsDBNull(R_BF.item(9)), "", R_BF.item(9))
-                Campo9_BC = IIf(IsDBNull(R_BC.item(9)), "", R_BC.item(9))
-                Campo10_BF = IIf(IsDBNull(R_BF.item(10)), "", R_BF.item(10))
-                Campo10_BC = IIf(IsDBNull(R_BC.item(10)), "", R_BC.item(10))
 
                 'Dados selecionados
                 If CAMPO1 = True Then
-                    TEXTO1 = Campo1_BF = Campo1_BC
+                    TEXTO1 = CAMPO1_BF = IIf(IsDBNull(R_BC.item(1)), "", R_BC.item(1))
                 Else
-                    TEXTO1 = Campo1_BF = Campo1_BF
+                    TEXTO1 = True
                 End If
                 If CAMPO2 = True Then
-                    TEXTO2 = Campo2_BF = Campo2_BC
+                    TEXTO2 = CAMPO2_BF = IIf(IsDBNull(R_BC.item(2)), "", R_BC.item(2))
                 Else
-                    TEXTO2 = Campo2_BF = Campo2_BF
+                    TEXTO2 = True
                 End If
                 If CAMPO3 = True Then
-                    TEXTO3 = Campo3_BF = Campo3_BC
+                    TEXTO3 = CAMPO3_BF = IIf(IsDBNull(R_BC.item(3)), "", R_BC.item(3))
                 Else
-                    TEXTO3 = Campo3_BF = Campo3_BF
+                    TEXTO3 = True
                 End If
                 If CAMPO4 = True Then
-                    TEXTO4 = Campo4_BF = Campo4_BC
+                    TEXTO4 = CAMPO4_BF = IIf(IsDBNull(R_BC.item(4)), "", R_BC.item(4))
                 Else
-                    TEXTO4 = Campo4_BF = Campo4_BF
+                    TEXTO4 = True
                 End If
                 If CAMPO5 = True Then
-                    TEXTO5 = Campo5_BF = Campo5_BC
+                    TEXTO5 = CAMPO5_BF = IIf(IsDBNull(R_BC.item(5)), "", R_BC.item(5))
                 Else
-                    TEXTO5 = Campo5_BF = Campo5_BF
+                    TEXTO5 = True
                 End If
                 If CAMPO6 = True Then
-                    TEXTO6 = Campo6_BF = Campo6_BC
+                    TEXTO6 = CAMPO6_BF = IIf(IsDBNull(R_BC.item(6)), "", R_BC.item(6))
                 Else
-                    TEXTO6 = Campo6_BF = Campo6_BF
+                    TEXTO6 = True
                 End If
                 If CAMPO7 = True Then
-                    TEXTO7 = Campo7_BF = Campo7_BC
+                    TEXTO7 = CAMPO7_BF = IIf(IsDBNull(R_BC.item(7)), "", R_BC.item(7))
                 Else
-                    TEXTO7 = Campo7_BF = Campo7_BF
+                    TEXTO7 = True
                 End If
                 If CAMPO8 = True Then
-                    TEXTO8 = Campo8_BF = Campo8_BC
+                    TEXTO8 = CAMPO8_BF = IIf(IsDBNull(R_BC.item(8)), "", R_BC.item(8))
                 Else
-                    TEXTO8 = Campo8_BF = Campo8_BF
+                    TEXTO8 = True
                 End If
                 If CAMPO9 = True Then
-                    TEXTO9 = Campo9_BF = Campo9_BC
+                    TEXTO9 = CAMPO9_BF = IIf(IsDBNull(R_BC.item(9)), "", R_BC.item(9))
                 Else
-                    TEXTO9 = Campo9_BF = Campo9_BF
+                    TEXTO9 = True
                 End If
                 If CAMPO10 = True Then
-                    TEXTO10 = Campo10_BF = Campo10_BC
+                    TEXTO10 = CAMPO10_BF = IIf(IsDBNull(R_BC.item(10)), "", R_BC.item(10))
                 Else
-                    TEXTO10 = Campo10_BF = Campo10_BF
+                    TEXTO10 = True
                 End If
                 '-----------------------------------------------------------------
                 'Subtração e colocar dados na DT resultado
@@ -514,7 +515,7 @@ Err:
                 If TEXTO1 And TEXTO2 And TEXTO3 And TEXTO4 And TEXTO5 And TEXTO6 And TEXTO7 And TEXTO8 _
                     And TEXTO9 And TEXTO10 Then
 
-                    If R_BF.Item(11) <= 0 Then
+                    If QUANTIDADE_BF <= 0 Then
                         GoTo Prox_BF
                     End If
                     If R_BC.Item(11) <= 0 Then
@@ -524,20 +525,20 @@ Err:
                     VOC_UNIT = CDec(R_BC.Item(13)) / CDec(R_BC.Item(11))
                     DAC_UNIT = CDec(R_BC.Item(14)) / CDec(R_BC.Item(11))
                     'Diminui BC
-                    If CDec(R_BF.Item(11)) >= CDec(R_BC.Item(11)) Then
+                    If QUANTIDADE_BF >= CDec(R_BC.Item(11)) Then
                         'Var Conciliado
                         BF_BC_CONCIL = CDec(R_BC.Item(11))
                         'Zera BC
                         Resultado_BC = 0
                     Else
-                        Resultado_BC = CDec(R_BC.Item(11)) - CDec(R_BF.Item(11))
+                        Resultado_BC = CDec(R_BC.Item(11)) - QUANTIDADE_BF
                         'Var Conciliado
-                        BF_BC_CONCIL = CDec(R_BF.Item(11))
+                        BF_BC_CONCIL = QUANTIDADE_BF
                     End If
 
                     'Diminui BF
-                    Resultado_BF = CDec(R_BF.Item(11)) - CDec(R_BC.Item(11))
-                    If CDec(R_BF.Item(11)) < 0 Then
+                    Resultado_BF = QUANTIDADE_BF - CDec(R_BC.Item(11))
+                    If QUANTIDADE_BF < 0 Then
                         Resultado_BF = 0
                     End If
 
@@ -553,9 +554,9 @@ Err:
                     DT_RESULTADO.Rows.Add(R_BC.Item(0), R_BC.Item(1), R_BC.Item(2), R_BC.Item(3), R_BC.Item(4),
                                           R_BC.Item(5), R_BC.Item(6), R_BC.Item(7), R_BC.Item(8), R_BC.Item(9),
                                           R_BC.Item(10), R_BC.Item(12), VOC_UNIT * BF_BC_CONCIL, DAC_UNIT * BF_BC_CONCIL, BF_BC_CONCIL,
-                                          Status, R_BF.Item(0), R_BF.Item(1), R_BF.Item(2), R_BF.Item(3), R_BF.Item(4),
-                                          R_BF.Item(5), R_BF.Item(6), R_BF.Item(7), R_BF.Item(8), R_BF.Item(9),
-                                          R_BF.Item(10), BF_BC_CONCIL)
+                                          Status, CHAVE_BF, CAMPO1_BF, CAMPO2_BF, CAMPO3_BF, CAMPO4_BF,
+                                          CAMPO5_BF, CAMPO6_BF, CAMPO7_BF, CAMPO8_BF, CAMPO9_BF,
+                                          CAMPO10_BF, BF_BC_CONCIL)
 
                     '------------------------------------------------------------------
                     'Limpar BC

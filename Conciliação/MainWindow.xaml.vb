@@ -28,6 +28,10 @@ Class MainWindow
     End Sub
 
     Private Sub MenuItem_Click_1(sender As Object, e As RoutedEventArgs)
+        MiArquivo.IsEnabled = False
+        MiArquivo.Header = "Aguarde a Importação do Arquivo"
+        Limite_Primeira = False
+
         Dim OFD As New OpenFileDialog
         OFD.DefaultExt = ".xlsx"
         OFD.Filter = "Documentos Excel (.xlsx)|*.xlsx"
@@ -36,14 +40,16 @@ Class MainWindow
         If result = True Then
             FileName = OFD.FileName
         Else
+            MiArquivo.IsEnabled = True
+            MiArquivo.Header = "Arquivo"
             Exit Sub
         End If
-        MiArquivo.IsEnabled = False
-        Limite_Primeira = False
+
         BD.Importar_Excel(FileName, DgBF, DgBC)
         DgResultado.ItemsSource = ""
         TxtRodadas.Text = ""
         MiArquivo.IsEnabled = True
+        MiArquivo.Header = "Arquivo"
     End Sub
 
     Private Sub BtnSelecionar_Click(sender As Object, e As RoutedEventArgs) Handles BtnSelecionar.Click

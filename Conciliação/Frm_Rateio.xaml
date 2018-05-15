@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Conciliação_Rateio"
         mc:Ignorable="d"
-       Title="Rateio" Height="515.899" Width="769.456" WindowState="Maximized" Icon="Fotos/Chamas.ico">
+       Title="Rateio" Height="515.899" Width="769.456" WindowState="Maximized" Icon="Fotos/Simbolo.ico">
     <Grid>
         <GroupBox x:Name="GbModelo" Header="Modelo" HorizontalAlignment="Left" Margin="10,13,0,0" VerticalAlignment="Top" Height="58" Width="206">
             <Button x:Name="BtnModelo" Content="Gerar" Margin="10,10,8,6" Cursor="Hand"/>

@@ -22,6 +22,8 @@ Public Class Frm_Rateio
     End Sub
     Private Sub BtnCarga_Click(sender As Object, e As RoutedEventArgs) Handles BtnCarga.Click
         Try
+            BtnCarga.IsEnabled = False
+            BtnCarga.Content = "Aguarde Importação!"
             OFD.Title = "Selecione a carga"
             OFD.Filter = "Excel (*.xlsx)|*.xlsx"
             OFD.FileName = ""
@@ -34,6 +36,8 @@ Public Class Frm_Rateio
             Exit Sub
         End If
         Magia_F.Importar_Excel(ArquivoExcel, DGV_Magia)
+        BtnCarga.IsEnabled = True
+        BtnCarga.Content = "Sistema"
         BtnCalcular.IsEnabled = True
     End Sub
     Private Sub BtnCalcular_Click(sender As Object, e As RoutedEventArgs) Handles BtnCalcular.Click
