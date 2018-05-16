@@ -454,11 +454,12 @@ Err:
             n_BF = n_BF + 1
             n_BC = 0
             Process(n_BF, Linhas_Totais)
+            'Loop BC
             For Each R_BC In DT_BC.Rows
                 n_BC = n_BC + 1
                 On Error GoTo Err
 
-                If QUANTIDADE_BF <= 0 Then
+                If CDec(R_BF.Item(11)) <= 0 Then
                     GoTo Prox_BF
                 End If
                 If R_BC.Item(11) <= 0 Then
@@ -539,11 +540,12 @@ Err:
 
                     'Diminui BF
                     Resultado_BF = QUANTIDADE_BF - CDec(R_BC.Item(11))
-                    If QUANTIDADE_BF < 0 Then
+                    If Resultado_BF < 0 Then
                         Resultado_BF = 0
                     End If
 
                     R_BF.Item(11) = Resultado_BF
+                    QUANTIDADE_BF = Resultado_BF
                     R_BC.Item(11) = Resultado_BC
 
                     'Arrumar DT_BC - VOC e DAC
@@ -567,12 +569,12 @@ Err:
                 End If
 Prox_BC:
             Next
+Prox_BF:
             'Limpar BF
             If CDec(R_BF.Item(11)) <= 0 Then
                 R_BF.Item(11) = 0
+                QUANTIDADE_BF = 0
             End If
-
-Prox_BF:
         Next
 Err:
         'Limpar DT
