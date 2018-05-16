@@ -381,6 +381,13 @@ Err:
                          CAMPO2 As Boolean, CAMPO3 As Boolean, CAMPO4 As Boolean, CAMPO5 As Boolean, CAMPO6 As Boolean,
                          CAMPO7 As Boolean, CAMPO8 As Boolean, CAMPO9 As Boolean, CAMPO10 As Boolean,
                          Txt As TextBox, Campos As String)
+        'Limpar Bases
+        Dim Limp_BF As New ArrayList
+        Dim Limp_BC As New ArrayList
+        Dim Loop_n_BF As Integer
+        Dim Loop_n_BC As Integer
+        Dim n_limpos_BF As Integer = 0
+        Dim n_limpos_BC As Integer = 0
 
         'Var BF e BC
         Dim CHAVE_BF As String
@@ -565,25 +572,29 @@ Err:
                     'Limpar BC
                     If CDec(R_BC.Item(11)) <= 0 Then
                         R_BC.Item(11) = 0
+                        Limp_BC.Add(n_BC - 1)
+                    End If
+                    'Limpar BF
+                    If CDec(R_BF.Item(11)) <= 0 Then
+                        R_BF.Item(11) = 0
+                        QUANTIDADE_BF = 0
                     End If
                 End If
 Prox_BC:
             Next
-Prox_BF:
-            'Limpar BF
-            If CDec(R_BF.Item(11)) <= 0 Then
-                R_BF.Item(11) = 0
-                QUANTIDADE_BF = 0
+
+            If Limp_BC.Count > 0 Then
+                For k = 0 To Limp_BC.Count - 1
+                    DT_BC.Rows.RemoveAt(Limp_BC(k) - n_limpos_BC)
+                    n_limpos_BC += 1
+                Next
+                n_limpos_BC = 0
+                Limp_BC.Clear()
             End If
+Prox_BF:
         Next
 Err:
         'Limpar DT
-        Dim Limp_BF As New ArrayList
-        Dim Limp_BC As New ArrayList
-        Dim Loop_n_BF As Integer
-        Dim Loop_n_BC As Integer
-        Dim n_limpos_BF As Integer = 0
-        Dim n_limpos_BC As Integer = 0
 
         For Each R_BF In DT_BF.Rows
             Loop_n_BF += 1
@@ -592,25 +603,13 @@ Err:
             End If
         Next
 
-        For Each R_BC In DT_BC.Rows
-            Loop_n_BC += 1
-            If R_BC.Item(11) <= 0 Then
-                Limp_BC.Add(Loop_n_BC - 1)
-            End If
-        Next
-
         If Limp_BF.Count > 0 Then
             For k = 0 To Limp_BF.Count - 1
                 DT_BF.Rows.RemoveAt(Limp_BF(k) - n_limpos_BF)
                 n_limpos_BF += 1
             Next
-        End If
-
-        If Limp_BC.Count > 0 Then
-            For k = 0 To Limp_BC.Count - 1
-                DT_BC.Rows.RemoveAt(Limp_BC(k) - n_limpos_BC)
-                n_limpos_BC += 1
-            Next
+            n_limpos_BF = 0
+            Limp_BF.Clear()
         End If
 
         Txt.Text = Txt.Text & IIf(Txt.Text = "", "", vbCrLf) & " | RODADA: " & n_Rodada & " | CONCILIADO: " &
