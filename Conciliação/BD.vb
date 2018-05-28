@@ -7,6 +7,7 @@ Public Class BD
     Dim DS As New DataSet
     Dim DT_BF As New DataTable
     Dim DT_BC As New DataTable
+    Dim DT_N_BC As DataTable
     Public DT_RESULTADO As New DataTable
     Dim DT_BF_Back As New DataTable
     Dim DT_BC_Back As New DataTable
@@ -251,6 +252,11 @@ Public Class BD
             DT_BF = DS.Tables("TB_BF")
             DT_BC = DS.Tables("TB_BC")
 
+            'Colocando ID na BC
+            DT_BC.Columns.Add("ID")
+            For j = 0 To DT_BC.Rows.Count - 1
+                DT_BC.Rows(j).Item("ID") = j + 1
+            Next
             'Analisar VOC e QTD
             If Analise_VOC() = False Then
                 MsgBox("Quantidade e/ou VOC menor ou igual a zero localizado." & Chr(13) & " Ajuste a base antes de Importar.", vbInformation)
@@ -318,6 +324,24 @@ Public Class BD
         DT_RESULTADO.Columns.Add("CAMPO9_F")
         DT_RESULTADO.Columns.Add("CAMPO10_F")
         DT_RESULTADO.Columns.Add("QUANTIDADE_F")
+    End Sub
+
+    Public Sub Criar_DT_N_CONTABIL()
+        DT_N_BC.Columns.Add("CHAVE")
+        DT_N_BC.Columns.Add("CAMPO1")
+        DT_N_BC.Columns.Add("CAMPO2")
+        DT_N_BC.Columns.Add("CAMPO3")
+        DT_N_BC.Columns.Add("CAMPO4")
+        DT_N_BC.Columns.Add("CAMPO5")
+        DT_N_BC.Columns.Add("CAMPO6")
+        DT_N_BC.Columns.Add("CAMPO7")
+        DT_N_BC.Columns.Add("CAMPO8")
+        DT_N_BC.Columns.Add("CAMPO9")
+        DT_N_BC.Columns.Add("CAMPO10")
+        DT_N_BC.Columns.Add("QUANTIDADE")
+        DT_N_BC.Columns.Add("DATA")
+        DT_N_BC.Columns.Add("VOC")
+        DT_N_BC.Columns.Add("DAC")
     End Sub
 
     Public Sub Limpar_Limite(Limite_F As Single, Limite_C As Single, Txt As TextBox)
@@ -444,6 +468,8 @@ Err:
         n_Rodada += 1
         MW.Show()
 
+        'Criar_DT_N_CONTABIL()
+
         For Each R_BF In DT_BF.Rows
             CHAVE_BF = R_BF.item(0)
             CAMPO1_BF = IIf(IsDBNull(R_BF.item(1)), "", R_BF.item(1))
@@ -461,6 +487,78 @@ Err:
             n_BF = n_BF + 1
             n_BC = 0
             Process(n_BF, Linhas_Totais)
+            '-----------------------------------------------------------
+            'Alternativa
+
+            '            'Loop BC
+            '            'Consulta Itens da BF na BC
+            '            Dim Expressao As String
+            '            Expressao = IIf(CAMPO1 = True, DT_BC.Columns(1).ColumnName & IIf(CAMPO1_BF = "", " is NULL", "='" & CAMPO1_BF & "'"), "1=1") & " and " &
+            '                        IIf(CAMPO2 = True, DT_BC.Columns(2).ColumnName & IIf(CAMPO2_BF = "", " is NULL", "='" & CAMPO2_BF & "'"), "1=1") & " and " &
+            '                        IIf(CAMPO3 = True, DT_BC.Columns(3).ColumnName & IIf(CAMPO3_BF = "", " is NULL", "='" & CAMPO3_BF & "'"), "1=1") & " and " &
+            '                        IIf(CAMPO4 = True, DT_BC.Columns(4).ColumnName & IIf(CAMPO4_BF = "", " is NULL", "='" & CAMPO4_BF & "'"), "1=1") & " and " &
+            '                        IIf(CAMPO5 = True, DT_BC.Columns(5).ColumnName & IIf(CAMPO5_BF = "", " is NULL", "='" & CAMPO5_BF & "'"), "1=1") & " and " &
+            '                        IIf(CAMPO6 = True, DT_BC.Columns(6).ColumnName & IIf(CAMPO6_BF = "", " is NULL", "='" & CAMPO6_BF & "'"), "1=1") & " and " &
+            '                        IIf(CAMPO7 = True, DT_BC.Columns(7).ColumnName & IIf(CAMPO7_BF = "", " is NULL", "='" & CAMPO7_BF & "'"), "1=1") & " and " &
+            '                        IIf(CAMPO8 = True, DT_BC.Columns(8).ColumnName & IIf(CAMPO8_BF = "", " is NULL", "='" & CAMPO8_BF & "'"), "1=1") & " and " &
+            '                        IIf(CAMPO9 = True, DT_BC.Columns(9).ColumnName & IIf(CAMPO9_BF = "", " is NULL", "='" & CAMPO9_BF & "'"), "1=1") & " and " &
+            '                        IIf(CAMPO10 = True, DT_BC.Columns(10).ColumnName & IIf(CAMPO10_BF = "", " is NULL", "='" & CAMPO10_BF & "'"), "1=1")
+            '            If DT_BC.Select(Expressao).Count > 0 Then
+            '                DT_N_BC = DT_BC.Select(Expressao).CopyToDataTable
+            '            End If
+
+            '            For Each R_BC In DT_N_BC.Rows
+            '                If R_BC.Item(11) = 0 Then
+            '                    GoTo Prox_BC
+            '                End If
+            '                'Valores unit.
+            '                VOC_UNIT = CDec(R_BC.Item(13)) / CDec(R_BC.Item(11))
+            '                DAC_UNIT = CDec(R_BC.Item(14)) / CDec(R_BC.Item(11))
+            '                'Diminui BC
+            '                If QUANTIDADE_BF >= CDec(R_BC.Item(11)) Then
+            '                    'Var Conciliado
+            '                    BF_BC_CONCIL = CDec(R_BC.Item(11))
+            '                    'Zera BC
+            '                    Resultado_BC = 0
+            '                Else
+            '                    Resultado_BC = CDec(R_BC.Item(11)) - QUANTIDADE_BF
+            '                    'Var Conciliado
+            '                    BF_BC_CONCIL = QUANTIDADE_BF
+            '                End If
+
+            '                'Diminui BF
+            '                Resultado_BF = QUANTIDADE_BF - CDec(R_BC.Item(11))
+            '                If Resultado_BF < 0 Then
+            '                    Resultado_BF = 0
+            '                End If
+
+            '                R_BF.Item(11) = Resultado_BF
+            '                QUANTIDADE_BF = Resultado_BF
+
+            '                Dim dr() As DataRow
+            '                dr = DT_BC.Select(DT_BC.Columns(15).ColumnName & "='" & R_BC.Item(15) & "'")
+            '                dr(0)(11) = Resultado_BC
+            '                dr(0)(13) = CDec(R_BC.Item(11)) * VOC_UNIT
+            '                dr(0)(14) = CDec(R_BC.Item(11)) * DAC_UNIT
+            '                'Limpar linha zerada
+            '                If Resultado_BC = 0 Then
+            '                    dr(0).Delete()
+            '                End If
+
+            '                'Preencher DT resultado
+            '                Status = "CONCILIADO"
+            '                n_CO += BF_BC_CONCIL
+            '                DT_RESULTADO.Rows.Add(R_BC.Item(0), R_BC.Item(1), R_BC.Item(2), R_BC.Item(3), R_BC.Item(4),
+            '                                  R_BC.Item(5), R_BC.Item(6), R_BC.Item(7), R_BC.Item(8), R_BC.Item(9),
+            '                                  R_BC.Item(10), R_BC.Item(12), VOC_UNIT * BF_BC_CONCIL, DAC_UNIT * BF_BC_CONCIL, BF_BC_CONCIL,
+            '                                  Status, CHAVE_BF, CAMPO1_BF, CAMPO2_BF, CAMPO3_BF, CAMPO4_BF,
+            '                                  CAMPO5_BF, CAMPO6_BF, CAMPO7_BF, CAMPO8_BF, CAMPO9_BF,
+            '                                  CAMPO10_BF, BF_BC_CONCIL)
+            'Prox_BC:
+            '            Next
+            '---------------------------------------------------
+            'Original
+
             'Loop BC
             For Each R_BC In DT_BC.Rows
                 n_BC = n_BC + 1
@@ -592,7 +690,7 @@ Prox_BC:
                 Limp_BC.Clear()
             End If
 Prox_BF:
-        Next
+            Next
 Err:
         'Limpar DT
 

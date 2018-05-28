@@ -72,6 +72,7 @@ Class MainWindow
         Me.Hide()
         'Validação
         If Validar() = False Then
+            Me.Show()
             Exit Sub
         End If
         BtnConciliar.IsEnabled = False
