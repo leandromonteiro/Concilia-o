@@ -425,7 +425,7 @@ Err:
         Dim CAMPO8_BF As String
         Dim CAMPO9_BF As String
         Dim CAMPO10_BF As String
-        Dim QUANTIDADE_BF As Single
+        Dim QUANTIDADE_BF As Decimal
         Dim CHAVE_BC As String
         Dim CAMPO1_BC As String
         Dim CAMPO2_BC As String
@@ -437,9 +437,9 @@ Err:
         Dim CAMPO8_BC As String
         Dim CAMPO9_BC As String
         Dim CAMPO10_BC As String
-        Dim QUANTIDADE_BC As Single
-        Dim VOC_BC As Single
-        Dim DAC_BC As Single
+        Dim QUANTIDADE_BC As Decimal
+        Dim VOC_BC As Decimal
+        Dim DAC_BC As Decimal
 
         Dim TEXTO1 As Boolean
         Dim TEXTO2 As Boolean
@@ -452,11 +452,11 @@ Err:
         Dim TEXTO9 As Boolean
         Dim TEXTO10 As Boolean
 
-        Dim VOC_UNIT As Single
-        Dim DAC_UNIT As Single
-        Dim BF_BC_CONCIL As Single
-        Dim Resultado_BF As Single
-        Dim Resultado_BC As Single
+        Dim VOC_UNIT As Decimal
+        Dim DAC_UNIT As Decimal
+        Dim BF_BC_CONCIL As Decimal
+        Dim Resultado_BF As Decimal
+        Dim Resultado_BC As Decimal
         Dim Status As String
 
         Dim n_BF As Integer = 0
@@ -482,7 +482,7 @@ Err:
             CAMPO8_BF = IIf(IsDBNull(R_BF.item(8)), "", R_BF.item(8))
             CAMPO9_BF = IIf(IsDBNull(R_BF.item(9)), "", R_BF.item(9))
             CAMPO10_BF = IIf(IsDBNull(R_BF.item(10)), "", R_BF.item(10))
-            QUANTIDADE_BF = R_BF.Item(11)
+            QUANTIDADE_BF = Decimal.Round(R_BF.Item(11), 4)
 
             n_BF = n_BF + 1
             n_BC = 0
@@ -556,24 +556,26 @@ Err:
 
                 If TEXTO1 And TEXTO2 And TEXTO3 And TEXTO4 And TEXTO5 And TEXTO6 And TEXTO7 And TEXTO8 _
                     And TEXTO9 And TEXTO10 Then
-
+                    QUANTIDADE_BC = Decimal.Round(R_BC.Item(11), 4)
+                    VOC_BC = Decimal.Round(R_BC.Item(13), 4)
+                    DAC_BC = Decimal.Round(R_BC.Item(14), 4)
                     'Valores unit.
-                    VOC_UNIT = R_BC.Item(13) / R_BC.Item(11)
-                    DAC_UNIT = R_BC.Item(14) / R_BC.Item(11)
+                    VOC_UNIT = VOC_BC / QUANTIDADE_BC
+                    DAC_UNIT = DAC_BC / QUANTIDADE_BC
                     'Diminui BC
-                    If QUANTIDADE_BF >= R_BC.Item(11) Then
+                    If QUANTIDADE_BF >= QUANTIDADE_BC Then
                         'Var Conciliado
-                        BF_BC_CONCIL = R_BC.Item(11)
+                        BF_BC_CONCIL = QUANTIDADE_BC
                         'Zera BC
                         Resultado_BC = 0
                     Else
-                        Resultado_BC = R_BC.Item(11) - QUANTIDADE_BF
+                        Resultado_BC = QUANTIDADE_BC - QUANTIDADE_BF
                         'Var Conciliado
                         BF_BC_CONCIL = QUANTIDADE_BF
                     End If
 
                     'Diminui BF
-                    Resultado_BF = QUANTIDADE_BF - R_BC.Item(11)
+                    Resultado_BF = QUANTIDADE_BF - QUANTIDADE_BC
                     If Resultado_BF < 0 Then
                         Resultado_BF = 0
                     End If
@@ -583,8 +585,8 @@ Err:
                     R_BC.Item(11) = Resultado_BC
 
                     'Arrumar DT_BC - VOC e DAC
-                    R_BC.Item(13) = R_BC.Item(11) * VOC_UNIT
-                    R_BC.Item(14) = R_BC.Item(11) * DAC_UNIT
+                    R_BC.Item(13) = Resultado_BC * VOC_UNIT
+                    R_BC.Item(14) = Resultado_BC * DAC_UNIT
                     'Preencher DT resultado
                     Status = "CONCILIADO"
                     n_CO += BF_BC_CONCIL
