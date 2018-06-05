@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Conciliação_Rateio"
         mc:Ignorable="d"
-        Title="W_PB" Height="63.906" Width="729.245" WindowStyle="None" ResizeMode="NoResize" Topmost="True" WindowStartupLocation="CenterScreen">
-    <StackPanel Margin="10,10,10,0" Height="49" VerticalAlignment="Top">
+        Title="" Height="95.906" Width="733.245" ResizeMode="CanMinimize" Topmost="True" WindowStartupLocation="CenterScreen">
+    <StackPanel Margin="10,10,10,2">
         <Label Name="LblPB" Content="Aguarde até que esteja concluído!" FontWeight="Bold"></Label>
         <ProgressBar x:Name="PB" Height="11"/>
     </StackPanel>

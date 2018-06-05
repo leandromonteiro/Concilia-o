@@ -37,8 +37,8 @@ Public Class C_Rateio
             Sh_T.Columns.AutoFit()
             Sh_T.Range("a1:f1").Font.Bold = True
             Sh_T.Range("a1:f1").Font.ColorIndex = 2
-            Sh_T.Range("a1:c1").Interior.ColorIndex = 12
-            Sh_T.Range("d1:f1").Interior.ColorIndex = 14
+            Sh_T.Range("a1:c1").Interior.ColorIndex = 51
+            Sh_T.Range("d1:f1").Interior.ColorIndex = 56
             xlApp.Visible = True
 
         Catch

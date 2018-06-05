@@ -9,10 +9,10 @@
     <Grid>
         <Menu Height="26" VerticalAlignment="Top" FontWeight="Bold">
             <MenuItem x:Name="MiArquivo" Header="Arquivo">
-                <MenuItem IsCheckable="true" Header="Layout" ToolTip="Cria um Layout de Carga" Click="MenuItem_Click"></MenuItem>
-                <MenuItem IsCheckable="True" Header="Importar" ToolTip="Importa dados para o Sistema" Click="MenuItem_Click_1"></MenuItem>
-                <MenuItem IsCheckable="True" Header="Exportar" ToolTip="Exporta dados para o Excel" Click="MenuItem_Click_2"></MenuItem>
-                <MenuItem IsCheckable="True" Header="Zerar Conciliação" ToolTip="Limpa os dados para uma nova conciliação" Click="MenuItem_Click_3"></MenuItem>
+                <MenuItem  Header="Layout" ToolTip="Cria um Layout de Carga" Click="MenuItem_Click"></MenuItem>
+                <MenuItem  Header="Importar" ToolTip="Importa dados para o Sistema" Click="MenuItem_Click_1"></MenuItem>
+                <MenuItem  Header="Exportar" ToolTip="Exporta dados para o Excel" Click="MenuItem_Click_2"></MenuItem>
+                <MenuItem  Header="Zerar Conciliação" ToolTip="Limpa os dados para uma nova conciliação" Click="MenuItem_Click_3"></MenuItem>
             </MenuItem>
         </Menu>
         <TabControl Margin="10,270,10,10">
