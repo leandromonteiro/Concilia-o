@@ -425,7 +425,7 @@ Err:
         Dim CAMPO8_BF As String
         Dim CAMPO9_BF As String
         Dim CAMPO10_BF As String
-        Dim QUANTIDADE_BF As Decimal
+        Dim QUANTIDADE_BF As Single
         Dim CHAVE_BC As String
         Dim CAMPO1_BC As String
         Dim CAMPO2_BC As String
@@ -437,9 +437,9 @@ Err:
         Dim CAMPO8_BC As String
         Dim CAMPO9_BC As String
         Dim CAMPO10_BC As String
-        Dim QUANTIDADE_BC As Decimal
-        Dim VOC_BC As Decimal
-        Dim DAC_BC As Decimal
+        Dim QUANTIDADE_BC As Single
+        Dim VOC_BC As Single
+        Dim DAC_BC As Single
 
         Dim TEXTO1 As Boolean
         Dim TEXTO2 As Boolean
@@ -482,7 +482,7 @@ Err:
             CAMPO8_BF = IIf(IsDBNull(R_BF.item(8)), "", R_BF.item(8))
             CAMPO9_BF = IIf(IsDBNull(R_BF.item(9)), "", R_BF.item(9))
             CAMPO10_BF = IIf(IsDBNull(R_BF.item(10)), "", R_BF.item(10))
-            QUANTIDADE_BF = CDec(R_BF.Item(11))
+            QUANTIDADE_BF = R_BF.Item(11)
 
             n_BF = n_BF + 1
             n_BC = 0
@@ -493,7 +493,7 @@ Err:
                 n_BC = n_BC + 1
                 On Error GoTo Err
 
-                If CDec(R_BF.Item(11)) <= 0 Then
+                If R_BF.Item(11) <= 0 Then
                     GoTo Prox_BF
                 End If
                 If R_BC.Item(11) <= 0 Then
@@ -558,22 +558,22 @@ Err:
                     And TEXTO9 And TEXTO10 Then
 
                     'Valores unit.
-                    VOC_UNIT = CDec(R_BC.Item(13)) / CDec(R_BC.Item(11))
-                    DAC_UNIT = CDec(R_BC.Item(14)) / CDec(R_BC.Item(11))
+                    VOC_UNIT = R_BC.Item(13) / R_BC.Item(11)
+                    DAC_UNIT = R_BC.Item(14) / R_BC.Item(11)
                     'Diminui BC
-                    If QUANTIDADE_BF >= CDec(R_BC.Item(11)) Then
+                    If QUANTIDADE_BF >= R_BC.Item(11) Then
                         'Var Conciliado
-                        BF_BC_CONCIL = CDec(R_BC.Item(11))
+                        BF_BC_CONCIL = R_BC.Item(11)
                         'Zera BC
                         Resultado_BC = 0
                     Else
-                        Resultado_BC = CDec(R_BC.Item(11)) - QUANTIDADE_BF
+                        Resultado_BC = R_BC.Item(11) - QUANTIDADE_BF
                         'Var Conciliado
                         BF_BC_CONCIL = QUANTIDADE_BF
                     End If
 
                     'Diminui BF
-                    Resultado_BF = QUANTIDADE_BF - CDec(R_BC.Item(11))
+                    Resultado_BF = QUANTIDADE_BF - R_BC.Item(11)
                     If Resultado_BF < 0 Then
                         Resultado_BF = 0
                     End If
@@ -583,8 +583,8 @@ Err:
                     R_BC.Item(11) = Resultado_BC
 
                     'Arrumar DT_BC - VOC e DAC
-                    R_BC.Item(13) = CDec(R_BC.Item(11)) * VOC_UNIT
-                    R_BC.Item(14) = CDec(R_BC.Item(11)) * DAC_UNIT
+                    R_BC.Item(13) = R_BC.Item(11) * VOC_UNIT
+                    R_BC.Item(14) = R_BC.Item(11) * DAC_UNIT
                     'Preencher DT resultado
                     Status = "CONCILIADO"
                     n_CO += BF_BC_CONCIL
@@ -597,12 +597,12 @@ Err:
 
                     '------------------------------------------------------------------
                     'Limpar BC
-                    If CDec(R_BC.Item(11)) <= 0 Then
+                    If R_BC.Item(11) <= 0 Then
                         R_BC.Item(11) = 0
                         Limp_BC.Add(n_BC - 1)
                     End If
                     'Limpar BF
-                    If CDec(R_BF.Item(11)) <= 0 Then
+                    If R_BF.Item(11) <= 0 Then
                         R_BF.Item(11) = 0
                         QUANTIDADE_BF = 0
                     End If
