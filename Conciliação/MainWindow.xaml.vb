@@ -69,10 +69,10 @@ Class MainWindow
         Dim Array_Campos As New ArrayList
         Dim Campos As String = ""
 
-        Me.Hide()
+        'Me.Hide()
         'Validação
         If Validar() = False Then
-            Me.Show()
+            'Me.Show()
             Exit Sub
         End If
         BtnConciliar.IsEnabled = False
@@ -102,13 +102,12 @@ Class MainWindow
             End If
         Next
 
-
         'Conciliar
         BD.Conciliar(DgBF, DgBC, DgResultado, Cb1.IsChecked, Cb2.IsChecked, Cb3.IsChecked, Cb4.IsChecked,
                      Cb5.IsChecked, Cb6.IsChecked, Cb7.IsChecked, Cb8.IsChecked, Cb9.IsChecked, Cb10.IsChecked,
-                     TxtRodadas, Campos)
+                     TxtRodadas, Campos, MiArquivo)
         BtnConciliar.IsEnabled = True
-        Me.Show()
+        'Me.Show()
     End Sub
     Private Function Validar() As Boolean
         On Error Resume Next
