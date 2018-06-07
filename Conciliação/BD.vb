@@ -140,18 +140,16 @@ Public Class BD
 
     Public Sub Exportar_Excel(Txt As TextBox, Casa_Decimal_Qtde As Integer, Casa_Decimal_Valor As Integer)
         Dim xlApp As Excel.Application
-        Try
-            Dim xlWorkBook As Excel.Workbook
+        Dim xlWorkBook As Excel.Workbook
             Dim StResultado As Excel.Worksheet
             Dim StRodadas As Excel.Worksheet
             Dim misValue As Object = System.Reflection.Missing.Value
             Dim Formato_Qtde As String = ""
             Dim Formato_Valor As String = ""
             Dim i As Integer
-            Dim j As Integer
+        Dim j As Integer
 
-            PB_W.Show()
-            Select Case Casa_Decimal_Qtde
+        Select Case Casa_Decimal_Qtde
                 Case 0
                     Formato_Qtde = "0"
                 Case 1
@@ -184,25 +182,28 @@ Public Class BD
             For k As Integer = 1 To DT_RESULTADO.Columns.Count
                 StResultado.Cells(1, k) = DT_RESULTADO.Columns(k - 1).ColumnName
             Next
-            Dim Contar_DT_Resultado As Integer = DT_RESULTADO.Rows.Count
-            For i = 0 To Contar_DT_Resultado - 1
-                Process(i, Contar_DT_Resultado - 1)
-                For j = 0 To DT_RESULTADO.Columns.Count - 1
-                    If j = 12 Or j = 13 Or j = 14 Or j = 27 Then
-                        StResultado.Cells(i + 2, j + 1) = IIf(Not IsDBNull(DT_RESULTADO.Rows(i)(j)), CDec(DT_RESULTADO.Rows(i)(j)), "")
-                    Else
-                        StResultado.Cells(i + 2, j + 1) = DT_RESULTADO.Rows(i)(j)
-                    End If
-                    'Qtde
-                    If j = 14 Or j = 27 Then
-                        StResultado.Cells(i + 2, j + 1).numberformat = Formato_Qtde
-                    End If
-                    'Valor
-                    If j = 12 Or j = 13 Then
-                        StResultado.Cells(i + 2, j + 1).numberformat = Formato_Valor
-                    End If
-                Next
-            Next
+        Dim Contar_DT_Resultado As Integer = DT_RESULTADO.Rows.Count
+
+        Dim colIndex As Integer
+        Dim dc As System.Data.DataColumn
+        Dim Nbligne As Integer = DT_RESULTADO.Rows.Count
+
+        For Each dc In DT_RESULTADO.Columns
+            colIndex = colIndex + 1
+            'Column headers
+            StResultado.Cells(1, colIndex) = dc.ColumnName
+            Try
+                StResultado.Cells(2, colIndex).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k(dc.ColumnName))).ToArray())
+            Catch
+            End Try
+        Next
+        Try
+            'Qtde
+            StResultado.Range("N:N").NumberFormat = Formato_Qtde
+            StResultado.Range("AA:AA").NumberFormat = Formato_Qtde
+            'Valor
+            StResultado.Range("L:L").NumberFormat = Formato_Valor
+            StResultado.Range("M:M").NumberFormat = Formato_Valor
 
             StResultado.Range("a1:ab1").Font.Bold = True
             StResultado.Range("a1:ab1").Font.ColorIndex = 2
@@ -221,10 +222,8 @@ Public Class BD
             StRodadas.Cells(1, 1).VerticalAlignment = Excel.Constants.xlTop
             StRodadas.Name = "Rodadas"
 
-            PB_W.Hide()
             xlApp.Visible = True
         Catch
-            PB_W.Hide()
             xlApp.Quit()
             MsgBox("Erro ao exportar para Excel", MsgBoxStyle.Critical)
         End Try
