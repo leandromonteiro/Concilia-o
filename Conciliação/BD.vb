@@ -638,32 +638,20 @@ Err:
                 R_BC.delete
             End If
         Next
+        DT_BC.AcceptChanges()
 
         For Each R_BF In DT_BF.Rows
-            Loop_n_BF += 1
             If R_BF.Item(11) <= 0 Then
-                Limp_BF.Add(Loop_n_BF - 1)
+                R_BF.delete
             End If
         Next
-
-        If Limp_BF.Count > 0 Then
-            DT_BF.BeginLoadData()
-            For k = 0 To Limp_BF.Count - 1
-                DT_BF.Rows.RemoveAt(Limp_BF(k) - n_limpos_BF)
-                n_limpos_BF += 1
-            Next
-            DT_BF.EndLoadData()
-            n_limpos_BF = 0
-            Limp_BF.Clear()
-        End If
-
-        DT_BC.AcceptChanges()
         DT_BF.AcceptChanges()
 
         Txt.Text = Txt.Text & IIf(Txt.Text = "", "", vbCrLf) & " | RODADA: " & n_Rodada & " | CONCILIADO: " &
             n_CO & " | CAMPOS: " & Campos
         'Devolver resultado para DGV
         DGV_RESULTADO.ItemsSource = DT_RESULTADO.DefaultView
+        DT_BC.DefaultView.RowFilter = ""
         DGV_BC.ItemsSource = DT_BC.DefaultView
         DGV_BF.ItemsSource = DT_BF.DefaultView
         Menu.IsEnabled = True

@@ -167,6 +167,7 @@ Class MainWindow
 
     Private Sub MenuItem_Click_3(sender As Object, e As RoutedEventArgs)
         BD.Zerar_Conciliacao(DgBF, DgBC, DgResultado)
+        Limite_Primeira = False
         TxtRodadas.Text = ""
     End Sub
 
@@ -188,5 +189,9 @@ Class MainWindow
 
     Private Sub MainWindow_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         Application.Current.Shutdown()
+    End Sub
+
+    Private Sub MiArquivo_Click(sender As Object, e As RoutedEventArgs) Handles MiArquivo.Click
+
     End Sub
 End Class
