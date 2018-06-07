@@ -436,6 +436,18 @@ Err:
         Dim CAMPO8_BF As String
         Dim CAMPO9_BF As String
         Dim CAMPO10_BF As String
+
+        Dim CAMPO1_BF_Loop As String
+        Dim CAMPO2_BF_Loop As String
+        Dim CAMPO3_BF_Loop As String
+        Dim CAMPO4_BF_Loop As String
+        Dim CAMPO5_BF_Loop As String
+        Dim CAMPO6_BF_Loop As String
+        Dim CAMPO7_BF_Loop As String
+        Dim CAMPO8_BF_Loop As String
+        Dim CAMPO9_BF_Loop As String
+        Dim CAMPO10_BF_Loop As String
+
         Dim QUANTIDADE_BF As Decimal
         Dim CHAVE_BC As String
         Dim CAMPO1_BC As String
@@ -482,6 +494,18 @@ Err:
             CAMPO8_BF = IIf(IsDBNull(R_BF.item(8)), "", R_BF.item(8))
             CAMPO9_BF = IIf(IsDBNull(R_BF.item(9)), "", R_BF.item(9))
             CAMPO10_BF = IIf(IsDBNull(R_BF.item(10)), "", R_BF.item(10))
+
+            CAMPO1_BF_Loop = IIf(IsDBNull(R_BF.item(1)), "IS NULL", "='" & R_BF.item(1) & "'")
+            CAMPO2_BF_Loop = IIf(IsDBNull(R_BF.item(2)), "IS NULL", "='" & R_BF.item(2) & "'")
+            CAMPO3_BF_Loop = IIf(IsDBNull(R_BF.item(3)), "IS NULL", "='" & R_BF.item(3) & "'")
+            CAMPO4_BF_Loop = IIf(IsDBNull(R_BF.item(4)), "IS NULL", "='" & R_BF.item(4) & "'")
+            CAMPO5_BF_Loop = IIf(IsDBNull(R_BF.item(5)), "IS NULL", "='" & R_BF.item(5) & "'")
+            CAMPO6_BF_Loop = IIf(IsDBNull(R_BF.item(6)), "IS NULL", "='" & R_BF.item(6) & "'")
+            CAMPO7_BF_Loop = IIf(IsDBNull(R_BF.item(7)), "IS NULL", "='" & R_BF.item(7) & "'")
+            CAMPO8_BF_Loop = IIf(IsDBNull(R_BF.item(8)), "IS NULL", "='" & R_BF.item(8) & "'")
+            CAMPO9_BF_Loop = IIf(IsDBNull(R_BF.item(9)), "IS NULL", "='" & R_BF.item(9) & "'")
+            CAMPO10_BF_Loop = IIf(IsDBNull(R_BF.item(10)), "IS NULL", "='" & R_BF.item(10) & "'")
+
             QUANTIDADE_BF = Decimal.Round(R_BF.Item(11), 4)
 
             n_BF = n_BF + 1
@@ -491,74 +515,75 @@ Err:
             DoEvents()
             'Loop BC
             If CAMPO1 = True Then
-                TEXTOFIM = "CAMPO1 ='" & CAMPO1_BF & "'"
+                TEXTOFIM = "CAMPO1 " & CAMPO1_BF_Loop
             End If
             If CAMPO2 = True Then
                 If TEXTOFIM <> "" Then
-                    TEXTOFIM = TEXTOFIM & " AND CAMPO2 ='" & CAMPO2_BF & "'"
+                    TEXTOFIM = TEXTOFIM & " AND CAMPO2 " & CAMPO2_BF_Loop
                 Else
-                    TEXTOFIM = "CAMPO2 ='" & CAMPO2_BF & "'"
+                    TEXTOFIM = "CAMPO2 " & CAMPO2_BF_Loop
                 End If
             End If
             If CAMPO3 = True Then
                 If TEXTOFIM <> "" Then
-                    TEXTOFIM = TEXTOFIM & " AND CAMPO3 ='" & CAMPO3_BF & "'"
+                    TEXTOFIM = TEXTOFIM & " AND CAMPO3 " & CAMPO3_BF_Loop
                 Else
-                    TEXTOFIM = "CAMPO3 ='" & CAMPO3_BF & "'"
+                    TEXTOFIM = "CAMPO3 " & CAMPO3_BF_Loop
                 End If
             End If
             If CAMPO4 = True Then
                 If TEXTOFIM <> "" Then
-                    TEXTOFIM = TEXTOFIM & " AND CAMPO4 ='" & CAMPO4_BF & "'"
+                    TEXTOFIM = TEXTOFIM & " AND CAMPO4 " & CAMPO4_BF_Loop
                 Else
-                    TEXTOFIM = "CAMPO4 ='" & CAMPO4_BF & "'"
+                    TEXTOFIM = "CAMPO4 " & CAMPO4_BF_Loop
                 End If
             End If
             If CAMPO5 = True Then
                 If TEXTOFIM <> "" Then
-                    TEXTOFIM = TEXTOFIM & " AND CAMPO5 ='" & CAMPO5_BF & "'"
+                    TEXTOFIM = TEXTOFIM & " AND CAMPO5 " & CAMPO5_BF_Loop
                 Else
-                    TEXTOFIM = "CAMPO5 ='" & CAMPO5_BF & "'"
+                    TEXTOFIM = "CAMPO5 " & CAMPO5_BF_Loop
                 End If
             End If
             If CAMPO6 = True Then
                 If TEXTOFIM <> "" Then
-                    TEXTOFIM = TEXTOFIM & " AND CAMPO6 ='" & CAMPO6_BF & "'"
+                    TEXTOFIM = TEXTOFIM & " AND CAMPO6 " & CAMPO6_BF_Loop
                 Else
-                    TEXTOFIM = "CAMPO6 ='" & CAMPO6_BF & "'"
+                    TEXTOFIM = "CAMPO6 " & CAMPO6_BF_Loop
                 End If
             End If
             If CAMPO7 = True Then
                 If TEXTOFIM <> "" Then
-                    TEXTOFIM = TEXTOFIM & " AND CAMPO7 ='" & CAMPO7_BF & "'"
+                    TEXTOFIM = TEXTOFIM & " AND CAMPO7 " & CAMPO7_BF_Loop
                 Else
-                    TEXTOFIM = "CAMPO7 ='" & CAMPO7_BF & "'"
+                    TEXTOFIM = "CAMPO7 " & CAMPO7_BF_Loop
                 End If
             End If
             If CAMPO8 = True Then
                 If TEXTOFIM <> "" Then
-                    TEXTOFIM = TEXTOFIM & " AND CAMPO8 ='" & CAMPO8_BF & "'"
+                    TEXTOFIM = TEXTOFIM & " AND CAMPO8 " & CAMPO8_BF_Loop
                 Else
-                    TEXTOFIM = "CAMPO8 ='" & CAMPO8_BF & "'"
+                    TEXTOFIM = "CAMPO8 " & CAMPO8_BF_Loop
                 End If
             End If
             If CAMPO9 = True Then
                 If TEXTOFIM <> "" Then
-                    TEXTOFIM = TEXTOFIM & " AND CAMPO9 ='" & CAMPO9_BF & "'"
+                    TEXTOFIM = TEXTOFIM & " AND CAMPO9 " & CAMPO9_BF_Loop
                 Else
-                    TEXTOFIM = "CAMPO9 ='" & CAMPO9_BF & "'"
+                    TEXTOFIM = "CAMPO9 " & CAMPO9_BF_Loop
                 End If
             End If
             If CAMPO10 = True Then
                 If TEXTOFIM <> "" Then
-                    TEXTOFIM = TEXTOFIM & " AND CAMPO10 ='" & CAMPO10_BF & "'"
+                    TEXTOFIM = TEXTOFIM & " AND CAMPO10 " & CAMPO10_BF_Loop
                 Else
-                    TEXTOFIM = "CAMPO10 ='" & CAMPO10_BF & "'"
+                    TEXTOFIM = "CAMPO10 " & CAMPO10_BF_Loop
                 End If
             End If
 
             DV_BC = DT_BC.DefaultView
             DV_BC.RowFilter = TEXTOFIM
+            TEXTOFIM = ""
             DT_RESULTADO.BeginLoadData()
             For Each R_BC In DV_BC
                 n_BC = n_BC + 1
