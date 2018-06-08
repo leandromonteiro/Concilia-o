@@ -43,7 +43,7 @@ Public Class BD
                 Soma_BF = 0
             End If
 
-            Txt.Text += vbCrLf & " | RODADA FINAL | SOBRA FÍSICA: " & Soma_BF & " | SOBRA CONTÁBIL " & Soma_BC
+            Txt.Text += vbCrLf & " | RODADA FINAL | SOBRA FÍSICA: " & Soma_BF.ToString("#,###.##") & " | SOBRA CONTÁBIL " & Soma_BC.ToString("#,###.##")
         Catch
             MsgBox("Erro na Rodada Final. Verifique os valores das quantidades.", vbCritical)
         End Try
@@ -145,9 +145,7 @@ Public Class BD
             Dim StRodadas As Excel.Worksheet
             Dim misValue As Object = System.Reflection.Missing.Value
             Dim Formato_Qtde As String = ""
-            Dim Formato_Valor As String = ""
-            Dim i As Integer
-        Dim j As Integer
+        Dim Formato_Valor As String = ""
 
         Select Case Casa_Decimal_Qtde
                 Case 0
@@ -178,10 +176,10 @@ Public Class BD
             xlWorkBook = xlApp.Workbooks.Add(misValue)
             StResultado = xlWorkBook.Sheets(1)
 
-            'Colocando Títulos
-            For k As Integer = 1 To DT_RESULTADO.Columns.Count
-                StResultado.Cells(1, k) = DT_RESULTADO.Columns(k - 1).ColumnName
-            Next
+        ''Colocando Títulos
+        'For k As Integer = 1 To DT_RESULTADO.Columns.Count
+        '    StResultado.Cells(1, k) = DT_RESULTADO.Columns(k - 1).ColumnName
+        'Next
         Dim Contar_DT_Resultado As Integer = DT_RESULTADO.Rows.Count
 
         Dim colIndex As Integer
@@ -198,12 +196,24 @@ Public Class BD
             End Try
         Next
         Try
+            StResultado.Columns("M:M").TextToColumns(Destination:=StResultado.Range("M1"), DataType:=Excel.XlTextParsingType.xlDelimited,
+        TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
+        Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
+            StResultado.Columns("N:N").TextToColumns(Destination:=StResultado.Range("N1"), DataType:=Excel.XlTextParsingType.xlDelimited,
+        TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
+        Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
+            StResultado.Columns("O:O").TextToColumns(Destination:=StResultado.Range("O1"), DataType:=Excel.XlTextParsingType.xlDelimited,
+        TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
+        Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
+            StResultado.Columns("AB:AB").TextToColumns(Destination:=StResultado.Range("AB1"), DataType:=Excel.XlTextParsingType.xlDelimited,
+        TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
+        Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
+
             'Qtde
-            StResultado.Range("N:N").NumberFormat = Formato_Qtde
-            StResultado.Range("AA:AA").NumberFormat = Formato_Qtde
+            StResultado.Range("O:O").NumberFormat = Formato_Qtde
+            StResultado.Range("AB:AB").NumberFormat = Formato_Qtde
             'Valor
-            StResultado.Range("L:L").NumberFormat = Formato_Valor
-            StResultado.Range("M:M").NumberFormat = Formato_Valor
+            StResultado.Range("M:N").NumberFormat = Formato_Valor
 
             StResultado.Range("a1:ab1").Font.Bold = True
             StResultado.Range("a1:ab1").Font.ColorIndex = 2
@@ -598,9 +608,9 @@ Err:
                 '-----------------------------------------------------------------
                 'Subtração e colocar dados na DT resultado
 
-                QUANTIDADE_BC = Decimal.Round(R_BC.Item(11), 4)
-                VOC_BC = Decimal.Round(R_BC.Item(13), 4)
-                DAC_BC = Decimal.Round(R_BC.Item(14), 4)
+                QUANTIDADE_BC = Math.Round(R_BC.Item(11), 4)
+                VOC_BC = Math.Round(R_BC.Item(13), 4)
+                DAC_BC = Math.Round(R_BC.Item(14), 4)
                 'Valores unit.
                 VOC_UNIT = VOC_BC / QUANTIDADE_BC
                 DAC_UNIT = DAC_BC / QUANTIDADE_BC
@@ -675,6 +685,7 @@ Err:
             n_CO & " | CAMPOS: " & Campos
         'Devolver resultado para DGV
         DGV_RESULTADO.ItemsSource = DT_RESULTADO.DefaultView
+
         DT_BC.DefaultView.RowFilter = ""
         DGV_BC.ItemsSource = DT_BC.DefaultView
         DGV_BF.ItemsSource = DT_BF.DefaultView
