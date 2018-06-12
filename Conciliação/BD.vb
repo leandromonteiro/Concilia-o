@@ -138,43 +138,43 @@ Public Class BD
         End Try
     End Sub
 
-    Public Sub Exportar_Excel(Txt As TextBox, Casa_Decimal_Qtde As Integer, Casa_Decimal_Valor As Integer)
+    Public Sub Exportar_Excel(Txt As TextBox, Casa_Decimal_Qtde As Integer, Casa_Decimal_Valor As Integer, DGV As DataGrid)
         Dim xlApp As Excel.Application
         Dim xlWorkBook As Excel.Workbook
-            Dim StResultado As Excel.Worksheet
-            Dim StRodadas As Excel.Worksheet
-            Dim misValue As Object = System.Reflection.Missing.Value
-            Dim Formato_Qtde As String = ""
+        Dim StResultado As Excel.Worksheet
+        Dim StRodadas As Excel.Worksheet
+        Dim misValue As Object = System.Reflection.Missing.Value
+        Dim Formato_Qtde As String = ""
         Dim Formato_Valor As String = ""
 
         Select Case Casa_Decimal_Qtde
-                Case 0
-                    Formato_Qtde = "0"
-                Case 1
-                    Formato_Qtde = "0.0"
-                Case 2
-                    Formato_Qtde = "0.00"
-                Case 3
-                    Formato_Qtde = "0.000"
-                Case 4
-                    Formato_Qtde = "0.0000"
-            End Select
+            Case 0
+                Formato_Qtde = "0"
+            Case 1
+                Formato_Qtde = "0.0"
+            Case 2
+                Formato_Qtde = "0.00"
+            Case 3
+                Formato_Qtde = "0.000"
+            Case 4
+                Formato_Qtde = "0.0000"
+        End Select
 
-            Select Case Casa_Decimal_Valor
-                Case 0
-                    Formato_Valor = "0"
-                Case 1
-                    Formato_Valor = "0.0"
-                Case 2
-                    Formato_Valor = "0.00"
-                Case 3
-                    Formato_Valor = "0.000"
-                Case 4
-                    Formato_Valor = "0.0000"
-            End Select
-            xlApp = New Excel.Application
-            xlWorkBook = xlApp.Workbooks.Add(misValue)
-            StResultado = xlWorkBook.Sheets(1)
+        Select Case Casa_Decimal_Valor
+            Case 0
+                Formato_Valor = "0"
+            Case 1
+                Formato_Valor = "0.0"
+            Case 2
+                Formato_Valor = "0.00"
+            Case 3
+                Formato_Valor = "0.000"
+            Case 4
+                Formato_Valor = "0.0000"
+        End Select
+        xlApp = New Excel.Application
+        xlWorkBook = xlApp.Workbooks.Add(misValue)
+        StResultado = xlWorkBook.Sheets(1)
 
         ''Colocando Títulos
         'For k As Integer = 1 To DT_RESULTADO.Columns.Count
@@ -186,15 +186,31 @@ Public Class BD
         Dim dc As System.Data.DataColumn
         Dim Nbligne As Integer = DT_RESULTADO.Rows.Count
 
-        For Each dc In DT_RESULTADO.Columns
-            colIndex = colIndex + 1
-            'Column headers
-            StResultado.Cells(1, colIndex) = dc.ColumnName
-            Try
-                StResultado.Cells(2, colIndex).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k(dc.ColumnName))).ToArray())
-            Catch
-            End Try
+        DGV.SelectAllCells()
+        DGV.ClipboardCopyMode = DataGridClipboardCopyMode.IncludeHeader
+        ApplicationCommands.Copy.Execute(Nothing, DGV)
+
+        StResultado.Range("a1").Select()
+        StResultado.Paste()
+        Dim lin As Integer = 1
+        For Each dr In DT_RESULTADO.Rows
+            lin += 1
+            StResultado.Cells(lin, 13).value = "'" & dr.item(12).ToString
+            StResultado.Cells(lin, 14).value = "'" & dr.item(13).ToString
+            StResultado.Cells(lin, 15).value = "'" & dr.item(14).ToString
+            StResultado.Cells(lin, 28).value = "'" & dr.item(27).ToString
         Next
+
+        'For Each dc In DT_RESULTADO.Columns
+        '    colIndex = colIndex + 1
+        '    'Column headers
+        '    StResultado.Cells(1, colIndex) = dc.ColumnName
+        '    Try
+        '        StResultado.Cells(2, colIndex).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k(dc.ColumnName))).ToArray())
+        '    Catch
+        '    End Try
+        'Next
+
         Try
             StResultado.Columns("M:M").TextToColumns(Destination:=StResultado.Range("M1"), DataType:=Excel.XlTextParsingType.xlDelimited,
         TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
@@ -642,7 +658,7 @@ Err:
                     'Preencher DT resultado
                     Status = "CONCILIADO"
                     n_CO += BF_BC_CONCIL
-                    DT_RESULTADO.Rows.Add(R_BC.Item(0), R_BC.Item(1), R_BC.Item(2), R_BC.Item(3), R_BC.Item(4),
+                DT_RESULTADO.Rows.Add(R_BC.Item(0), R_BC.Item(1), R_BC.Item(2), R_BC.Item(3), R_BC.Item(4),
                                           R_BC.Item(5), R_BC.Item(6), R_BC.Item(7), R_BC.Item(8), R_BC.Item(9),
                                           R_BC.Item(10), R_BC.Item(12), VOC_UNIT * BF_BC_CONCIL, DAC_UNIT * BF_BC_CONCIL, BF_BC_CONCIL,
                                           Status, CHAVE_BF, CAMPO1_BF, CAMPO2_BF, CAMPO3_BF, CAMPO4_BF,
