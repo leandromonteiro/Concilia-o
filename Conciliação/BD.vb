@@ -186,14 +186,22 @@ Public Class BD
         Dim dc As System.Data.DataColumn
         Dim Nbligne As Integer = DT_RESULTADO.Rows.Count
 
-        DGV.SelectAllCells()
-        DGV.ClipboardCopyMode = DataGridClipboardCopyMode.IncludeHeader
-        ApplicationCommands.Copy.Execute(Nothing, DGV)
 
-        StResultado.Range("a1").Select()
-        StResultado.Paste()
+        Dim dv As New DataView
+        dv = DT_RESULTADO.DefaultView
+
+        For Each dc In DT_RESULTADO.Columns
+            colIndex = colIndex + 1
+            'Column headers
+            StResultado.Cells(1, colIndex) = dc.ColumnName
+            Try
+                StResultado.Cells(2, colIndex).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k(dc.ColumnName))).ToArray())
+            Catch
+            End Try
+        Next
+
         Dim lin As Integer = 1
-        For Each dr In DT_RESULTADO.Rows
+        For Each dr In dv
             lin += 1
             StResultado.Cells(lin, 13).value = "'" & dr.item(12).ToString
             StResultado.Cells(lin, 14).value = "'" & dr.item(13).ToString
@@ -201,15 +209,12 @@ Public Class BD
             StResultado.Cells(lin, 28).value = "'" & dr.item(27).ToString
         Next
 
-        'For Each dc In DT_RESULTADO.Columns
-        '    colIndex = colIndex + 1
-        '    'Column headers
-        '    StResultado.Cells(1, colIndex) = dc.ColumnName
-        '    Try
-        '        StResultado.Cells(2, colIndex).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k(dc.ColumnName))).ToArray())
-        '    Catch
-        '    End Try
-        'Next
+        'DGV.SelectAllCells()
+        'DGV.ClipboardCopyMode = DataGridClipboardCopyMode.IncludeHeader
+        'ApplicationCommands.Copy.Execute(Nothing, DGV)
+
+        'StResultado.Range("a1").Select()
+        'StResultado.Paste()
 
         Try
             StResultado.Columns("M:M").TextToColumns(Destination:=StResultado.Range("M1"), DataType:=Excel.XlTextParsingType.xlDelimited,
