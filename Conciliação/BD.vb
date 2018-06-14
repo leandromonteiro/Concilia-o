@@ -26,9 +26,12 @@ Public Class BD
         Try
             Dim Soma_BC As Single
             Dim Soma_BF As Single
+            Dim dv_bf As New DataView
+            Dim dv_bc As New DataView
 
             If DT_BC.Rows.Count > 0 Then
-                For Each R_BC In DT_BC.Rows
+                dv_bc = DT_BC.DefaultView
+                For Each R_BC In dv_bc
                     Soma_BC += R_BC.item(11)
                 Next
             Else
@@ -36,7 +39,8 @@ Public Class BD
             End If
 
             If DT_BF.Rows.Count > 0 Then
-                For Each R_BF In DT_BF.Rows
+                dv_bf = DT_BF.DefaultView
+                For Each R_BF In dv_bf
                     Soma_BF += R_BF.item(11)
                 Next
             Else
@@ -111,28 +115,34 @@ Public Class BD
     Public Sub Juntar_DT()
         Try
             If DT_BF.Rows.Count > 0 Then
+                Dim dv_bf As New DataView
+                dv_bf = DT_BF.DefaultView
                 DT_RESULTADO.BeginLoadData()
-                For Each R_BF In DT_BF.Rows
+                For Each R_BF In dv_bf
                     DT_RESULTADO.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0,
                                           "SOBRA FÍSICA", R_BF.Item(0), R_BF.Item(1), R_BF.Item(2), R_BF.Item(3), R_BF.Item(4),
                                               R_BF.Item(5), R_BF.Item(6), R_BF.Item(7), R_BF.Item(8), R_BF.Item(9),
                                               R_BF.Item(10), R_BF.Item(11))
                 Next
                 DT_RESULTADO.EndLoadData()
+                DT_BF.Clear()
             End If
         Catch
         End Try
 
         Try
             If DT_BC.Rows.Count > 0 Then
+                Dim dv_bc As New DataView
+                dv_bc = DT_BC.DefaultView
                 DT_RESULTADO.BeginLoadData()
-                For Each R_BC In DT_BC.Rows
+                For Each R_BC In dv_bc
                     DT_RESULTADO.Rows.Add(R_BC.Item(0), R_BC.Item(1), R_BC.Item(2), R_BC.Item(3), R_BC.Item(4),
                                           R_BC.Item(5), R_BC.Item(6), R_BC.Item(7), R_BC.Item(8), R_BC.Item(9),
-                                          R_BC.Item(10), R_BC.Item(12), R_BC.Item(13), R_BC.Item(14), R_BC.Item(11),
+                                          R_BC.Item(10), R_BC.Item(12), Math.Round(R_BC.Item(13), 4).ToString, R_BC.Item(14), R_BC.Item(11),
                                               "SOBRA CONTÁBIL", "", "", "", "", "", "", "", "", "", "", "", 0)
                 Next
                 DT_RESULTADO.EndLoadData()
+                DT_BC.Clear()
             End If
         Catch
         End Try
@@ -188,6 +198,7 @@ Public Class BD
 
 
         Dim dv As New DataView
+        Dim Linha As Integer = 1
         dv = DT_RESULTADO.DefaultView
 
         For Each dc In DT_RESULTADO.Columns
@@ -200,14 +211,15 @@ Public Class BD
             End Try
         Next
 
-        Dim lin As Integer = 1
-        For Each dr In dv
-            lin += 1
-            StResultado.Cells(lin, 13).value = "'" & dr.item(12).ToString
-            StResultado.Cells(lin, 14).value = "'" & dr.item(13).ToString
-            StResultado.Cells(lin, 15).value = "'" & dr.item(14).ToString
-            StResultado.Cells(lin, 28).value = "'" & dr.item(27).ToString
+        For Each L_dv In dv
+            Linha += 1
+            StResultado.Cells(Linha, 13).value = "'" & L_dv.Item(12).ToString
+            StResultado.Cells(Linha, 14).value = "'" & L_dv.Item(13).ToString
+            StResultado.Cells(Linha, 15).value = "'" & L_dv.Item(14).ToString
+            StResultado.Cells(Linha, 28).value = "'" & L_dv.Item(27).ToString
         Next
+
+        DT_RESULTADO.Clear()
 
         'DGV.SelectAllCells()
         'DGV.ClipboardCopyMode = DataGridClipboardCopyMode.IncludeHeader
@@ -261,9 +273,9 @@ Public Class BD
     End Sub
 
     Public Sub Importar_Excel(ArquivoExcel As String, DGV_BF As DataGrid, DGV_BC As DataGrid)
-        Try
-            'Limpa dados
-            n_Rodada = 0
+        'Try
+        'Limpa dados
+        n_Rodada = 0
             DT_RESULTADO.Clear()
             DS.Clear()
             DT_BC.Clear()
@@ -289,15 +301,17 @@ Public Class BD
             DT_BF = DS.Tables("TB_BF")
             DT_BC = DS.Tables("TB_BC")
 
-            'Colocando ID na BC
+        'Colocando ID na BC
+        If DT_BC.Columns.Count = 15 Then
             DT_BC.Columns.Add("ID")
             DT_BC.BeginLoadData()
             For j = 0 To DT_BC.Rows.Count - 1
                 DT_BC.Rows(j).Item("ID") = j + 1
             Next
             DT_BC.EndLoadData()
-            'Analisar VOC e QTD
-            If Analise_VOC() = False Then
+        End If
+        'Analisar VOC e QTD
+        If Analise_VOC() = False Then
                 MsgBox("Quantidade e/ou VOC menor ou igual a zero localizado." & Chr(13) & " Ajuste a base antes de Importar.", vbInformation)
                 Exit Sub
             End If
@@ -309,9 +323,9 @@ Public Class BD
             DGV_BC.ItemsSource = DS.Tables("TB_BC").DefaultView
 
             MsgBox("Dados carregados com sucesso", MsgBoxStyle.Information)
-        Catch
-            MsgBox("Erro ao Carregar os Dados", MsgBoxStyle.Critical)
-        End Try
+        'Catch
+        'MsgBox("Erro ao Carregar os Dados", MsgBoxStyle.Critical)
+        'End Try
     End Sub
 
     Public Sub Classificar_BD(Prioridade As String, Ordem As String)
@@ -665,7 +679,7 @@ Err:
                     n_CO += BF_BC_CONCIL
                 DT_RESULTADO.Rows.Add(R_BC.Item(0), R_BC.Item(1), R_BC.Item(2), R_BC.Item(3), R_BC.Item(4),
                                           R_BC.Item(5), R_BC.Item(6), R_BC.Item(7), R_BC.Item(8), R_BC.Item(9),
-                                          R_BC.Item(10), R_BC.Item(12), VOC_UNIT * BF_BC_CONCIL, DAC_UNIT * BF_BC_CONCIL, BF_BC_CONCIL,
+                                          R_BC.Item(10), R_BC.Item(12), Math.Round(VOC_UNIT * BF_BC_CONCIL, 4), Math.Round(DAC_UNIT * BF_BC_CONCIL, 4), BF_BC_CONCIL,
                                           Status, CHAVE_BF, CAMPO1_BF, CAMPO2_BF, CAMPO3_BF, CAMPO4_BF,
                                           CAMPO5_BF, CAMPO6_BF, CAMPO7_BF, CAMPO8_BF, CAMPO9_BF,
                                           CAMPO10_BF, BF_BC_CONCIL)
