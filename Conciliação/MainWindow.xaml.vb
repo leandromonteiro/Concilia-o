@@ -159,7 +159,6 @@ Class MainWindow
         MiArquivo.IsEnabled = False
         MiArquivo.Header = "Aguarde a Importação do Arquivo"
         BD.Exportacao_SF_SC(TxtRodadas)
-        BD.Juntar_DT()
         BD.Exportar_Excel(TxtRodadas, CInt(Slide_Qtd.Value), CInt(Slider_Valor.Value), DgResultado)
         MiArquivo.IsEnabled = True
         MiArquivo.Header = "Arquivo"

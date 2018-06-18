@@ -201,25 +201,93 @@ Public Class BD
         Dim Linha As Integer = 1
         dv = DT_RESULTADO.DefaultView
 
+        'CONCILIADO
         For Each dc In DT_RESULTADO.Columns
             colIndex = colIndex + 1
             'Column headers
             StResultado.Cells(1, colIndex) = dc.ColumnName
             Try
-                StResultado.Cells(2, colIndex).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k(dc.ColumnName))).ToArray())
+                If DT_RESULTADO.Rows.Count > 0 Then
+                    StResultado.Cells(2, colIndex).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k(dc.ColumnName))).ToArray())
+                End If
             Catch
             End Try
         Next
+        If DT_RESULTADO.Rows.Count > 0 Then
+            For Each L_dv In dv
+                Linha += 1
+                StResultado.Cells(Linha, 13).value = "'" & L_dv.Item(12).ToString
+                StResultado.Cells(Linha, 14).value = "'" & L_dv.Item(13).ToString
+                StResultado.Cells(Linha, 15).value = "'" & L_dv.Item(14).ToString
+                StResultado.Cells(Linha, 28).value = "'" & L_dv.Item(27).ToString
+            Next
+        End If
 
-        For Each L_dv In dv
-            Linha += 1
-            StResultado.Cells(Linha, 13).value = "'" & L_dv.Item(12).ToString
-            StResultado.Cells(Linha, 14).value = "'" & L_dv.Item(13).ToString
-            StResultado.Cells(Linha, 15).value = "'" & L_dv.Item(14).ToString
-            StResultado.Cells(Linha, 28).value = "'" & L_dv.Item(27).ToString
-        Next
+        'SOBRA CONTÁBIL
+        If DT_BC.Rows.Count > 0 Then
+            Dim DV_BC As New DataView
+            Dim L_Result As Integer = DT_RESULTADO.Rows.Count
+            Dim L_BC As Integer = DT_BC.Rows.Count
+            Dim L As Integer = 0
+            DV_BC = DT_BC.DefaultView
+            Try
+                StResultado.Cells(L_Result + 2, 1).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CHAVE"))).ToArray())
+                StResultado.Cells(L_Result + 2, 2).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO1"))).ToArray())
+                StResultado.Cells(L_Result + 2, 3).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO2"))).ToArray())
+                StResultado.Cells(L_Result + 2, 4).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO3"))).ToArray())
+                StResultado.Cells(L_Result + 2, 5).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO4"))).ToArray())
+                StResultado.Cells(L_Result + 2, 6).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO5"))).ToArray())
+                StResultado.Cells(L_Result + 2, 7).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO6"))).ToArray())
+                StResultado.Cells(L_Result + 2, 8).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO7"))).ToArray())
+                StResultado.Cells(L_Result + 2, 9).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO8"))).ToArray())
+                StResultado.Cells(L_Result + 2, 10).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO9"))).ToArray())
+                StResultado.Cells(L_Result + 2, 11).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO10"))).ToArray())
+                StResultado.Cells(L_Result + 2, 12).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("DATA"))).ToArray())
+
+                For Each VS In DV_BC
+                    StResultado.Cells(L_Result + L + 2, 13).VALUE = "'" & VS.ITEM(13).ToString
+                    StResultado.Cells(L_Result + L + 2, 14).VALUE = "'" & VS.ITEM(14).ToString
+                    StResultado.Cells(L_Result + L + 2, 15).VALUE = "'" & VS.ITEM(11).ToString
+                    StResultado.Cells(L_Result + L + 2, 16).VALUE = "SOBRA CONTÁBIL"
+                    L += 1
+                Next
+            Catch
+            End Try
+        End If
+
+        'SOBRA FÍSICA
+        If DT_BF.Rows.Count > 0 Then
+            Dim DV_BF As New DataView
+            Dim L_Result As Integer = DT_RESULTADO.Rows.Count
+            Dim L_BC As Integer = DT_BC.Rows.Count
+            Dim L_BF As Integer = DT_BF.Rows.Count
+            Dim L As Integer = 0
+            DV_BF = DT_BF.DefaultView
+            Try
+                StResultado.Cells(L_Result + L_BC + 2, 17).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CHAVE"))).ToArray())
+                StResultado.Cells(L_Result + L_BC + 2, 18).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO1"))).ToArray())
+                StResultado.Cells(L_Result + L_BC + 2, 19).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO2"))).ToArray())
+                StResultado.Cells(L_Result + L_BC + 2, 20).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO3"))).ToArray())
+                StResultado.Cells(L_Result + L_BC + 2, 21).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO4"))).ToArray())
+                StResultado.Cells(L_Result + L_BC + 2, 22).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO5"))).ToArray())
+                StResultado.Cells(L_Result + L_BC + 2, 23).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO6"))).ToArray())
+                StResultado.Cells(L_Result + L_BC + 2, 24).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO7"))).ToArray())
+                StResultado.Cells(L_Result + L_BC + 2, 25).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO8"))).ToArray())
+                StResultado.Cells(L_Result + L_BC + 2, 26).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO9"))).ToArray())
+                StResultado.Cells(L_Result + L_BC + 2, 27).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO10"))).ToArray())
+
+                For Each VS In DV_BF
+                    StResultado.Cells(L_Result + L + L_BC + 2, 28).VALUE = "'" & VS.ITEM(11).ToString
+                    StResultado.Cells(L_Result + L + L_BC + 2, 16).VALUE = "SOBRA FÍSICA"
+                    L += 1
+                Next
+            Catch
+            End Try
+        End If
 
         DT_RESULTADO.Clear()
+        DT_BC.Clear()
+        DT_BF.Clear()
 
         'DGV.SelectAllCells()
         'DGV.ClipboardCopyMode = DataGridClipboardCopyMode.IncludeHeader
