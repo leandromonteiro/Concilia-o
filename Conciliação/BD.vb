@@ -47,7 +47,7 @@ Public Class BD
                 Soma_BF = 0
             End If
 
-            Txt.Text += vbCrLf & " | RODADA FINAL | SOBRA FÍSICA: " & Soma_BF.ToString("#,###.##") & " | SOBRA CONTÁBIL " & Soma_BC.ToString("#,###.##")
+            Txt.Text += vbCrLf & " | RODADA FINAL | SOBRA FÍSICA: " & Math.Round(Soma_BF, 2) & " | SOBRA CONTÁBIL " & Math.Round(Soma_BC, 2)
         Catch
             MsgBox("Erro na Rodada Final. Verifique os valores das quantidades.", vbCritical)
         End Try
@@ -516,11 +516,14 @@ Public Class BD
         Dim Loop_n_BC As Integer = 0
         Dim n_limpos_BF As Integer = 0
         Dim n_limpos_BC As Integer = 0
+        Dim Q_BC As Decimal = 0
+        Dim Q_BF As Decimal = 0
 
         For Each R_BF In DT_BF.Rows
             Loop_n_BF += 1
             If R_BF.Item(11) <= Limite_F Then
                 Limp_BF.Add(Loop_n_BF - 1)
+                Q_BF += R_BF.item(11)
             End If
         Next
 
@@ -528,6 +531,7 @@ Public Class BD
             Loop_n_BC += 1
             If R_BC.Item(11) <= Limite_C Then
                 Limp_BC.Add(Loop_n_BC - 1)
+                Q_BC += R_BC.item(11)
             End If
         Next
 
@@ -562,7 +566,7 @@ Public Class BD
                 n_limpos_BC += 1
             Next
         End If
-        Txt.Text = " | RODADA MÍN. QTDE | SOBRA FÍSICA: " & n_limpos_BF & " | SOBRA CONTÁBIL: " & n_limpos_BC
+        Txt.Text = " | RODADA MÍN. QTDE | SOBRA FÍSICA: " & Math.Round(Q_BF, 2) & " | SOBRA CONTÁBIL: " & Math.Round(Q_BC, 2)
 Err:
     End Sub
 
@@ -627,10 +631,10 @@ Err:
         Dim Resultado_BC As Decimal
         Dim Status As String
 
-        Dim n_BF As Integer = 0
-        Dim n_BC As Integer = 0
+        Dim n_BF As Decimal = 0
+        Dim n_BC As Decimal = 0
 
-        Dim n_CO As Integer = 0
+        Dim n_CO As Decimal = 0
 
         Dim Linhas_Totais As Integer = DT_BF.Rows.Count
         n_Rodada += 1
@@ -827,7 +831,7 @@ Err:
         DT_BF.AcceptChanges()
 
         Txt.Text = Txt.Text & IIf(Txt.Text = "", "", vbCrLf) & " | RODADA: " & n_Rodada & " | CONCILIADO: " &
-            n_CO & " | CAMPOS: " & Campos
+            Math.Round(n_CO, 2) & " | CAMPOS: " & Campos
         'Devolver resultado para DGV
         DGV_RESULTADO.ItemsSource = DT_RESULTADO.DefaultView
 
