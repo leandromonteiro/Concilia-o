@@ -25,7 +25,6 @@ Partial Class SsConciliacao
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SsConciliacao))
         Me.TimerSs = New System.Windows.Forms.Timer(Me.components)
-        Me.ApplicationTitle = New System.Windows.Forms.Label()
         Me.Copyright = New System.Windows.Forms.Label()
         Me.MainLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
         Me.Version = New System.Windows.Forms.Label()
@@ -35,18 +34,6 @@ Partial Class SsConciliacao
         'TimerSs
         '
         Me.TimerSs.Interval = 1000
-        '
-        'ApplicationTitle
-        '
-        Me.ApplicationTitle.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ApplicationTitle.BackColor = System.Drawing.Color.Transparent
-        Me.ApplicationTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.ApplicationTitle.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.ApplicationTitle.Location = New System.Drawing.Point(41, 254)
-        Me.ApplicationTitle.Name = "ApplicationTitle"
-        Me.ApplicationTitle.Size = New System.Drawing.Size(199, 49)
-        Me.ApplicationTitle.TabIndex = 0
-        Me.ApplicationTitle.Text = "Peça de Aplicação"
         '
         'Copyright
         '
@@ -59,7 +46,7 @@ Partial Class SsConciliacao
         Me.Copyright.Location = New System.Drawing.Point(3, 0)
         Me.Copyright.Name = "Copyright"
         Me.Copyright.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Copyright.Size = New System.Drawing.Size(237, 218)
+        Me.Copyright.Size = New System.Drawing.Size(237, 303)
         Me.Copyright.TabIndex = 2
         Me.Copyright.Text = "Copyright"
         '
@@ -70,7 +57,6 @@ Partial Class SsConciliacao
         Me.MainLayoutPanel.ColumnCount = 2
         Me.MainLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 243.0!))
         Me.MainLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 253.0!))
-        Me.MainLayoutPanel.Controls.Add(Me.ApplicationTitle, 0, 1)
         Me.MainLayoutPanel.Controls.Add(Me.Copyright, 0, 0)
         Me.MainLayoutPanel.Controls.Add(Me.Version, 1, 0)
         Me.MainLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill
@@ -92,7 +78,7 @@ Partial Class SsConciliacao
         Me.Version.Location = New System.Drawing.Point(246, 0)
         Me.Version.Name = "Version"
         Me.Version.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.Version.Size = New System.Drawing.Size(247, 218)
+        Me.Version.Size = New System.Drawing.Size(247, 303)
         Me.Version.TabIndex = 3
         Me.Version.Text = "Versão {0}.{1:00}"
         '
@@ -116,7 +102,6 @@ Partial Class SsConciliacao
     End Sub
 
     Friend WithEvents TimerSs As Forms.Timer
-    Friend WithEvents ApplicationTitle As Forms.Label
     Friend WithEvents Copyright As Forms.Label
     Friend WithEvents MainLayoutPanel As Forms.TableLayoutPanel
     Friend WithEvents Version As Forms.Label
