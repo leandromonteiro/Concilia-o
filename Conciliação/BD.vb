@@ -159,28 +159,28 @@ Public Class BD
 
         Select Case Casa_Decimal_Qtde
             Case 0
-                Formato_Qtde = "0"
+                Formato_Qtde = "#,###"
             Case 1
-                Formato_Qtde = "0.0"
+                Formato_Qtde = "#,###.0"
             Case 2
-                Formato_Qtde = "0.00"
+                Formato_Qtde = "#,###.00"
             Case 3
-                Formato_Qtde = "0.000"
+                Formato_Qtde = "#,###.000"
             Case 4
-                Formato_Qtde = "0.0000"
+                Formato_Qtde = "#,###.0000"
         End Select
 
         Select Case Casa_Decimal_Valor
             Case 0
-                Formato_Valor = "0"
+                Formato_Valor = "#,###"
             Case 1
-                Formato_Valor = "0.0"
+                Formato_Valor = "#,###.0"
             Case 2
-                Formato_Valor = "0.00"
+                Formato_Valor = "#,###.00"
             Case 3
-                Formato_Valor = "0.000"
+                Formato_Valor = "#,###.000"
             Case 4
-                Formato_Valor = "0.0000"
+                Formato_Valor = "#,###.0000"
         End Select
         xlApp = New Excel.Application
         xlWorkBook = xlApp.Workbooks.Add(misValue)
@@ -201,6 +201,8 @@ Public Class BD
         Dim Linha As Integer = 1
         dv = DT_RESULTADO.DefaultView
 
+        'xlApp.Visible = True
+
         'CONCILIADO
         For Each dc In DT_RESULTADO.Columns
             colIndex = colIndex + 1
@@ -209,34 +211,78 @@ Public Class BD
         Next
 
         If DT_RESULTADO.Rows.Count > 0 Then
-            StResultado.Cells(2, 1).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("ID_C"))).ToArray())
-            StResultado.Cells(2, 2).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO1_C"))).ToArray())
-            StResultado.Cells(2, 3).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO2_C"))).ToArray())
-            StResultado.Cells(2, 4).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO3_C"))).ToArray())
-            StResultado.Cells(2, 5).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO4_C"))).ToArray())
-            StResultado.Cells(2, 6).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO5_C"))).ToArray())
-            StResultado.Cells(2, 7).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO6_C"))).ToArray())
-            StResultado.Cells(2, 8).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO7_C"))).ToArray())
-            StResultado.Cells(2, 9).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO8_C"))).ToArray())
-            StResultado.Cells(2, 10).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO9_C"))).ToArray())
-            StResultado.Cells(2, 11).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO10_C"))).ToArray())
-            StResultado.Cells(2, 12).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("DATA"))).ToArray())
-            StResultado.Cells(2, 13).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CDbl(k("VOC"))).ToArray())
-            StResultado.Cells(2, 14).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CDbl(k("DAC"))).ToArray())
-            StResultado.Cells(2, 15).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CDbl(k("QUANTIDADE_C"))).ToArray())
-            StResultado.Cells(2, 16).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("STATUS"))).ToArray())
-            StResultado.Cells(2, 17).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("ID_F"))).ToArray())
-            StResultado.Cells(2, 18).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO1_F"))).ToArray())
-            StResultado.Cells(2, 19).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO2_F"))).ToArray())
-            StResultado.Cells(2, 20).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO3_F"))).ToArray())
-            StResultado.Cells(2, 21).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO4_F"))).ToArray())
-            StResultado.Cells(2, 22).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO5_F"))).ToArray())
-            StResultado.Cells(2, 23).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO6_F"))).ToArray())
-            StResultado.Cells(2, 24).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO7_F"))).ToArray())
-            StResultado.Cells(2, 25).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO8_F"))).ToArray())
-            StResultado.Cells(2, 26).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO9_F"))).ToArray())
-            StResultado.Cells(2, 27).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO10_F"))).ToArray())
-            StResultado.Cells(2, 28).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CDbl(k("QUANTIDADE_F"))).ToArray())
+            Try
+                StResultado.Cells(2, 1).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("ID_C"))).ToArray())
+                If Not IsDBNull(DT_RESULTADO.Rows(0).Item(1)) Then
+                    StResultado.Cells(2, 2).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO1_C"))).ToArray())
+                End If
+                If Not IsDBNull(DT_RESULTADO.Rows(0).Item(2)) Then
+                    StResultado.Cells(2, 3).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO2_C"))).ToArray())
+                End If
+                If Not IsDBNull(DT_RESULTADO.Rows(0).Item(3)) Then
+                    StResultado.Cells(2, 4).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO3_C"))).ToArray())
+                End If
+                If Not IsDBNull(DT_RESULTADO.Rows(0).Item(4)) Then
+                    StResultado.Cells(2, 5).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO4_C"))).ToArray())
+                End If
+                If Not IsDBNull(DT_RESULTADO.Rows(0).Item(5)) Then
+                    StResultado.Cells(2, 6).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO5_C"))).ToArray())
+                End If
+                If Not IsDBNull(DT_RESULTADO.Rows(0).Item(6)) Then
+                    StResultado.Cells(2, 7).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO6_C"))).ToArray())
+                End If
+                If Not IsDBNull(DT_RESULTADO.Rows(0).Item(7)) Then
+                    StResultado.Cells(2, 8).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO7_C"))).ToArray())
+                End If
+                If Not IsDBNull(DT_RESULTADO.Rows(0).Item(8)) Then
+                    StResultado.Cells(2, 9).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO8_C"))).ToArray())
+                End If
+                If Not IsDBNull(DT_RESULTADO.Rows(0).Item(9)) Then
+                    StResultado.Cells(2, 10).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO9_C"))).ToArray())
+                End If
+                If Not IsDBNull(DT_RESULTADO.Rows(0).Item(10)) Then
+                    StResultado.Cells(2, 11).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO10_C"))).ToArray())
+                End If
+                StResultado.Cells(2, 12).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("DATA"))).ToArray())
+                StResultado.Cells(2, 13).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CDbl(k("VOC"))).ToArray())
+                StResultado.Cells(2, 14).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CDbl(k("DAC"))).ToArray())
+                StResultado.Cells(2, 15).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CDbl(k("QUANTIDADE_C"))).ToArray())
+                StResultado.Cells(2, 16).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("STATUS"))).ToArray())
+                StResultado.Cells(2, 17).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("ID_F"))).ToArray())
+                If Not IsDBNull(DT_RESULTADO.Rows(0).Item(17)) Then
+                    StResultado.Cells(2, 18).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO1_F"))).ToArray())
+                End If
+                If Not IsDBNull(DT_RESULTADO.Rows(0).Item(18)) Then
+                    StResultado.Cells(2, 19).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO2_F"))).ToArray())
+                End If
+                If Not IsDBNull(DT_RESULTADO.Rows(0).Item(19)) Then
+                    StResultado.Cells(2, 20).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO3_F"))).ToArray())
+                End If
+                If Not IsDBNull(DT_RESULTADO.Rows(0).Item(20)) Then
+                    StResultado.Cells(2, 21).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO4_F"))).ToArray())
+                End If
+                If Not IsDBNull(DT_RESULTADO.Rows(0).Item(21)) Then
+                    StResultado.Cells(2, 22).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO5_F"))).ToArray())
+                End If
+                If Not IsDBNull(DT_RESULTADO.Rows(0).Item(22)) Then
+                    StResultado.Cells(2, 23).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO6_F"))).ToArray())
+                End If
+                If Not IsDBNull(DT_RESULTADO.Rows(0).Item(23)) Then
+                    StResultado.Cells(2, 24).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO7_F"))).ToArray())
+                End If
+                If Not IsDBNull(DT_RESULTADO.Rows(0).Item(24)) Then
+                    StResultado.Cells(2, 25).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO8_F"))).ToArray())
+                End If
+                If Not IsDBNull(DT_RESULTADO.Rows(0).Item(25)) Then
+                    StResultado.Cells(2, 26).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO9_F"))).ToArray())
+                End If
+                If Not IsDBNull(DT_RESULTADO.Rows(0).Item(26)) Then
+                    StResultado.Cells(2, 27).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO10_F"))).ToArray())
+                End If
+                StResultado.Cells(2, 28).Resize(Nbligne, ).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().[Select](Function(k) CDbl(k("QUANTIDADE_F"))).ToArray())
+            Catch
+                MsgBox("Erro na Extração Resultado")
+            End Try
         End If
 
         'SOBRA CONTÁBIL
@@ -248,21 +294,43 @@ Public Class BD
             DV_BC = DT_BC.DefaultView
             Try
                 StResultado.Cells(L_Result + 2, 1).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CHAVE"))).ToArray())
-                StResultado.Cells(L_Result + 2, 2).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO1"))).ToArray())
-                StResultado.Cells(L_Result + 2, 3).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO2"))).ToArray())
-                StResultado.Cells(L_Result + 2, 4).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO3"))).ToArray())
-                StResultado.Cells(L_Result + 2, 5).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO4"))).ToArray())
-                StResultado.Cells(L_Result + 2, 6).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO5"))).ToArray())
-                StResultado.Cells(L_Result + 2, 7).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO6"))).ToArray())
-                StResultado.Cells(L_Result + 2, 8).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO7"))).ToArray())
-                StResultado.Cells(L_Result + 2, 9).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO8"))).ToArray())
-                StResultado.Cells(L_Result + 2, 10).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO9"))).ToArray())
-                StResultado.Cells(L_Result + 2, 11).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO10"))).ToArray())
+                If Not IsDBNull(DT_BC.Rows(0).Item(1)) Then
+                    StResultado.Cells(L_Result + 2, 2).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO1"))).ToArray())
+                End If
+                If Not IsDBNull(DT_BC.Rows(0).Item(2)) Then
+                    StResultado.Cells(L_Result + 2, 3).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO2"))).ToArray())
+                End If
+                If Not IsDBNull(DT_BC.Rows(0).Item(3)) Then
+                    StResultado.Cells(L_Result + 2, 4).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO3"))).ToArray())
+                End If
+                If Not IsDBNull(DT_BC.Rows(0).Item(4)) Then
+                    StResultado.Cells(L_Result + 2, 5).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO4"))).ToArray())
+                End If
+                If Not IsDBNull(DT_BC.Rows(0).Item(5)) Then
+                    StResultado.Cells(L_Result + 2, 6).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO5"))).ToArray())
+                End If
+                If Not IsDBNull(DT_BC.Rows(0).Item(6)) Then
+                    StResultado.Cells(L_Result + 2, 7).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO6"))).ToArray())
+                End If
+                If Not IsDBNull(DT_BC.Rows(0).Item(7)) Then
+                    StResultado.Cells(L_Result + 2, 8).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO7"))).ToArray())
+                End If
+                If Not IsDBNull(DT_BC.Rows(0).Item(8)) Then
+                    StResultado.Cells(L_Result + 2, 9).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO8"))).ToArray())
+                End If
+                If Not IsDBNull(DT_BC.Rows(0).Item(9)) Then
+                    StResultado.Cells(L_Result + 2, 10).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO9"))).ToArray())
+                End If
+                If Not IsDBNull(DT_BC.Rows(0).Item(10)) Then
+                    StResultado.Cells(L_Result + 2, 11).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO10"))).ToArray())
+                End If
                 StResultado.Cells(L_Result + 2, 12).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("DATA"))).ToArray())
                 StResultado.Cells(L_Result + 2, 13).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CDbl(k("VOC"))).ToArray())
                 StResultado.Cells(L_Result + 2, 14).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CDbl(k("DAC"))).ToArray())
                 StResultado.Cells(L_Result + 2, 15).Resize(L_BC, ).value = xlApp.Application.transpose(DT_BC.Rows.OfType(Of DataRow)().[Select](Function(k) CDbl(k("QUANTIDADE"))).ToArray())
+                StResultado.Range("P" & L_Result + 2 & ":P" & L_Result + 1 + DT_BC.Rows.Count).Value = "SOBRA CONTÁBIL"
             Catch
+                MsgBox("Erro na Extração Sobra Contábil")
             End Try
         End If
 
@@ -276,18 +344,40 @@ Public Class BD
             DV_BF = DT_BF.DefaultView
             Try
                 StResultado.Cells(L_Result + L_BC + 2, 17).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CHAVE"))).ToArray())
-                StResultado.Cells(L_Result + L_BC + 2, 18).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO1"))).ToArray())
-                StResultado.Cells(L_Result + L_BC + 2, 19).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO2"))).ToArray())
-                StResultado.Cells(L_Result + L_BC + 2, 20).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO3"))).ToArray())
-                StResultado.Cells(L_Result + L_BC + 2, 21).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO4"))).ToArray())
-                StResultado.Cells(L_Result + L_BC + 2, 22).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO5"))).ToArray())
-                StResultado.Cells(L_Result + L_BC + 2, 23).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO6"))).ToArray())
-                StResultado.Cells(L_Result + L_BC + 2, 24).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO7"))).ToArray())
-                StResultado.Cells(L_Result + L_BC + 2, 25).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO8"))).ToArray())
-                StResultado.Cells(L_Result + L_BC + 2, 26).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO9"))).ToArray())
-                StResultado.Cells(L_Result + L_BC + 2, 27).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO10"))).ToArray())
+                If Not IsDBNull(DT_BF.Rows(0).Item(1)) Then
+                    StResultado.Cells(L_Result + L_BC + 2, 18).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO1"))).ToArray())
+                End If
+                If Not IsDBNull(DT_BF.Rows(0).Item(2)) Then
+                    StResultado.Cells(L_Result + L_BC + 2, 19).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO2"))).ToArray())
+                End If
+                If Not IsDBNull(DT_BF.Rows(0).Item(3)) Then
+                    StResultado.Cells(L_Result + L_BC + 2, 20).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO3"))).ToArray())
+                End If
+                If Not IsDBNull(DT_BF.Rows(0).Item(4)) Then
+                    StResultado.Cells(L_Result + L_BC + 2, 21).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO4"))).ToArray())
+                End If
+                If Not IsDBNull(DT_BF.Rows(0).Item(5)) Then
+                    StResultado.Cells(L_Result + L_BC + 2, 22).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO5"))).ToArray())
+                End If
+                If Not IsDBNull(DT_BF.Rows(0).Item(6)) Then
+                    StResultado.Cells(L_Result + L_BC + 2, 23).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO6"))).ToArray())
+                End If
+                If Not IsDBNull(DT_BF.Rows(0).Item(7)) Then
+                    StResultado.Cells(L_Result + L_BC + 2, 24).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO7"))).ToArray())
+                End If
+                If Not IsDBNull(DT_BF.Rows(0).Item(8)) Then
+                    StResultado.Cells(L_Result + L_BC + 2, 25).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO8"))).ToArray())
+                End If
+                If Not IsDBNull(DT_BF.Rows(0).Item(9)) Then
+                    StResultado.Cells(L_Result + L_BC + 2, 26).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO9"))).ToArray())
+                End If
+                If Not IsDBNull(DT_BF.Rows(0).Item(10)) Then
+                    StResultado.Cells(L_Result + L_BC + 2, 27).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO10"))).ToArray())
+                End If
                 StResultado.Cells(L_Result + L_BC + 2, 28).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CDbl(k("QUANTIDADE"))).ToArray())
+                StResultado.Range("P" & L_Result + L_BC + 2 & ":P" & L_Result + L_BC + 1 + DT_BC.Rows.Count).Value = "SOBRA FÍSICA"
             Catch
+                MsgBox("Erro na Extração Sobra Física")
             End Try
         End If
 
@@ -303,18 +393,18 @@ Public Class BD
         'StResultado.Paste()
 
         Try
-            StResultado.Columns("M:M").TextToColumns(Destination:=StResultado.Range("M1"), DataType:=Excel.XlTextParsingType.xlDelimited,
-        TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
-        Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
-            StResultado.Columns("N:N").TextToColumns(Destination:=StResultado.Range("N1"), DataType:=Excel.XlTextParsingType.xlDelimited,
-        TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
-        Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
-            StResultado.Columns("O:O").TextToColumns(Destination:=StResultado.Range("O1"), DataType:=Excel.XlTextParsingType.xlDelimited,
-        TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
-        Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
-            StResultado.Columns("AB:AB").TextToColumns(Destination:=StResultado.Range("AB1"), DataType:=Excel.XlTextParsingType.xlDelimited,
-        TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
-        Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
+            '    StResultado.Columns("M:M").TextToColumns(Destination:=StResultado.Range("M1"), DataType:=Excel.XlTextParsingType.xlDelimited,
+            'TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
+            'Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
+            '    StResultado.Columns("N:N").TextToColumns(Destination:=StResultado.Range("N1"), DataType:=Excel.XlTextParsingType.xlDelimited,
+            'TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
+            'Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
+            '    StResultado.Columns("O:O").TextToColumns(Destination:=StResultado.Range("O1"), DataType:=Excel.XlTextParsingType.xlDelimited,
+            'TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
+            'Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
+            '    StResultado.Columns("AB:AB").TextToColumns(Destination:=StResultado.Range("AB1"), DataType:=Excel.XlTextParsingType.xlDelimited,
+            'TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
+            'Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
 
             'Qtde
             StResultado.Range("O:O").NumberFormat = Formato_Qtde
@@ -341,7 +431,7 @@ Public Class BD
 
             xlApp.Visible = True
         Catch
-            xlApp.Quit()
+            xlApp.Visible = True
             MsgBox("Erro ao exportar para Excel", MsgBoxStyle.Critical)
         End Try
     End Sub

@@ -40,7 +40,7 @@ Partial Class SsConciliacao
         '
         Me.ApplicationTitle.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ApplicationTitle.BackColor = System.Drawing.Color.Transparent
-        Me.ApplicationTitle.Font = New System.Drawing.Font("SansSerif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.ApplicationTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.ApplicationTitle.ForeColor = System.Drawing.SystemColors.ControlDarkDark
         Me.ApplicationTitle.Location = New System.Drawing.Point(41, 254)
         Me.ApplicationTitle.Name = "ApplicationTitle"
