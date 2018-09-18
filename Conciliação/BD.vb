@@ -375,7 +375,7 @@ Public Class BD
                     StResultado.Cells(L_Result + L_BC + 2, 27).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CObj(k("CAMPO10"))).ToArray())
                 End If
                 StResultado.Cells(L_Result + L_BC + 2, 28).Resize(L_BF, ).value = xlApp.Application.transpose(DT_BF.Rows.OfType(Of DataRow)().[Select](Function(k) CDbl(k("QUANTIDADE"))).ToArray())
-                StResultado.Range("P" & L_Result + L_BC + 2 & ":P" & L_Result + L_BC + 1 + DT_BC.Rows.Count).Value = "SOBRA FÍSICA"
+                StResultado.Range("P" & L_Result + L_BC + 2 & ":P" & L_Result + L_BC + 1 + DT_BF.Rows.Count).Value = "SOBRA FÍSICA"
             Catch
                 MsgBox("Erro na Extração Sobra Física")
             End Try
