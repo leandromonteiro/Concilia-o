@@ -159,7 +159,7 @@ Class MainWindow
         MiArquivo.IsEnabled = False
         MiArquivo.Header = "Aguarde a Importação do Arquivo"
         BD.Exportacao_SF_SC(TxtRodadas)
-        BD.Exportar_Excel(TxtRodadas, CInt(Slide_Qtd.Value), CInt(Slider_Valor.Value), DgResultado)
+        BD.Exportar_Excel(TxtRodadas, CInt(Slide_Qtd.Value), CInt(Slider_Valor.Value), DgResultado, DgBC, DgBF, TbControl, TiResultado, TiBC, TiBF)
         MiArquivo.IsEnabled = True
         MiArquivo.Header = "Arquivo"
     End Sub
@@ -188,9 +188,5 @@ Class MainWindow
 
     Private Sub MainWindow_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         Application.Current.Shutdown()
-    End Sub
-
-    Private Sub MiArquivo_Click(sender As Object, e As RoutedEventArgs) Handles MiArquivo.Click
-
     End Sub
 End Class

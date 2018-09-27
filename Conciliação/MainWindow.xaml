@@ -15,18 +15,21 @@
                 <MenuItem  Header="Zerar Conciliação" ToolTip="Limpa os dados para uma nova conciliação" Click="MenuItem_Click_3"></MenuItem>
             </MenuItem>
         </Menu>
-        <TabControl Margin="10,270,10,10">
-            <TabItem Header="Base Física">
+        <TabControl x:Name="TbControl" Margin="10,270,10,10">
+            <TabItem x:Name="TiBF" Header="Base Física">
                 <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
                     <DataGrid x:Name="DgBF" Margin="10" Background="{x:Null}" IsReadOnly="True" GridLinesVisibility="None"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Base Contábil">
+            <TabItem x:Name="TiBC" Header="Base Contábil">
                 <Grid Background="#FFE5E5E5">
                     <DataGrid x:Name="DgBC" Margin="10" Background="{x:Null}" IsReadOnly="True" GridLinesVisibility="None"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Resultado">
+            <TabItem x:Name="TiResultado" Header="Resultado">
                 <Grid Background="#FFE5E5E5">
                     <DataGrid x:Name="DgResultado" Margin="10" Background="{x:Null}" IsReadOnly="True" GridLinesVisibility="None"/>
                 </Grid>
