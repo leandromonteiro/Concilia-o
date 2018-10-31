@@ -4,6 +4,8 @@ Imports System.Data
 Imports Conciliação_Rateio.MainWindow
 Imports System.Windows.Threading
 
+Imports DataTableToExcel
+
 Public Class BD
     Dim DS As New DataSet
     Dim DT_BF As New DataTable
@@ -188,52 +190,44 @@ Public Class BD
         End Select
         xlApp = New Excel.Application
         xlWorkBook = xlApp.Workbooks.Add(misValue)
-        StResultado = xlWorkBook.Sheets(1)
 
-        ''Colocando Títulos
-        'For k As Integer = 1 To DT_RESULTADO.Columns.Count
-        '    StResultado.Cells(1, k) = DT_RESULTADO.Columns(k - 1).ColumnName
-        'Next
+        'xlWorkBook.Sheets.Add(Before:=StResultado)
+        StRodadas = xlWorkBook.Sheets(1)
+        StRodadas.Cells(1, 1).value = Txt.Text
+        StRodadas.Cells(1, 1).columnwidth = 100
+        StRodadas.Cells(1, 1).VerticalAlignment = Excel.Constants.xlTop
+        StRodadas.Name = "Rodadas"
+
+        xlWorkBook.SaveAs("c:\Resultado.xlsx")
+        xlWorkBook.Close()
+
+
+        'StResultado = xlWorkBook.Sheets(1)
+
         Dim Contar_DT_Resultado As Integer = DT_RESULTADO.Rows.Count
 
-        Dim colIndex As Integer
-        Dim dc As System.Data.DataColumn
-        'Dim Nbligne As Integer = DT_RESULTADO.Rows.Count
-
+        'Dim colIndex As Integer
+        'Dim dc As System.Data.DataColumn
 
         Dim dv As New DataView
         Dim Linha As Integer = 1
         dv = DT_RESULTADO.DefaultView
 
-        xlApp.Visible = True
+        'xlApp.Visible = False
 
         'CONCILIADO
-        For Each dc In DT_RESULTADO.Columns
-            colIndex = colIndex + 1
-            'Column headers
-            StResultado.Cells(1, colIndex) = dc.ColumnName
-        Next
+        'For Each dc In DT_RESULTADO.Columns
+        '    colIndex = colIndex + 1
+        '    'Column headers
+        '    StResultado.Cells(1, colIndex) = dc.ColumnName
+        'Next
 
         If DT_RESULTADO.Rows.Count > 0 Then
-            Try
-                Tbcontrole.SelectedIndex = 2
-                Tbcontrole.SelectedItem = TiResultado
-                TiResultado.IsSelected = True
-
-                DgResult.SelectAllCells()
-                DgResult.ClipboardCopyMode = DataGridClipboardCopyMode.ExcludeHeader
-                ApplicationCommands.Copy.Execute(Nothing, DgResult)
-
-                With StResultado
-                    'Identify and select the range of cells in Excel to paste the clipboard data.     
-                    .Range("A2").Select()
-                    'Paste the clipboard data     
-                    .Paste()
-                    Clipboard.Clear()
-                End With
-            Catch
-                MsgBox("Erro na Extração Resultado")
-            End Try
+            'Try
+            DataTableToExcel.DataTableToExcel.ExportToExcel("c:\Resultado.xlsx", "Somente_Resultado", DT_RESULTADO)
+            ' Catch
+            'MsgBox("Erro na Extração Resultado")
+            'End Try
         End If
 
         'SOBRA CONTÁBIL
@@ -244,25 +238,7 @@ Public Class BD
             Dim L As Integer = 0
             DV_BC = DT_BC.DefaultView
             Try
-                With StResultado
-
-                    Tbcontrole.SelectedIndex = 1
-                    Tbcontrole.SelectedItem = TiBC
-                    TiBC.IsSelected = True
-
-                    DgBC.SelectAllCells()
-                    DgBC.ClipboardCopyMode = DataGridClipboardCopyMode.ExcludeHeader
-                    ApplicationCommands.Copy.Execute(Nothing, DgBC)
-
-                    With StResultado
-                        'Identify and select the range of cells in Excel to paste the clipboard data.     
-                        .Range("A" & L_Result + 2).Select()
-                        'Paste the clipboard data     
-                        .Paste()
-                        Clipboard.Clear()
-                    End With
-                End With
-                StResultado.Range("P" & L_Result + 2 & ":P" & L_Result + 1 + L_BC).Value = "SOBRA CONTÁBIL"
+                DataTableToExcel.DataTableToExcel.ExportToExcel("c:\Resultado.xlsx", "Sobra_BC", DT_BC)
             Catch
                 MsgBox("Erro na Extração Sobra Contábil")
             End Try
@@ -277,25 +253,8 @@ Public Class BD
             Dim L As Integer = 0
             DV_BF = DT_BF.DefaultView
             Try
-                With StResultado
-
-                    Tbcontrole.SelectedIndex = 0
-                    Tbcontrole.SelectedItem = TiBF
-                    TiBF.IsSelected = True
-
-                    DgBF.SelectAllCells()
-                    DgBF.ClipboardCopyMode = DataGridClipboardCopyMode.ExcludeHeader
-                    ApplicationCommands.Copy.Execute(Nothing, DgBF)
-                    With StResultado
-                        'Identify and select the range of cells in Excel to paste the clipboard data.     
-                        .Range("Q" & L_Result + L_BC + 2).Select()
-                        'Paste the clipboard data     
-                        .Paste()
-                        .Range("AC" & L_Result + L_BC + 2 & ":AC" & L_Result + L_BC + 1 + L_BF).Clear()
-                        Clipboard.Clear()
-                    End With
-                End With
-                StResultado.Range("P" & L_Result + L_BC + 2 & ":P" & L_Result + L_BC + 1 + L_BF).Value = "SOBRA FÍSICA"
+                DataTableToExcel.DataTableToExcel.ExportToExcel("c:\Resultado.xlsx", "Sobra_BF", DT_BF)
+                'StResultado.Range("P" & L_Result + L_BC + 2 & ":P" & L_Result + L_BC + 1 + L_BF).Value = "SOBRA FÍSICA"
             Catch
                 MsgBox("Erro na Extração Sobra Física")
             End Try
@@ -306,6 +265,10 @@ Public Class BD
         DT_BF.Clear()
 
         Try
+            '    StResultado.Columns("L:L").TextToColumns(Destination:=StResultado.Range("L1"), DataType:=Excel.XlTextParsingType.xlDelimited,
+            'TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
+            'Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
+
             '    StResultado.Columns("M:M").TextToColumns(Destination:=StResultado.Range("M1"), DataType:=Excel.XlTextParsingType.xlDelimited,
             'TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
             'Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
@@ -319,32 +282,26 @@ Public Class BD
             'TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
             'Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
 
-            'Qtde
-            StResultado.Range("O:O").NumberFormat = Formato_Qtde
-            StResultado.Range("AB:AB").NumberFormat = Formato_Qtde
-            'Valor
-            StResultado.Range("M:N").NumberFormat = Formato_Valor
+            '    'Qtde
+            '    StResultado.Range("O:O").NumberFormat = Formato_Qtde
+            '    StResultado.Range("AB:AB").NumberFormat = Formato_Qtde
+            '    'Valor
+            '    StResultado.Range("M:N").NumberFormat = Formato_Valor
 
-            StResultado.Range("a1:ab1").Font.Bold = True
-            StResultado.Range("a1:ab1").Font.ColorIndex = 2
-            StResultado.Range("p1").Font.ColorIndex = 1
-            StResultado.Range("a1:o1").Interior.ColorIndex = 56
-            StResultado.Range("p1").Interior.ColorIndex = 2
-            StResultado.Range("q1:ab1").Interior.ColorIndex = 51
+            '    StResultado.Range("a1:ab1").Font.Bold = True
+            '    StResultado.Range("a1:ab1").Font.ColorIndex = 2
+            '    StResultado.Range("p1").Font.ColorIndex = 1
+            '    StResultado.Range("a1:o1").Interior.ColorIndex = 56
+            '    StResultado.Range("p1").Interior.ColorIndex = 2
+            '    StResultado.Range("q1:ab1").Interior.ColorIndex = 51
 
-            StResultado.Columns.AutoFit()
-            StResultado.Name = "Resultado"
+            '    StResultado.Columns.AutoFit()
+            '    StResultado.Name = "Resultado"
 
-            xlWorkBook.Sheets.Add(Before:=StResultado)
-            StRodadas = xlWorkBook.Sheets(1)
-            StRodadas.Cells(1, 1).value = Txt.Text
-            StRodadas.Cells(1, 1).columnwidth = 100
-            StRodadas.Cells(1, 1).VerticalAlignment = Excel.Constants.xlTop
-            StRodadas.Name = "Rodadas"
-
-            xlApp.Visible = True
+            MsgBox("Dados Exportados com Sucesso!")
+            'xlApp.Visible = True
         Catch
-            xlApp.Visible = True
+            'xlApp.Visible = True
             MsgBox("Erro ao exportar para Excel", MsgBoxStyle.Critical)
         End Try
     End Sub
