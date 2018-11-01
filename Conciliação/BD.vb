@@ -22,16 +22,20 @@ Public Class BD
     'Stores the value of the ProgressBar
     Public value As Double = 0
     'Dim MW As New MainWindow
-    Dim PB_W As New W_PB
 
 
-    Public Sub Exportacao_SF_SC(Txt As TextBox)
+    Public Sub Exportacao_SF_SC(Txt As TextBox, Menu As MenuItem)
 
         Try
+
             Dim Soma_BC As Single
             Dim Soma_BF As Single
             Dim dv_bf As New DataView
             Dim dv_bc As New DataView
+
+            Menu.IsEnabled = False
+            Menu.Header = "Aguarde a Exportação do Arquivo"
+            DoEvents()
 
             If DT_BC.Rows.Count > 0 Then
                 dv_bc = DT_BC.DefaultView
@@ -158,6 +162,8 @@ Public Class BD
         Dim xlApp As Excel.Application
         Dim xlWorkBook As Excel.Workbook
         Dim StResultado As Excel.Worksheet
+        Dim StSF As Excel.Worksheet
+        Dim StSC As Excel.Worksheet
         Dim StRodadas As Excel.Worksheet
         Dim misValue As Object = System.Reflection.Missing.Value
         Dim Formato_Qtde As String = ""
@@ -200,9 +206,7 @@ Public Class BD
 
         xlWorkBook.SaveAs("c:\Resultado.xlsx")
         xlWorkBook.Close()
-
-
-        'StResultado = xlWorkBook.Sheets(1)
+        xlApp.Quit()
 
         Dim Contar_DT_Resultado As Integer = DT_RESULTADO.Rows.Count
 
@@ -223,11 +227,11 @@ Public Class BD
         'Next
 
         If DT_RESULTADO.Rows.Count > 0 Then
-            'Try
-            DataTableToExcel.DataTableToExcel.ExportToExcel("c:\Resultado.xlsx", "Somente_Resultado", DT_RESULTADO)
-            ' Catch
-            'MsgBox("Erro na Extração Resultado")
-            'End Try
+            Try
+                DataTableToExcel.DataTableToExcel.ExportToExcel("c:\Resultado.xlsx", "Conciliado", DT_RESULTADO)
+            Catch
+                MsgBox("Erro na Extração Resultado")
+            End Try
         End If
 
         'SOBRA CONTÁBIL
@@ -238,7 +242,7 @@ Public Class BD
             Dim L As Integer = 0
             DV_BC = DT_BC.DefaultView
             Try
-                DataTableToExcel.DataTableToExcel.ExportToExcel("c:\Resultado.xlsx", "Sobra_BC", DT_BC)
+                DataTableToExcel.DataTableToExcel.ExportToExcel("c:\Resultado.xlsx", "Sobra Contábil", DT_BC)
             Catch
                 MsgBox("Erro na Extração Sobra Contábil")
             End Try
@@ -253,7 +257,7 @@ Public Class BD
             Dim L As Integer = 0
             DV_BF = DT_BF.DefaultView
             Try
-                DataTableToExcel.DataTableToExcel.ExportToExcel("c:\Resultado.xlsx", "Sobra_BF", DT_BF)
+                DataTableToExcel.DataTableToExcel.ExportToExcel("c:\Resultado.xlsx", "Sobra Física", DT_BF)
                 'StResultado.Range("P" & L_Result + L_BC + 2 & ":P" & L_Result + L_BC + 1 + L_BF).Value = "SOBRA FÍSICA"
             Catch
                 MsgBox("Erro na Extração Sobra Física")
@@ -264,76 +268,105 @@ Public Class BD
         DT_BC.Clear()
         DT_BF.Clear()
 
-        Try
-            '    StResultado.Columns("L:L").TextToColumns(Destination:=StResultado.Range("L1"), DataType:=Excel.XlTextParsingType.xlDelimited,
-            'TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
-            'Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
+        'Try
+        xlApp = New Excel.Application
+        xlWorkBook = xlApp.Workbooks.Open("c:\Resultado.xlsx")
+        StSF = xlWorkBook.Sheets(4)
+        StSC = xlWorkBook.Sheets(3)
+        StResultado = xlWorkBook.Sheets(2)
 
-            '    StResultado.Columns("M:M").TextToColumns(Destination:=StResultado.Range("M1"), DataType:=Excel.XlTextParsingType.xlDelimited,
-            'TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
-            'Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
-            '    StResultado.Columns("N:N").TextToColumns(Destination:=StResultado.Range("N1"), DataType:=Excel.XlTextParsingType.xlDelimited,
-            'TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
-            'Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
-            '    StResultado.Columns("O:O").TextToColumns(Destination:=StResultado.Range("O1"), DataType:=Excel.XlTextParsingType.xlDelimited,
-            'TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
-            'Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
-            '    StResultado.Columns("AB:AB").TextToColumns(Destination:=StResultado.Range("AB1"), DataType:=Excel.XlTextParsingType.xlDelimited,
-            'TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
-            'Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
+        StResultado.Columns("L:L").TextToColumns(Destination:=StResultado.Range("L1"), DataType:=Excel.XlTextParsingType.xlDelimited,
+    TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
+    Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
 
-            '    'Qtde
-            '    StResultado.Range("O:O").NumberFormat = Formato_Qtde
-            '    StResultado.Range("AB:AB").NumberFormat = Formato_Qtde
-            '    'Valor
-            '    StResultado.Range("M:N").NumberFormat = Formato_Valor
+        StResultado.Columns("M:M").TextToColumns(Destination:=StResultado.Range("M1"), DataType:=Excel.XlTextParsingType.xlDelimited,
+    TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
+    Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
+        StResultado.Columns("N:N").TextToColumns(Destination:=StResultado.Range("N1"), DataType:=Excel.XlTextParsingType.xlDelimited,
+    TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
+    Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
+        StResultado.Columns("O:O").TextToColumns(Destination:=StResultado.Range("O1"), DataType:=Excel.XlTextParsingType.xlDelimited,
+    TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
+    Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
+        StResultado.Columns("AB:AB").TextToColumns(Destination:=StResultado.Range("AB1"), DataType:=Excel.XlTextParsingType.xlDelimited,
+    TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
+    Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
 
-            '    StResultado.Range("a1:ab1").Font.Bold = True
-            '    StResultado.Range("a1:ab1").Font.ColorIndex = 2
-            '    StResultado.Range("p1").Font.ColorIndex = 1
-            '    StResultado.Range("a1:o1").Interior.ColorIndex = 56
-            '    StResultado.Range("p1").Interior.ColorIndex = 2
-            '    StResultado.Range("q1:ab1").Interior.ColorIndex = 51
+        'Qtde
+        StResultado.Range("O:O").NumberFormat = Formato_Qtde
+        StResultado.Range("AB:AB").NumberFormat = Formato_Qtde
+        'Valor
+        StResultado.Range("M:N").NumberFormat = Formato_Valor
 
-            '    StResultado.Columns.AutoFit()
-            '    StResultado.Name = "Resultado"
+        StResultado.Range("a1:ab1").Font.Bold = True
+        StResultado.Range("a1:ab1").Font.ColorIndex = 2
+        StResultado.Range("p1").Font.ColorIndex = 1
+        StResultado.Range("a1:o1").Interior.ColorIndex = 56
+        StResultado.Range("p1").Interior.ColorIndex = 2
+        StResultado.Range("q1:ab1").Interior.ColorIndex = 51
 
-            MsgBox("Dados Exportados com Sucesso!")
-            'xlApp.Visible = True
-        Catch
-            'xlApp.Visible = True
-            MsgBox("Erro ao exportar para Excel", MsgBoxStyle.Critical)
-        End Try
+        StResultado.Columns.AutoFit()
+
+        'SC
+        StSC.Range("P:P").Clear()
+        'Qtde
+        StSC.Range("L:L").NumberFormat = Formato_Qtde
+        'Valor
+        StSC.Range("N:O").NumberFormat = Formato_Valor
+
+        StSC.Range("a1:o1").Font.Bold = True
+        StSC.Range("a1:o1").Font.ColorIndex = 2
+        StSC.Range("a1:o1").Interior.ColorIndex = 56
+        StSC.Columns.AutoFit()
+        'SF
+        StSF.Range("M:M").Clear()
+        StSF.Range("L:L").NumberFormat = Formato_Qtde
+
+        StSF.Range("a1:l1").Font.Bold = True
+        StSF.Range("a1:l1").Font.ColorIndex = 2
+        StSF.Range("a1:l1").Interior.ColorIndex = 51
+
+        StSF.Columns.AutoFit()
+
+        xlWorkBook.Save()
+        xlWorkBook.Close()
+        xlApp.Quit()
+
+        MsgBox("Dados Exportados com Sucesso!")
+        'Catch
+        '    xlApp.Quit()
+        '    MsgBox("Erro ao exportar para Excel", MsgBoxStyle.Critical)
+        'End Try
     End Sub
 
     Public Sub Importar_Excel(ArquivoExcel As String, DGV_BF As DataGrid, DGV_BC As DataGrid)
         'Try
         'Limpa dados
         n_Rodada = 0
-            DT_RESULTADO.Clear()
-            DS.Clear()
-            DT_BC.Clear()
-            DT_BF.Clear()
-            DGV_BF.ItemsSource = ""
-            DGV_BC.ItemsSource = ""
+        DT_RESULTADO.Clear()
+        DS.Clear()
+        DT_BC.Clear()
+        DT_BF.Clear()
+        DGV_BF.ItemsSource = ""
+        DGV_BC.ItemsSource = ""
 
-            GC.Collect()
+        GC.Collect()
 
-            Dim con As New OleDbConnection
-            con.ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source='" & ArquivoExcel & "';Extended Properties= 'Excel 12.0';"
-            Dim cmd As New OleDbCommand
-            Dim DA_BF As New OleDbDataAdapter
-            Dim DA_BC As New OleDbDataAdapter
-            con.Open()
-            DA_BF.SelectCommand = New OleDbCommand("SELECT [CHAVE],[CAMPO1],[CAMPO2],[CAMPO3],[CAMPO4],[CAMPO5],[CAMPO6],[CAMPO7],[CAMPO8],[CAMPO9],[CAMPO10],[QUANTIDADE],[PRIORIDADE] FROM [Base Física$];", con)
-            DA_BC.SelectCommand = New OleDbCommand("SELECT [CHAVE],[CAMPO1],[CAMPO2],[CAMPO3],[CAMPO4],[CAMPO5],[CAMPO6],[CAMPO7],[CAMPO8],[CAMPO9],[CAMPO10],[QUANTIDADE],FORMAT ([DATA],'dd/MM/yyyy') as DATA,[VOC],[DAC] FROM [Base Contábil$];", con)
+        Dim con As New OleDbConnection
+        con.ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source='" & ArquivoExcel & "';Extended Properties= 'Excel 12.0';"
+        Dim cmd As New OleDbCommand
+        Dim DA_BF As New OleDbDataAdapter
+        Dim DA_BC As New OleDbDataAdapter
+        con.Open()
+        DA_BF.SelectCommand = New OleDbCommand("SELECT [CHAVE],[CAMPO1],[CAMPO2],[CAMPO3],[CAMPO4],[CAMPO5],[CAMPO6],[CAMPO7],[CAMPO8],[CAMPO9],[CAMPO10],[QUANTIDADE],[PRIORIDADE] FROM [Base Física$];", con)
+        DA_BC.SelectCommand = New OleDbCommand("SELECT [CHAVE],[CAMPO1],[CAMPO2],[CAMPO3],[CAMPO4],[CAMPO5],[CAMPO6],[CAMPO7],[CAMPO8],[CAMPO9],[CAMPO10],[QUANTIDADE],FORMAT ([DATA],'dd/MM/yyyy') as DATA,[VOC],[DAC] FROM [Base Contábil$];", con)
 
-            DA_BF.Fill(DS, "TB_BF")
-            DA_BC.Fill(DS, "TB_BC")
-            con.Close()
-            'Dividir BF e BC em DataTables
-            DT_BF = DS.Tables("TB_BF")
-            DT_BC = DS.Tables("TB_BC")
+        DA_BF.Fill(DS, "TB_BF")
+        DA_BC.Fill(DS, "TB_BC")
+        con.Close()
+        'Dividir BF e BC em DataTables
+        DT_BF = DS.Tables("TB_BF")
+        DT_BC = DS.Tables("TB_BC")
 
         'Colocando ID na BC
         If DT_BC.Columns.Count = 15 Then
@@ -346,17 +379,17 @@ Public Class BD
         End If
         'Analisar VOC e QTD
         If Analise_VOC() = False Then
-                MsgBox("Quantidade e/ou VOC menor ou igual a zero localizado." & Chr(13) & " Ajuste a base antes de Importar.", vbInformation)
-                Exit Sub
-            End If
+            MsgBox("Quantidade e/ou VOC menor ou igual a zero localizado." & Chr(13) & " Ajuste a base antes de Importar.", vbInformation)
+            Exit Sub
+        End If
 
-            DT_BF_Back = DT_BF
-            DT_BC_Back = DT_BC
+        DT_BF_Back = DT_BF
+        DT_BC_Back = DT_BC
 
-            DGV_BF.ItemsSource = DS.Tables("TB_BF").DefaultView
-            DGV_BC.ItemsSource = DS.Tables("TB_BC").DefaultView
+        DGV_BF.ItemsSource = DS.Tables("TB_BF").DefaultView
+        DGV_BC.ItemsSource = DS.Tables("TB_BC").DefaultView
 
-            MsgBox("Dados carregados com sucesso", MsgBoxStyle.Information)
+        MsgBox("Dados carregados com sucesso", MsgBoxStyle.Information)
         'Catch
         'MsgBox("Erro ao Carregar os Dados", MsgBoxStyle.Critical)
         'End Try
@@ -699,22 +732,22 @@ Err:
                     BF_BC_CONCIL = QUANTIDADE_BF
                 End If
 
-                    'Diminui BF
-                    Resultado_BF = QUANTIDADE_BF - QUANTIDADE_BC
-                    If Resultado_BF < 0 Then
-                        Resultado_BF = 0
-                    End If
+                'Diminui BF
+                Resultado_BF = QUANTIDADE_BF - QUANTIDADE_BC
+                If Resultado_BF < 0 Then
+                    Resultado_BF = 0
+                End If
 
-                    R_BF.Item(11) = Resultado_BF
-                    QUANTIDADE_BF = Resultado_BF
-                    R_BC.Item(11) = Resultado_BC
+                R_BF.Item(11) = Resultado_BF
+                QUANTIDADE_BF = Resultado_BF
+                R_BC.Item(11) = Resultado_BC
 
-                    'Arrumar DT_BC - VOC e DAC
-                    R_BC.Item(13) = Resultado_BC * VOC_UNIT
-                    R_BC.Item(14) = Resultado_BC * DAC_UNIT
-                    'Preencher DT resultado
-                    Status = "CONCILIADO"
-                    n_CO += BF_BC_CONCIL
+                'Arrumar DT_BC - VOC e DAC
+                R_BC.Item(13) = Resultado_BC * VOC_UNIT
+                R_BC.Item(14) = Resultado_BC * DAC_UNIT
+                'Preencher DT resultado
+                Status = "CONCILIADO"
+                n_CO += BF_BC_CONCIL
                 DT_RESULTADO.Rows.Add(R_BC.Item(0), R_BC.Item(1), R_BC.Item(2), R_BC.Item(3), R_BC.Item(4),
                                           R_BC.Item(5), R_BC.Item(6), R_BC.Item(7), R_BC.Item(8), R_BC.Item(9),
                                           R_BC.Item(10), R_BC.Item(12), Math.Round(VOC_UNIT * BF_BC_CONCIL, 4), Math.Round(DAC_UNIT * BF_BC_CONCIL, 4), BF_BC_CONCIL,
@@ -991,21 +1024,21 @@ Fim:
         End Try
     End Function
 
-    Private Delegate Sub UpdateProgressBarDelegate(ByVal dp As _
-             System.Windows.DependencyProperty,
-             ByVal value As Object)
-    Private Sub Process(ByRef Linhas As Single, ByRef Linhas_Totais As Single)
-        Try
+    'Private Delegate Sub UpdateProgressBarDelegate(ByVal dp As _
+    '         System.Windows.DependencyProperty,
+    '         ByVal value As Object)
+    'Private Sub Process(ByRef Linhas As Single, ByRef Linhas_Totais As Single)
+    '    Try
 
-            'Create a new instance of our ProgressBar Delegate that points
-            ' to the ProgressBar's SetValue method.
-            value = (Linhas / (Linhas_Totais)) * 100
-            Dim updatePbDelegate As New _
-        UpdateProgressBarDelegate(AddressOf PB_W.PB.SetValue)
-            PB_W.Dispatcher.Invoke(updatePbDelegate,
-            System.Windows.Threading.DispatcherPriority.Background,
-            New Object() {ProgressBar.ValueProperty, value})
-        Catch
-        End Try
-    End Sub
+    '        'Create a new instance of our ProgressBar Delegate that points
+    '        ' to the ProgressBar's SetValue method.
+    '        value = (Linhas / (Linhas_Totais)) * 100
+    '        Dim updatePbDelegate As New _
+    '    UpdateProgressBarDelegate(AddressOf PB_W.PB.SetValue)
+    '        PB_W.Dispatcher.Invoke(updatePbDelegate,
+    '        System.Windows.Threading.DispatcherPriority.Background,
+    '        New Object() {ProgressBar.ValueProperty, value})
+    '    Catch
+    '    End Try
+    'End Sub
 End Class

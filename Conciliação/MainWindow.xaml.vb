@@ -1,5 +1,4 @@
-﻿Imports Conciliação.BD
-Imports System.Data
+﻿Imports System.Data
 Imports Microsoft.Win32
 Imports System.ComponentModel
 
@@ -153,15 +152,15 @@ Class MainWindow
     End Function
 
     Private Sub MenuItem_Click_2(sender As Object, e As RoutedEventArgs)
+
         If TxtRodadas.Text = "" Then
             Exit Sub
         End If
-        MiArquivo.IsEnabled = False
-        MiArquivo.Header = "Aguarde a Importação do Arquivo"
-        BD.Exportacao_SF_SC(TxtRodadas)
+
+        BD.Exportacao_SF_SC(TxtRodadas, MiArquivo)
         BD.Exportar_Excel(TxtRodadas, CInt(Slide_Qtd.Value), CInt(Slider_Valor.Value), DgResultado, DgBC, DgBF, TbControl, TiResultado, TiBC, TiBF)
-        MiArquivo.IsEnabled = True
         MiArquivo.Header = "Arquivo"
+        MiArquivo.IsEnabled = True
     End Sub
 
     Private Sub MenuItem_Click_3(sender As Object, e As RoutedEventArgs)
