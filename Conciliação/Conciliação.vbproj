@@ -77,7 +77,7 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Fotos\Simbolo.ico</ApplicationIcon>
+    <ApplicationIcon>Fotos\icone_atomosconsultoria.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DataTableToExcel, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -260,6 +260,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Fotos\Chamas.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Fotos\icone_atomosconsultoria.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

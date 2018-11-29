@@ -16,7 +16,7 @@
 
     Private Sub TimerSs_Tick(sender As Object, e As EventArgs) Handles TimerSs.Tick
         Segundo += 1
-        If Segundo >= 2 Then
+        If Segundo >= 5 Then
             TimerSs.Stop()
             Me.Close()
         End If

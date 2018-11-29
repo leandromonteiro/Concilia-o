@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Conciliação_Rateio"
         mc:Ignorable="d"
-        Title="No que deseja trabalhar?" Height="158" Width="235" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False" Icon="Fotos/Simbolo.ico">
+        Title="No que deseja trabalhar?" Height="158" Width="235" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False" Icon="Fotos/icone_atomosconsultoria.ico">
     <Grid>
         <Button Name="Btn_Conciliar" Cursor="Hand" Content="Conciliação" Margin="10,19,14,71" FontWeight="Bold">
             <Button.Effect>

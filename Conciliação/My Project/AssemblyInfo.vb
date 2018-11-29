@@ -15,7 +15,7 @@ Imports System.Windows
 <Assembly: AssemblyDescription("Concilia base física e base contábil de acordo com atributos selecionados. Faz o rateio conforme a classificação determinada")>
 <Assembly: AssemblyCompany("")>
 <Assembly: AssemblyProduct("Conciliação & Rateio")>
-<Assembly: AssemblyCopyright("BM Copyright ©  2018")>
+<Assembly: AssemblyCopyright("Átomos Copyright ©  2019")>
 <Assembly: AssemblyTrademark("")>
 <Assembly: ComVisible(false)>
 

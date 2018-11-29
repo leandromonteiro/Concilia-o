@@ -43,10 +43,11 @@ Partial Class SsConciliacao
         Me.Copyright.BackColor = System.Drawing.Color.Transparent
         Me.Copyright.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Copyright.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.Copyright.Location = New System.Drawing.Point(3, 0)
+        Me.Copyright.Location = New System.Drawing.Point(4, 0)
+        Me.Copyright.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Copyright.Name = "Copyright"
         Me.Copyright.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Copyright.Size = New System.Drawing.Size(237, 303)
+        Me.Copyright.Size = New System.Drawing.Size(316, 373)
         Me.Copyright.TabIndex = 2
         Me.Copyright.Text = "Copyright"
         '
@@ -55,16 +56,17 @@ Partial Class SsConciliacao
         Me.MainLayoutPanel.BackgroundImage = CType(resources.GetObject("MainLayoutPanel.BackgroundImage"), System.Drawing.Image)
         Me.MainLayoutPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.MainLayoutPanel.ColumnCount = 2
-        Me.MainLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 243.0!))
-        Me.MainLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 253.0!))
+        Me.MainLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 324.0!))
+        Me.MainLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 337.0!))
         Me.MainLayoutPanel.Controls.Add(Me.Copyright, 0, 0)
         Me.MainLayoutPanel.Controls.Add(Me.Version, 1, 0)
         Me.MainLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.MainLayoutPanel.Location = New System.Drawing.Point(0, 0)
+        Me.MainLayoutPanel.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.MainLayoutPanel.Name = "MainLayoutPanel"
-        Me.MainLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 218.0!))
-        Me.MainLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38.0!))
-        Me.MainLayoutPanel.Size = New System.Drawing.Size(496, 303)
+        Me.MainLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 268.0!))
+        Me.MainLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 47.0!))
+        Me.MainLayoutPanel.Size = New System.Drawing.Size(661, 373)
         Me.MainLayoutPanel.TabIndex = 0
         '
         'Version
@@ -75,21 +77,23 @@ Partial Class SsConciliacao
         Me.Version.BackColor = System.Drawing.Color.Transparent
         Me.Version.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Version.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.Version.Location = New System.Drawing.Point(246, 0)
+        Me.Version.Location = New System.Drawing.Point(328, 0)
+        Me.Version.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Version.Name = "Version"
         Me.Version.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.Version.Size = New System.Drawing.Size(247, 303)
+        Me.Version.Size = New System.Drawing.Size(329, 373)
         Me.Version.TabIndex = 3
         Me.Version.Text = "Versão {0}.{1:00}"
         '
         'SsConciliacao
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(496, 303)
+        Me.ClientSize = New System.Drawing.Size(661, 373)
         Me.ControlBox = False
         Me.Controls.Add(Me.MainLayoutPanel)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "SsConciliacao"
