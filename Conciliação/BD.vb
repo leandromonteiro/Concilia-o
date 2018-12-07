@@ -3,6 +3,7 @@ Imports System.Data.OleDb
 Imports System.Data
 Imports Conciliação_Rateio.MainWindow
 Imports System.Windows.Threading
+Imports System.IO
 
 Imports DataTableToExcel
 
@@ -197,14 +198,19 @@ Public Class BD
         xlApp = New Excel.Application
         xlWorkBook = xlApp.Workbooks.Add(misValue)
 
-        'xlWorkBook.Sheets.Add(Before:=StResultado)
-        StRodadas = xlWorkBook.Sheets(1)
+		If File.Exists("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx") Then
+			File.Delete("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx")
+		End If
+
+		xlWorkBook.SaveAs("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx")
+
+		'xlWorkBook.Sheets.Add(Before:=StResultado)
+		StRodadas = xlWorkBook.Sheets(1)
         StRodadas.Cells(1, 1).value = Txt.Text
         StRodadas.Cells(1, 1).columnwidth = 100
         StRodadas.Cells(1, 1).VerticalAlignment = Excel.Constants.xlTop
         StRodadas.Name = "Rodadas"
 
-        xlWorkBook.SaveAs("c:\Resultado.xlsx")
         xlWorkBook.Close()
         xlApp.Quit()
 
@@ -228,8 +234,8 @@ Public Class BD
 
         If DT_RESULTADO.Rows.Count > 0 Then
             Try
-                DataTableToExcel.DataTableToExcel.ExportToExcel("c:\Resultado.xlsx", "Conciliado", DT_RESULTADO)
-            Catch
+				DataTableToExcel.DataTableToExcel.ExportToExcel("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx", "Conciliado", DT_RESULTADO)
+			Catch
                 MsgBox("Erro na Extração Resultado")
             End Try
         End If
@@ -242,8 +248,8 @@ Public Class BD
             Dim L As Integer = 0
             DV_BC = DT_BC.DefaultView
             Try
-                DataTableToExcel.DataTableToExcel.ExportToExcel("c:\Resultado.xlsx", "Sobra Contábil", DT_BC)
-            Catch
+				DataTableToExcel.DataTableToExcel.ExportToExcel("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx", "Sobra Contábil", DT_BC)
+			Catch
                 MsgBox("Erro na Extração Sobra Contábil")
             End Try
         End If
@@ -257,9 +263,9 @@ Public Class BD
             Dim L As Integer = 0
             DV_BF = DT_BF.DefaultView
             Try
-                DataTableToExcel.DataTableToExcel.ExportToExcel("c:\Resultado.xlsx", "Sobra Física", DT_BF)
-                'StResultado.Range("P" & L_Result + L_BC + 2 & ":P" & L_Result + L_BC + 1 + L_BF).Value = "SOBRA FÍSICA"
-            Catch
+				DataTableToExcel.DataTableToExcel.ExportToExcel("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx", "Sobra Física", DT_BF)
+				'StResultado.Range("P" & L_Result + L_BC + 2 & ":P" & L_Result + L_BC + 1 + L_BF).Value = "SOBRA FÍSICA"
+			Catch
                 MsgBox("Erro na Extração Sobra Física")
             End Try
         End If
