@@ -5,8 +5,6 @@ Imports Conciliação_Rateio.MainWindow
 Imports System.Windows.Threading
 Imports System.IO
 
-Imports DataTableToExcel
-
 Public Class BD
     Dim DS As New DataSet
     Dim DT_BF As New DataTable
@@ -163,8 +161,8 @@ Public Class BD
         Dim xlApp As Excel.Application
         Dim xlWorkBook As Excel.Workbook
         Dim StResultado As Excel.Worksheet
-        Dim StSF As Excel.Worksheet
-        Dim StSC As Excel.Worksheet
+        'Dim StSF As Excel.Worksheet
+        'Dim StSC As Excel.Worksheet
         Dim StRodadas As Excel.Worksheet
         Dim misValue As Object = System.Reflection.Missing.Value
         Dim Formato_Qtde As String = ""
@@ -198,22 +196,21 @@ Public Class BD
         xlApp = New Excel.Application
         xlWorkBook = xlApp.Workbooks.Add(misValue)
 
-		If File.Exists("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx") Then
-			File.Delete("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx")
-		End If
+        'If File.Exists("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx") Then
+        '	File.Delete("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx")
+        'End If
 
-		xlWorkBook.SaveAs("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx")
+        'xlWorkBook.SaveAs("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx")
 
-		'xlWorkBook.Sheets.Add(Before:=StResultado)
-		StRodadas = xlWorkBook.Sheets(1)
+        'xlWorkBook.Sheets.Add(Before:=StResultado)
+        StRodadas = xlWorkBook.Sheets(1)
         StRodadas.Cells(1, 1).value = Txt.Text
-        StRodadas.Cells(1, 1).columnwidth = 100
+        'StRodadas.Cells(1, 1).columnwidth = 100
         StRodadas.Cells(1, 1).VerticalAlignment = Excel.Constants.xlTop
         StRodadas.Name = "Rodadas"
-
-        xlWorkBook.Close()
-        xlApp.Quit()
-
+        xlWorkBook.Sheets.Add()
+        StResultado = xlWorkBook.Sheets(1)
+        StResultado.Name = "Resultado"
         Dim Contar_DT_Resultado As Integer = DT_RESULTADO.Rows.Count
 
         'Dim colIndex As Integer
@@ -226,18 +223,28 @@ Public Class BD
         'xlApp.Visible = False
 
         'CONCILIADO
-        'For Each dc In DT_RESULTADO.Columns
-        '    colIndex = colIndex + 1
-        '    'Column headers
-        '    StResultado.Cells(1, colIndex) = dc.ColumnName
-        'Next
+        Dim colIndex As Integer
+        For Each dc In DT_RESULTADO.Columns
+            colIndex = colIndex + 1
+            'Column headers
+            StResultado.Cells(1, colIndex) = dc.ColumnName
+        Next
 
         If DT_RESULTADO.Rows.Count > 0 Then
-            Try
-				DataTableToExcel.DataTableToExcel.ExportToExcel("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx", "Conciliado", DT_RESULTADO)
-			Catch
-                MsgBox("Erro na Extração Resultado")
-            End Try
+            'Try
+            'DataTableToExcel.DataTableToExcel.ExportToExcel("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx", "Conciliado", DT_RESULTADO)
+            Dim dc As Data.DataColumn
+            colIndex = 0
+            For Each dc In DT_RESULTADO.Columns
+                colIndex = colIndex + 1
+                If DT_RESULTADO.Rows(0)(colIndex - 1).ToString <> "" Then
+                    StResultado.Cells(2, colIndex).resize(DT_RESULTADO.Rows.Count,).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().Select(Function(k) CObj(k(dc.ColumnName))).ToArray())
+                End If
+            Next
+
+            'Catch
+            'MsgBox("Erro na Extração Resultado")
+            'End Try
         End If
 
         'SOBRA CONTÁBIL
@@ -248,8 +255,8 @@ Public Class BD
             Dim L As Integer = 0
             DV_BC = DT_BC.DefaultView
             Try
-				DataTableToExcel.DataTableToExcel.ExportToExcel("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx", "Sobra Contábil", DT_BC)
-			Catch
+                'DataTableToExcel.DataTableToExcel.ExportToExcel("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx", "Sobra Contábil", DT_BC)
+            Catch
                 MsgBox("Erro na Extração Sobra Contábil")
             End Try
         End If
@@ -263,9 +270,9 @@ Public Class BD
             Dim L As Integer = 0
             DV_BF = DT_BF.DefaultView
             Try
-				DataTableToExcel.DataTableToExcel.ExportToExcel("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx", "Sobra Física", DT_BF)
-				'StResultado.Range("P" & L_Result + L_BC + 2 & ":P" & L_Result + L_BC + 1 + L_BF).Value = "SOBRA FÍSICA"
-			Catch
+                'DataTableToExcel.DataTableToExcel.ExportToExcel("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx", "Sobra Física", DT_BF)
+                'StResultado.Range("P" & L_Result + L_BC + 2 & ":P" & L_Result + L_BC + 1 + L_BF).Value = "SOBRA FÍSICA"
+            Catch
                 MsgBox("Erro na Extração Sobra Física")
             End Try
         End If
@@ -273,13 +280,6 @@ Public Class BD
         DT_RESULTADO.Clear()
         DT_BC.Clear()
         DT_BF.Clear()
-
-        'Try
-        xlApp = New Excel.Application
-        xlWorkBook = xlApp.Workbooks.Open("c:\Resultado.xlsx")
-        StSF = xlWorkBook.Sheets(4)
-        StSC = xlWorkBook.Sheets(3)
-        StResultado = xlWorkBook.Sheets(2)
 
         StResultado.Columns("L:L").TextToColumns(Destination:=StResultado.Range("L1"), DataType:=Excel.XlTextParsingType.xlDelimited,
     TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
@@ -313,30 +313,31 @@ Public Class BD
 
         StResultado.Columns.AutoFit()
 
-        'SC
-        StSC.Range("P:P").Clear()
-        'Qtde
-        StSC.Range("L:L").NumberFormat = Formato_Qtde
-        'Valor
-        StSC.Range("N:O").NumberFormat = Formato_Valor
+        ''SC
+        'StSC.Range("P:P").Clear()
+        ''Qtde
+        'StSC.Range("L:L").NumberFormat = Formato_Qtde
+        ''Valor
+        'StSC.Range("N:O").NumberFormat = Formato_Valor
 
-        StSC.Range("a1:o1").Font.Bold = True
-        StSC.Range("a1:o1").Font.ColorIndex = 2
-        StSC.Range("a1:o1").Interior.ColorIndex = 56
-        StSC.Columns.AutoFit()
-        'SF
-        StSF.Range("M:M").Clear()
-        StSF.Range("L:L").NumberFormat = Formato_Qtde
+        'StSC.Range("a1:o1").Font.Bold = True
+        'StSC.Range("a1:o1").Font.ColorIndex = 2
+        'StSC.Range("a1:o1").Interior.ColorIndex = 56
+        'StSC.Columns.AutoFit()
+        ''SF
+        'StSF.Range("M:M").Clear()
+        'StSF.Range("L:L").NumberFormat = Formato_Qtde
 
-        StSF.Range("a1:l1").Font.Bold = True
-        StSF.Range("a1:l1").Font.ColorIndex = 2
-        StSF.Range("a1:l1").Interior.ColorIndex = 51
+        'StSF.Range("a1:l1").Font.Bold = True
+        'StSF.Range("a1:l1").Font.ColorIndex = 2
+        'StSF.Range("a1:l1").Interior.ColorIndex = 51
 
-        StSF.Columns.AutoFit()
+        'StSF.Columns.AutoFit()
 
         xlWorkBook.Save()
-        xlWorkBook.Close()
-        xlApp.Quit()
+        xlApp.Visible = True
+        'xlWorkBook.Close()
+        'xlApp.Quit()
 
         MsgBox("Dados Exportados com Sucesso!")
         'Catch
@@ -365,7 +366,8 @@ Public Class BD
         Dim DA_BC As New OleDbDataAdapter
         con.Open()
         DA_BF.SelectCommand = New OleDbCommand("SELECT [CHAVE],[CAMPO1],[CAMPO2],[CAMPO3],[CAMPO4],[CAMPO5],[CAMPO6],[CAMPO7],[CAMPO8],[CAMPO9],[CAMPO10],[QUANTIDADE],[PRIORIDADE] FROM [Base Física$];", con)
-        DA_BC.SelectCommand = New OleDbCommand("SELECT [CHAVE],[CAMPO1],[CAMPO2],[CAMPO3],[CAMPO4],[CAMPO5],[CAMPO6],[CAMPO7],[CAMPO8],[CAMPO9],[CAMPO10],[QUANTIDADE],FORMAT ([DATA],'dd/MM/yyyy') as DATA,[VOC],[DAC] FROM [Base Contábil$];", con)
+        'DA_BC.SelectCommand = New OleDbCommand("SELECT [CHAVE],[CAMPO1],[CAMPO2],[CAMPO3],[CAMPO4],[CAMPO5],[CAMPO6],[CAMPO7],[CAMPO8],[CAMPO9],[CAMPO10],[QUANTIDADE],FORMAT ([DATA],'dd/MM/yyyy') as DATA,[VOC],[DAC] FROM [Base Contábil$];", con)
+        DA_BC.SelectCommand = New OleDbCommand("SELECT [CHAVE],[CAMPO1],[CAMPO2],[CAMPO3],[CAMPO4],[CAMPO5],[CAMPO6],[CAMPO7],[CAMPO8],[CAMPO9],[CAMPO10],[QUANTIDADE],[DATA],[VOC],[DAC] FROM [Base Contábil$];", con)
 
         DA_BF.Fill(DS, "TB_BF")
         DA_BC.Fill(DS, "TB_BC")
@@ -403,6 +405,7 @@ Public Class BD
 
     Public Sub Classificar_BD(Prioridade As String, Ordem As String)
         Try
+
             'Ordenar tabelas
             If Prioridade = "Valor" And Ordem = "Crescente" Then
                 DT_BC = DT_BC.Select("", "[VOC] asc").CopyToDataTable
@@ -756,7 +759,7 @@ Err:
                 n_CO += BF_BC_CONCIL
                 DT_RESULTADO.Rows.Add(R_BC.Item(0), R_BC.Item(1), R_BC.Item(2), R_BC.Item(3), R_BC.Item(4),
                                           R_BC.Item(5), R_BC.Item(6), R_BC.Item(7), R_BC.Item(8), R_BC.Item(9),
-                                          R_BC.Item(10), R_BC.Item(12), Math.Round(VOC_UNIT * BF_BC_CONCIL, 4), Math.Round(DAC_UNIT * BF_BC_CONCIL, 4), BF_BC_CONCIL,
+                                          R_BC.Item(10), Format(R_BC.Item(12), "dd/MM/yyyy"), Math.Round(VOC_UNIT * BF_BC_CONCIL, 4), Math.Round(DAC_UNIT * BF_BC_CONCIL, 4), BF_BC_CONCIL,
                                           Status, CHAVE_BF, CAMPO1_BF, CAMPO2_BF, CAMPO3_BF, CAMPO4_BF,
                                           CAMPO5_BF, CAMPO6_BF, CAMPO7_BF, CAMPO8_BF, CAMPO9_BF,
                                           CAMPO10_BF, BF_BC_CONCIL)

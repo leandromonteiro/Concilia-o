@@ -18,15 +18,30 @@
         <TabControl x:Name="TbControl" Margin="10,270,10,10">
             <TabItem x:Name="TiBF" Header="Base Física">
                 <Grid Background="#FFE5E5E5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <DataGrid x:Name="DgBF" Margin="10" Background="{x:Null}" IsReadOnly="True" GridLinesVisibility="None"/>
+                    <DataGrid x:Name="DgBF" Margin="10" Background="{x:Null}" IsReadOnly="True" GridLinesVisibility="None" Grid.ColumnSpan="2"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="TiBC" Header="Base Contábil">
                 <Grid Background="#FFE5E5E5">
-                    <DataGrid x:Name="DgBC" Margin="10" Background="{x:Null}" IsReadOnly="True" GridLinesVisibility="None"/>
+                    <DataGrid x:Name="DgBC" Margin="10" Background="{x:Null}" IsReadOnly="True" GridLinesVisibility="None" IsSynchronizedWithCurrentItem="True"  AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="CHAVE" Binding="{Binding Path=CHAVE}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="CAMPO1" Binding="{Binding Path=CAMPO1}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="CAMPO2" Binding="{Binding Path=CAMPO2}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="CAMPO3" Binding="{Binding Path=CAMPO3}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="CAMPO4" Binding="{Binding Path=CAMPO4}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="CAMPO5" Binding="{Binding Path=CAMPO5}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="CAMPO6" Binding="{Binding Path=CAMPO6}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="CAMPO7" Binding="{Binding Path=CAMPO7}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="CAMPO8" Binding="{Binding Path=CAMPO8}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="CAMPO9" Binding="{Binding Path=CAMPO9}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="CAMPO10" Binding="{Binding Path=CAMPO10}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="QUANTIDADE" Binding="{Binding Path=QUANTIDADE}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="DATA" Binding="{Binding Path=DATA, StringFormat='{}{0:dd/MM/yyyy}'}"/>
+                            <DataGridTextColumn Header="VOC" Binding="{Binding Path=VOC}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="DAC" Binding="{Binding Path=DAC}"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Grid>
             </TabItem>
             <TabItem x:Name="TiResultado" Header="Resultado">
