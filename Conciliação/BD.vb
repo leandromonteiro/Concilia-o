@@ -196,17 +196,13 @@ Public Class BD
         xlApp = New Excel.Application
         xlWorkBook = xlApp.Workbooks.Add(misValue)
 
-        'If File.Exists("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx") Then
-        '	File.Delete("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx")
-        'End If
-
-        'xlWorkBook.SaveAs("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx")
 
         'xlWorkBook.Sheets.Add(Before:=StResultado)
         StRodadas = xlWorkBook.Sheets(1)
         StRodadas.Cells(1, 1).value = Txt.Text
-        'StRodadas.Cells(1, 1).columnwidth = 100
         StRodadas.Cells(1, 1).VerticalAlignment = Excel.Constants.xlTop
+        StRodadas.Columns("A:A").ColumnWidth = 65
+        'StRodadas.Rows.AutoFit()
         StRodadas.Name = "Rodadas"
         xlWorkBook.Sheets.Add()
         StResultado = xlWorkBook.Sheets(1)
@@ -220,7 +216,7 @@ Public Class BD
         Dim Linha As Integer = 1
         dv = DT_RESULTADO.DefaultView
 
-        'xlApp.Visible = False
+        xlApp.Visible = False
 
         'CONCILIADO
         Dim colIndex As Integer
@@ -231,31 +227,151 @@ Public Class BD
         Next
 
         If DT_RESULTADO.Rows.Count > 0 Then
-            'Try
-            'DataTableToExcel.DataTableToExcel.ExportToExcel("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx", "Conciliado", DT_RESULTADO)
-            Dim dc As Data.DataColumn
-            colIndex = 0
-            For Each dc In DT_RESULTADO.Columns
-                colIndex = colIndex + 1
-                If DT_RESULTADO.Rows(0)(colIndex - 1).ToString <> "" Then
-                    StResultado.Cells(2, colIndex).resize(DT_RESULTADO.Rows.Count,).value = xlApp.Application.transpose(DT_RESULTADO.Rows.OfType(Of DataRow)().Select(Function(k) CObj(k(dc.ColumnName))).ToArray())
-                End If
-            Next
+            Try
+                Dim A_1(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_2(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_3(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_4(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_5(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_6(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_7(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_8(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_9(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_10(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_11(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_12(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_13(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_14(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_15(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_16(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_17(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_18(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_19(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_20(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_21(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_22(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_23(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_24(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_25(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_26(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_27(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
+                Dim A_28(0 To DT_RESULTADO.Rows.Count - 1, 0 To 0) As String
 
-            'Catch
-            'MsgBox("Erro na Extração Resultado")
-            'End Try
+                For i = 0 To DT_RESULTADO.Rows.Count - 1
+                    A_1(i, 0) = DT_RESULTADO.Rows(i)(0)
+                    A_2(i, 0) = IIf(IsDBNull(DT_RESULTADO.Rows(i)(1)), "", DT_RESULTADO.Rows(i)(1))
+                    A_3(i, 0) = IIf(IsDBNull(DT_RESULTADO.Rows(i)(2)), "", DT_RESULTADO.Rows(i)(2))
+                    A_4(i, 0) = IIf(IsDBNull(DT_RESULTADO.Rows(i)(3)), "", DT_RESULTADO.Rows(i)(3))
+                    A_5(i, 0) = IIf(IsDBNull(DT_RESULTADO.Rows(i)(4)), "", DT_RESULTADO.Rows(i)(4))
+                    A_6(i, 0) = IIf(IsDBNull(DT_RESULTADO.Rows(i)(5)), "", DT_RESULTADO.Rows(i)(5))
+                    A_7(i, 0) = IIf(IsDBNull(DT_RESULTADO.Rows(i)(6)), "", DT_RESULTADO.Rows(i)(6))
+                    A_8(i, 0) = IIf(IsDBNull(DT_RESULTADO.Rows(i)(7)), "", DT_RESULTADO.Rows(i)(7))
+                    A_9(i, 0) = IIf(IsDBNull(DT_RESULTADO.Rows(i)(8)), "", DT_RESULTADO.Rows(i)(8))
+                    A_10(i, 0) = IIf(IsDBNull(DT_RESULTADO.Rows(i)(9)), "", DT_RESULTADO.Rows(i)(9))
+                    A_11(i, 0) = IIf(IsDBNull(DT_RESULTADO.Rows(i)(10)), "", DT_RESULTADO.Rows(i)(10))
+                    A_12(i, 0) = DT_RESULTADO.Rows(i)(11)
+                    A_13(i, 0) = DT_RESULTADO.Rows(i)(12)
+                    A_14(i, 0) = DT_RESULTADO.Rows(i)(13)
+                    A_15(i, 0) = DT_RESULTADO.Rows(i)(14)
+                    A_16(i, 0) = DT_RESULTADO.Rows(i)(15)
+                    A_17(i, 0) = DT_RESULTADO.Rows(i)(16)
+                    A_18(i, 0) = IIf(IsDBNull(DT_RESULTADO.Rows(i)(17)), "", DT_RESULTADO.Rows(i)(17))
+                    A_19(i, 0) = IIf(IsDBNull(DT_RESULTADO.Rows(i)(18)), "", DT_RESULTADO.Rows(i)(18))
+                    A_20(i, 0) = IIf(IsDBNull(DT_RESULTADO.Rows(i)(19)), "", DT_RESULTADO.Rows(i)(19))
+                    A_21(i, 0) = IIf(IsDBNull(DT_RESULTADO.Rows(i)(20)), "", DT_RESULTADO.Rows(i)(20))
+                    A_22(i, 0) = IIf(IsDBNull(DT_RESULTADO.Rows(i)(21)), "", DT_RESULTADO.Rows(i)(21))
+                    A_23(i, 0) = IIf(IsDBNull(DT_RESULTADO.Rows(i)(22)), "", DT_RESULTADO.Rows(i)(22))
+                    A_24(i, 0) = IIf(IsDBNull(DT_RESULTADO.Rows(i)(23)), "", DT_RESULTADO.Rows(i)(23))
+                    A_25(i, 0) = IIf(IsDBNull(DT_RESULTADO.Rows(i)(24)), "", DT_RESULTADO.Rows(i)(24))
+                    A_26(i, 0) = IIf(IsDBNull(DT_RESULTADO.Rows(i)(25)), "", DT_RESULTADO.Rows(i)(25))
+                    A_27(i, 0) = IIf(IsDBNull(DT_RESULTADO.Rows(i)(26)), "", DT_RESULTADO.Rows(i)(26))
+                    A_28(i, 0) = DT_RESULTADO.Rows(i)(27)
+                Next
+                StResultado.Cells(2, 1).resize(DT_RESULTADO.Rows.Count).value = A_1
+                StResultado.Cells(2, 2).resize(DT_RESULTADO.Rows.Count).value = A_2
+                StResultado.Cells(2, 3).resize(DT_RESULTADO.Rows.Count).value = A_3
+                StResultado.Cells(2, 4).resize(DT_RESULTADO.Rows.Count).value = A_4
+                StResultado.Cells(2, 5).resize(DT_RESULTADO.Rows.Count).value = A_5
+                StResultado.Cells(2, 6).resize(DT_RESULTADO.Rows.Count).value = A_6
+                StResultado.Cells(2, 7).resize(DT_RESULTADO.Rows.Count).value = A_7
+                StResultado.Cells(2, 8).resize(DT_RESULTADO.Rows.Count).value = A_8
+                StResultado.Cells(2, 9).resize(DT_RESULTADO.Rows.Count).value = A_9
+                StResultado.Cells(2, 10).resize(DT_RESULTADO.Rows.Count).value = A_10
+                StResultado.Cells(2, 11).resize(DT_RESULTADO.Rows.Count).value = A_11
+                StResultado.Cells(2, 12).resize(DT_RESULTADO.Rows.Count).value = A_12
+                StResultado.Cells(2, 13).resize(DT_RESULTADO.Rows.Count).value = A_13
+                StResultado.Cells(2, 14).resize(DT_RESULTADO.Rows.Count).value = A_14
+                StResultado.Cells(2, 15).resize(DT_RESULTADO.Rows.Count).value = A_15
+                StResultado.Cells(2, 16).resize(DT_RESULTADO.Rows.Count).value = A_16
+                StResultado.Cells(2, 17).resize(DT_RESULTADO.Rows.Count).value = A_17
+                StResultado.Cells(2, 18).resize(DT_RESULTADO.Rows.Count).value = A_18
+                StResultado.Cells(2, 19).resize(DT_RESULTADO.Rows.Count).value = A_19
+                StResultado.Cells(2, 20).resize(DT_RESULTADO.Rows.Count).value = A_20
+                StResultado.Cells(2, 21).resize(DT_RESULTADO.Rows.Count).value = A_21
+                StResultado.Cells(2, 22).resize(DT_RESULTADO.Rows.Count).value = A_22
+                StResultado.Cells(2, 23).resize(DT_RESULTADO.Rows.Count).value = A_23
+                StResultado.Cells(2, 24).resize(DT_RESULTADO.Rows.Count).value = A_24
+                StResultado.Cells(2, 25).resize(DT_RESULTADO.Rows.Count).value = A_25
+                StResultado.Cells(2, 26).resize(DT_RESULTADO.Rows.Count).value = A_26
+                StResultado.Cells(2, 27).resize(DT_RESULTADO.Rows.Count).value = A_27
+                StResultado.Cells(2, 28).resize(DT_RESULTADO.Rows.Count).value = A_28
+            Catch
+                MsgBox("Erro na Extração Resultado")
+            End Try
         End If
 
         'SOBRA CONTÁBIL
         If DT_BC.Rows.Count > 0 Then
-            Dim DV_BC As New DataView
-            Dim L_Result As Integer = DT_RESULTADO.Rows.Count
-            Dim L_BC As Integer = DT_BC.Rows.Count
-            Dim L As Integer = 0
-            DV_BC = DT_BC.DefaultView
             Try
-                'DataTableToExcel.DataTableToExcel.ExportToExcel("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx", "Sobra Contábil", DT_BC)
+                Dim A_1(0 To DT_BC.Rows.Count - 1, 0 To 0) As String
+                Dim A_2(0 To DT_BC.Rows.Count - 1, 0 To 0) As String
+                Dim A_3(0 To DT_BC.Rows.Count - 1, 0 To 0) As String
+                Dim A_4(0 To DT_BC.Rows.Count - 1, 0 To 0) As String
+                Dim A_5(0 To DT_BC.Rows.Count - 1, 0 To 0) As String
+                Dim A_6(0 To DT_BC.Rows.Count - 1, 0 To 0) As String
+                Dim A_7(0 To DT_BC.Rows.Count - 1, 0 To 0) As String
+                Dim A_8(0 To DT_BC.Rows.Count - 1, 0 To 0) As String
+                Dim A_9(0 To DT_BC.Rows.Count - 1, 0 To 0) As String
+                Dim A_10(0 To DT_BC.Rows.Count - 1, 0 To 0) As String
+                Dim A_11(0 To DT_BC.Rows.Count - 1, 0 To 0) As String
+                Dim A_12(0 To DT_BC.Rows.Count - 1, 0 To 0) As String
+                Dim A_13(0 To DT_BC.Rows.Count - 1, 0 To 0) As String
+                Dim A_14(0 To DT_BC.Rows.Count - 1, 0 To 0) As String
+                Dim A_15(0 To DT_BC.Rows.Count - 1, 0 To 0) As String
+
+                For i = 0 To DT_BC.Rows.Count - 1
+                    A_1(i, 0) = DT_BC.Rows(i)(0)
+                    A_2(i, 0) = IIf(IsDBNull(DT_BC.Rows(i)(1)), "", DT_BC.Rows(i)(1))
+                    A_3(i, 0) = IIf(IsDBNull(DT_BC.Rows(i)(2)), "", DT_BC.Rows(i)(2))
+                    A_4(i, 0) = IIf(IsDBNull(DT_BC.Rows(i)(3)), "", DT_BC.Rows(i)(3))
+                    A_5(i, 0) = IIf(IsDBNull(DT_BC.Rows(i)(4)), "", DT_BC.Rows(i)(4))
+                    A_6(i, 0) = IIf(IsDBNull(DT_BC.Rows(i)(5)), "", DT_BC.Rows(i)(5))
+                    A_7(i, 0) = IIf(IsDBNull(DT_BC.Rows(i)(6)), "", DT_BC.Rows(i)(6))
+                    A_8(i, 0) = IIf(IsDBNull(DT_BC.Rows(i)(7)), "", DT_BC.Rows(i)(7))
+                    A_9(i, 0) = IIf(IsDBNull(DT_BC.Rows(i)(8)), "", DT_BC.Rows(i)(8))
+                    A_10(i, 0) = IIf(IsDBNull(DT_BC.Rows(i)(9)), "", DT_BC.Rows(i)(9))
+                    A_11(i, 0) = IIf(IsDBNull(DT_BC.Rows(i)(10)), "", DT_BC.Rows(i)(10))
+                    A_12(i, 0) = DT_BC.Rows(i)(11)
+                    A_13(i, 0) = DT_BC.Rows(i)(12)
+                    A_14(i, 0) = DT_BC.Rows(i)(13)
+                    A_15(i, 0) = DT_BC.Rows(i)(14)
+                Next
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count, 1).resize(DT_BC.Rows.Count).value = A_1
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count, 2).resize(DT_BC.Rows.Count).value = A_2
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count, 3).resize(DT_BC.Rows.Count).value = A_3
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count, 4).resize(DT_BC.Rows.Count).value = A_4
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count, 5).resize(DT_BC.Rows.Count).value = A_5
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count, 6).resize(DT_BC.Rows.Count).value = A_6
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count, 7).resize(DT_BC.Rows.Count).value = A_7
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count, 8).resize(DT_BC.Rows.Count).value = A_8
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count, 9).resize(DT_BC.Rows.Count).value = A_9
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count, 10).resize(DT_BC.Rows.Count).value = A_10
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count, 11).resize(DT_BC.Rows.Count).value = A_11
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count, 12).resize(DT_BC.Rows.Count).value = A_13
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count, 13).resize(DT_BC.Rows.Count).value = A_14
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count, 14).resize(DT_BC.Rows.Count).value = A_15
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count, 15).resize(DT_BC.Rows.Count).value = A_12
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count, 16).resize(DT_BC.Rows.Count).value = "SOBRA CONTÁBIL"
             Catch
                 MsgBox("Erro na Extração Sobra Contábil")
             End Try
@@ -263,15 +379,47 @@ Public Class BD
 
         'SOBRA FÍSICA
         If DT_BF.Rows.Count > 0 Then
-            Dim DV_BF As New DataView
-            Dim L_Result As Integer = DT_RESULTADO.Rows.Count
-            Dim L_BC As Integer = DT_BC.Rows.Count
-            Dim L_BF As Integer = DT_BF.Rows.Count
-            Dim L As Integer = 0
-            DV_BF = DT_BF.DefaultView
             Try
-                'DataTableToExcel.DataTableToExcel.ExportToExcel("C:\Users\Marce\OneDrive\Área de Trabalho\Documentos\Resultado.xlsx", "Sobra Física", DT_BF)
-                'StResultado.Range("P" & L_Result + L_BC + 2 & ":P" & L_Result + L_BC + 1 + L_BF).Value = "SOBRA FÍSICA"
+                Dim A_17(0 To DT_BF.Rows.Count - 1, 0 To 0) As String
+                Dim A_18(0 To DT_BF.Rows.Count - 1, 0 To 0) As String
+                Dim A_19(0 To DT_BF.Rows.Count - 1, 0 To 0) As String
+                Dim A_20(0 To DT_BF.Rows.Count - 1, 0 To 0) As String
+                Dim A_21(0 To DT_BF.Rows.Count - 1, 0 To 0) As String
+                Dim A_22(0 To DT_BF.Rows.Count - 1, 0 To 0) As String
+                Dim A_23(0 To DT_BF.Rows.Count - 1, 0 To 0) As String
+                Dim A_24(0 To DT_BF.Rows.Count - 1, 0 To 0) As String
+                Dim A_25(0 To DT_BF.Rows.Count - 1, 0 To 0) As String
+                Dim A_26(0 To DT_BF.Rows.Count - 1, 0 To 0) As String
+                Dim A_27(0 To DT_BF.Rows.Count - 1, 0 To 0) As String
+                Dim A_28(0 To DT_BF.Rows.Count - 1, 0 To 0) As String
+
+                For i = 0 To DT_BF.Rows.Count - 1
+                    A_17(i, 0) = DT_BF.Rows(i)(0)
+                    A_18(i, 0) = IIf(IsDBNull(DT_BF.Rows(i)(1)), "", DT_BF.Rows(i)(1))
+                    A_19(i, 0) = IIf(IsDBNull(DT_BF.Rows(i)(2)), "", DT_BF.Rows(i)(2))
+                    A_20(i, 0) = IIf(IsDBNull(DT_BF.Rows(i)(3)), "", DT_BF.Rows(i)(3))
+                    A_21(i, 0) = IIf(IsDBNull(DT_BF.Rows(i)(4)), "", DT_BF.Rows(i)(4))
+                    A_22(i, 0) = IIf(IsDBNull(DT_BF.Rows(i)(5)), "", DT_BF.Rows(i)(5))
+                    A_23(i, 0) = IIf(IsDBNull(DT_BF.Rows(i)(6)), "", DT_BF.Rows(i)(6))
+                    A_24(i, 0) = IIf(IsDBNull(DT_BF.Rows(i)(7)), "", DT_BF.Rows(i)(7))
+                    A_25(i, 0) = IIf(IsDBNull(DT_BF.Rows(i)(8)), "", DT_BF.Rows(i)(8))
+                    A_26(i, 0) = IIf(IsDBNull(DT_BF.Rows(i)(9)), "", DT_BF.Rows(i)(9))
+                    A_27(i, 0) = IIf(IsDBNull(DT_BF.Rows(i)(10)), "", DT_BF.Rows(i)(10))
+                    A_28(i, 0) = DT_BF.Rows(i)(11)
+                Next
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count + DT_BC.Rows.Count, 16).resize(DT_BF.Rows.Count).value = "SOBRA FÍSICA"
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count + DT_BC.Rows.Count, 17).resize(DT_BF.Rows.Count).value = A_17
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count + DT_BC.Rows.Count, 18).resize(DT_BF.Rows.Count).value = A_18
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count + DT_BC.Rows.Count, 19).resize(DT_BF.Rows.Count).value = A_19
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count + DT_BC.Rows.Count, 20).resize(DT_BF.Rows.Count).value = A_20
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count + DT_BC.Rows.Count, 21).resize(DT_BF.Rows.Count).value = A_21
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count + DT_BC.Rows.Count, 22).resize(DT_BF.Rows.Count).value = A_22
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count + DT_BC.Rows.Count, 23).resize(DT_BF.Rows.Count).value = A_23
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count + DT_BC.Rows.Count, 24).resize(DT_BF.Rows.Count).value = A_24
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count + DT_BC.Rows.Count, 25).resize(DT_BF.Rows.Count).value = A_25
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count + DT_BC.Rows.Count, 26).resize(DT_BF.Rows.Count).value = A_26
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count + DT_BC.Rows.Count, 27).resize(DT_BF.Rows.Count).value = A_27
+                StResultado.Cells(2 + DT_RESULTADO.Rows.Count + DT_BC.Rows.Count, 28).resize(DT_BF.Rows.Count).value = A_28
             Catch
                 MsgBox("Erro na Extração Sobra Física")
             End Try
@@ -280,10 +428,6 @@ Public Class BD
         DT_RESULTADO.Clear()
         DT_BC.Clear()
         DT_BF.Clear()
-
-        StResultado.Columns("L:L").TextToColumns(Destination:=StResultado.Range("L1"), DataType:=Excel.XlTextParsingType.xlDelimited,
-    TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
-    Semicolon:=False, Comma:=False, Space:=False, Other:=False, TrailingMinusNumbers:=True)
 
         StResultado.Columns("M:M").TextToColumns(Destination:=StResultado.Range("M1"), DataType:=Excel.XlTextParsingType.xlDelimited,
     TextQualifier:=Excel.XlTextQualifier.xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True,
@@ -312,38 +456,9 @@ Public Class BD
         StResultado.Range("q1:ab1").Interior.ColorIndex = 51
 
         StResultado.Columns.AutoFit()
-
-        ''SC
-        'StSC.Range("P:P").Clear()
-        ''Qtde
-        'StSC.Range("L:L").NumberFormat = Formato_Qtde
-        ''Valor
-        'StSC.Range("N:O").NumberFormat = Formato_Valor
-
-        'StSC.Range("a1:o1").Font.Bold = True
-        'StSC.Range("a1:o1").Font.ColorIndex = 2
-        'StSC.Range("a1:o1").Interior.ColorIndex = 56
-        'StSC.Columns.AutoFit()
-        ''SF
-        'StSF.Range("M:M").Clear()
-        'StSF.Range("L:L").NumberFormat = Formato_Qtde
-
-        'StSF.Range("a1:l1").Font.Bold = True
-        'StSF.Range("a1:l1").Font.ColorIndex = 2
-        'StSF.Range("a1:l1").Interior.ColorIndex = 51
-
-        'StSF.Columns.AutoFit()
-
-        xlWorkBook.Save()
-        xlApp.Visible = True
-        'xlWorkBook.Close()
-        'xlApp.Quit()
-
         MsgBox("Dados Exportados com Sucesso!")
-        'Catch
-        '    xlApp.Quit()
-        '    MsgBox("Erro ao exportar para Excel", MsgBoxStyle.Critical)
-        'End Try
+        xlApp.Visible = True
+
     End Sub
 
     Public Sub Importar_Excel(ArquivoExcel As String, DGV_BF As DataGrid, DGV_BC As DataGrid)
